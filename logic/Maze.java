@@ -25,8 +25,8 @@ public class Maze
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 
 		hero = new Hero(1, 1);
-		dragon = new Dragon(1, 3);
-		sword = new Sword(1, 8);
+		dragon = new Dragon(1, 5); //1, 3
+		sword = new Sword(1, 6);
 
 		maze[hero.getY()][hero.getX()] = hero.getName();
 		maze[dragon.getY()][dragon.getX()] = dragon.getName();
@@ -35,14 +35,14 @@ public class Maze
 	
 	public void updateHero(String playerMovement)
 	{
-		//Player Movement
 		int lastPositionX = hero.getX();
 		int lastPositionY = hero.getY();
 		
 		int validInput = hero.inputHandler(playerMovement);
 		
 		if(validInput == 1){
-			if(maze[hero.getY()][hero.getX()] == 'X' || (maze[hero.getY()][hero.getX()] == 'S' && !dragon.getIsDead()))		//If the new position is a wall, the hero doesn't move
+			//If the new position is a wall or is the exit but he hasn't killed the dragon, then the hero doesn't move
+			if(maze[hero.getY()][hero.getX()] == 'X' || (maze[hero.getY()][hero.getX()] == 'S' && !dragon.getIsDead()))
 			{
 				hero.setX(lastPositionX);
 				hero.setY(lastPositionY);
@@ -53,9 +53,6 @@ public class Maze
 			{
 				hero.setWieldingSword();
 				sword.setIsWielded();		//IS THIS REALLY NECESSARY???????????????????????????????
-				
-				hero.setName('A');
-				sword.setName(' ');
 			}
 			
 			maze[hero.getY()][hero.getX()] = hero.getName();
@@ -65,19 +62,39 @@ public class Maze
 	
 	public void updateDragon()
 	{
-		//Dragon Movement
 		int lastPositionX = dragon.getX();
 		int lastPositionY = dragon.getY();
-				
-		dragon.updateDragon();
 
-		if (maze[dragon.getY()][dragon.getX()] != ' ') {
+		dragon.updateDragon();
+			
+		//If the new position is a wall or the exit, the dragon doesn't move
+		if (maze[dragon.getY()][dragon.getX()] == 'X' || maze[dragon.getY()][dragon.getX()] == 'S')
+		{
 			dragon.setX(lastPositionX);
 			dragon.setY(lastPositionY);
-		} else {
-			maze[dragon.getY()][dragon.getX()] = dragon.getName();
-			maze[lastPositionY][lastPositionX] = ' ';
+			
+			return;
 		}
+		//Since the verification of the movement occurence was done above, we're certain that he moves. So, if he's in the same position as the sword,
+		//we change the name of the position so that both the dragon and the sword can be represented again
+		else if(dragon.getName() == 'F')
+		{
+			dragon.setDragonOnTop(false);
+			sword.setDragonOnTop(false);
+			
+			maze[sword.getY()][sword.getX()] = sword.getName();
+			maze[dragon.getY()][dragon.getX()] = dragon.getName();
+			
+			return;
+		}
+		else if (maze[dragon.getY()][dragon.getX()] == 'E')
+		{
+			sword.setDragonOnTop(true);
+			dragon.setDragonOnTop(true);
+		}
+		
+		maze[dragon.getY()][dragon.getX()] = dragon.getName();
+		maze[lastPositionY][lastPositionX] = ' ';
 	}
 	
 	public boolean checkForBattle()
@@ -95,23 +112,17 @@ public class Maze
 	public void doBattle()
 	{
 		if(hero.getWieldingSword())
-		{
 			dragon.setIsDead();
-			dragon.setName(' ');
-		}
 		else
-		{
 			hero.setIsDead();
-			hero.setName(' ');
-		}
 	}
 	
 	public void updateMaze(String playerMovement){
-		updateHero(playerMovement);
-		updateDragon();
-		
 		if(checkForBattle())
 			doBattle();
+		
+		updateHero(playerMovement);
+		updateDragon();
 	}
 	
 	public void drawMaze()
@@ -119,7 +130,7 @@ public class Maze
 		for(int i = 0; i < maze.length; i++)
 		{
 			for(int j = 0; j < maze[i].length; j++)
-				System.out.print(maze[i][j] + " ");
+				System.out.print(maze[i][j] + " ");		// VER 'Y' E 'X' MANHOSOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 			System.out.println();
 		}

@@ -10,7 +10,7 @@ public class Hero extends Elements {
 		isDead = false;
 	}
 
-	public int inputHandler(String direction) // VER 'Y' E 'X' MANHOSOS
+	public int inputHandler(String direction)
 	{
 		if (direction.equals("W") || direction.equals("w")) {
 			setY(getY() - 1);
@@ -33,13 +33,20 @@ public class Hero extends Elements {
 		return this.wieldingSword;
 	}
 	
+	public boolean getIsDead()
+	{
+		return this.isDead;
+	}
+	
 	public void setWieldingSword()
 	{
 		this.wieldingSword = true;
+		this.setName('A');
 	}
 	
 	public void setIsDead()
 	{
 		this.isDead = true;
+		this.setName(' ');
 	}
 }
