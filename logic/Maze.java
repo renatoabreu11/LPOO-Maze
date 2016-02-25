@@ -42,7 +42,7 @@ public class Maze
 		if(validInput == 1){
 			maze[hero.getY()][hero.getX()] = hero.getName();
 			maze[positionY][positionX] = ' ';
-		}
+		} else return;
 		
 		positionX = dragon.getX();
 		positionY = dragon.getY();

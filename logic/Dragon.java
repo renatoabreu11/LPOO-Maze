@@ -40,17 +40,17 @@ public class Dragon extends Elements {
 	
 	public void setDragonOnTop(boolean flag){
 		this.dragonOnTop = flag;
-		
-		if(this.dragonOnTop == true){
+
+		if (this.dragonOnTop == true) {
 			setName('F');
-		}
-		else setName('D');
+		} else
+			setName('D');
 	}
-	
-	public void setIsDead(){
+
+	public void setIsDead() {
 		this.isDead = true;
 	}
-	
+
 	public boolean getIsDead(){
 		return this.isDead;
 	}
