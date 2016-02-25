@@ -23,10 +23,12 @@ public class Maze
 				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 				{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+				
+				//NAO ESQUECER LEGENDA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		hero = new Hero(1, 1);
-		dragon = new Dragon(1, 5); //1, 3
-		sword = new Sword(1, 6);
+		dragon = new Dragon(1, 3);
+		sword = new Sword(1, 8);
 
 		maze[hero.getY()][hero.getX()] = hero.getName();
 		maze[dragon.getY()][dragon.getX()] = dragon.getName();
@@ -67,6 +69,9 @@ public class Maze
 
 		dragon.updateDragon();
 			
+		//If the dragon keeps still, nothing changes
+		if(dragon.getX() == lastPositionX && dragon.getY() == lastPositionY)
+			return;
 		//If the new position is a wall or the exit, the dragon doesn't move
 		if (maze[dragon.getY()][dragon.getX()] == 'X' || maze[dragon.getY()][dragon.getX()] == 'S')
 		{
@@ -75,9 +80,11 @@ public class Maze
 			
 			return;
 		}
-		//Since the verification of the movement occurence was done above, we're certain that he moves. So, if he's in the same position as the sword,
-		//we change the name of the position so that both the dragon and the sword can be represented again
-		else if(dragon.getName() == 'F')
+		//Since the verification of the movement occurence was done above, we're certain that he doesn't move to a wall or the exit.
+		//So, if he's in the same position as the sword,
+		//we change the name of the position so that both the dragon and the sword can be represented again.
+		//Careful: the position isn't changed if the dragon keeps still...
+		else if(dragon.getDragonOnTop() && (dragon.getX() != lastPositionX || dragon.getY() != lastPositionY))
 		{
 			dragon.setDragonOnTop(false);
 			sword.setDragonOnTop(false);

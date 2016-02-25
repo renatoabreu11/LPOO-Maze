@@ -56,4 +56,9 @@ public class Dragon extends Elements {
 	public boolean getIsDead(){
 		return this.isDead;
 	}
+	
+	public boolean getDragonOnTop()
+	{
+		return this.dragonOnTop;
+	}
 }
