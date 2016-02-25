@@ -27,4 +27,19 @@ public class Hero extends Elements {
 		} else
 			return -1;
 	}
+	
+	public boolean getWieldingSword()
+	{
+		return this.wieldingSword;
+	}
+	
+	public void setWieldingSword()
+	{
+		this.wieldingSword = true;
+	}
+	
+	public void setIsDead()
+	{
+		this.isDead = true;
+	}
 }

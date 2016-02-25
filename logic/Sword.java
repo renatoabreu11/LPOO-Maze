@@ -11,4 +11,14 @@ public class Sword extends Elements
 		isWielded = false;
 		dragonOnTop = false;
 	}
+	
+	public void setIsWielded()
+	{
+		this.isWielded = true;
+	}
+	
+	public void setDragonOnTop(boolean dragonOnTop)
+	{
+		this.dragonOnTop = dragonOnTop;
+	}
 }
