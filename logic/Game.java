@@ -33,15 +33,28 @@ public class Game {
 		playerMovement = "";
 	}
 	
-	public void DisplayInstructions()
+	public void DisplayMessageInstructions()
 	{
 		System.out.println("Welcome to the dungeons!\n"
 				+ "Instructions: press 'W', 'A', 'S' or 'D' to select the movement, and finally 'ENTER' to accept it!\n"
-				+ "Let the hunts begin!\n");
+				+ "You can always quit by 'Q' and then 'ENTER'."
+				+ "\nLet the hunts begin!\n");
+	}
+	
+	public void DisplayMessageWinning()
+	{
+		System.out.println("\nCongratulations, you just beat the game! :D\n");
+	}
+	
+	public void DisplayMessageLose()
+	{
+		System.out.println("\nWe hoped the game wasn't to hard for you! ^.^\nSee ya! :D\n");
 	}
 	
 	public void UpdateGame()
 	{	
+		System.out.print("Move the hero: ");
+		
 		try{
 			playerMovement = s.nextLine();
 		} catch(InputMismatchException e){
@@ -49,12 +62,14 @@ public class Game {
 			s.next(); // this consumes the invalid token
 		}
 		
+		System.out.println();
+		
+		if(playerMovement.equals("Q") || playerMovement.equals("q"))
+			SetGameOver();
+		
 		UpdateHero(hero, playerMovement);
 		UpdateDragon(dragon);
 		UpdateMaze(maze);
-	
-//	if(playerMovement.equals("Q"))
-//		break;
 	}
 	
 	public void DrawGame()
@@ -77,6 +92,11 @@ public class Game {
 				hero.setY(lastPositionY);
 				
 				return;
+			}
+			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'S' && dragon.getDragonState().equals(DragonState.dead))
+			{
+				SetGameOver();
+				DisplayMessageWinning();
 			}
 			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'E')		//If the new position is where the sword is located, then the hero grabs the sword
 			{
@@ -132,6 +152,12 @@ public class Game {
 	{
 		if(maze.checkForBattle(hero, dragon))
 			maze.doBattle(hero, dragon);
+		
+		if(hero.getIsDead())
+		{
+			SetGameOver();
+			DisplayMessageLose();
+		}
 	}
 	
 	public void SetGameOver()
