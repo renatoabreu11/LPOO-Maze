@@ -10,7 +10,7 @@ public class Hero extends Elements {
 		isDead = false;
 	}
 
-	public int inputHandler(String direction)
+	public int UpdateMovement(String direction)
 	{
 		if (direction.equals("W") || direction.equals("w")) {
 			setY(getY() - 1);

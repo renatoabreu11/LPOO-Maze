@@ -20,7 +20,7 @@ public class Dragon extends Elements {
 	
 	//zé carlos, vê o que achas da estruturação desta função
 	//pergunta: não seria melhor passar como argumento um objeto maze e fazer o update do dragao aqui? (tal como em hero)
-	public void updateDragon(){
+	public void updateMovement(){
 		int aux;
 		switch (this.state){
 		case dead:
