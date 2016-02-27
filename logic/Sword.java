@@ -2,29 +2,23 @@ package maze.logic;
 
 public class Sword extends Elements
 {
-	private boolean isWielded;
-	private boolean dragonOnTop;
+	private boolean isVisible;
 	
 	public Sword(int x, int y)
 	{
 		super(x, y, 'E');
-		isWielded = false;
-		dragonOnTop = false;
+		isVisible = true;
 	}
 	
-	public void setIsWielded()
-	{
-		this.isWielded = true;
-		this.setName(' ');
-	}
-	
-	public void setDragonOnTop(boolean dragonOnTop)
-	{
-		this.dragonOnTop = dragonOnTop;
+	public void setIsVisible(boolean b) {
+		this.isVisible = b;
 		
-		if(this.dragonOnTop)
-			this.setName(' ');
-		else
+		if(this.isVisible){
 			this.setName('E');
+		} else this.setName(' ');
+	}
+	
+	public boolean getIsVisible() {
+		return this.isVisible;
 	}
 }
