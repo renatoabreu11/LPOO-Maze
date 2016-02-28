@@ -1,8 +1,5 @@
 package maze.logic;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import maze.logic.Dragon.DragonState;
 
 public class Game {
@@ -13,8 +10,6 @@ public class Game {
 	private Sword sword;
 	
 	private boolean gameOver;
-	Scanner s;
-	String playerMovement;
 	
 	public Game()
 	{
@@ -28,88 +23,43 @@ public class Game {
 		maze.WriteInMaze(sword.getX(), sword.getY(), sword.getName());
 		
 		this.gameOver = false;
-		
-		s = new Scanner(System.in);
-		playerMovement = "";
 	}
+
 	
-	public void DisplayMessageInstructions()
-	{
-		System.out.println("Welcome to the dungeons!\n"
-				+ "Instructions: press 'W', 'A', 'S' or 'D' to select the movement, and finally 'ENTER' to accept it!\n"
-				+ "You can always quit by 'Q' and then 'ENTER'."
-				+ "\nLet the hunts begin!\n");
-	}
-	
-	public void DisplayMessageWinning()
-	{
-		System.out.println("\nCongratulations, you just beat the game! :D\n");
-	}
-	
-	public void DisplayMessageLose()
-	{
-		System.out.println("\nWe hoped the game wasn't to hard for you! ^.^\nSee ya! :D\n");
-	}
-	
-	public void UpdateGame()
-	{	
-		System.out.print("Move the hero: ");
-		
-		try{
-			playerMovement = s.nextLine();
-		} catch(InputMismatchException e){
-			System.out.println("Invalid input. Try again.\n>>");
-			s.next(); // this consumes the invalid token
-		}
-		
-		System.out.println();
-		
-		if(playerMovement.equals("Q") || playerMovement.equals("q"))
-			SetGameOver();
-		
-		UpdateHero(hero, playerMovement);
+	public void UpdateGame(String movement) {
+		UpdateHero(hero, movement);
 		UpdateDragon(dragon);
-		UpdateMaze(maze);
-	}
-	
-	public void DrawGame()
-	{
-		this.maze.drawMaze();
+		if (checkForBattle())
+			doBattle();
+
+		if (hero.getIsDead()) {
+			SetGameOver();
+			DrawGame();
+		}
 	}
 	
 	public void UpdateHero(Hero hero, String playerMovement)
 	{
 		int lastPositionX = hero.getX();
 		int lastPositionY = hero.getY();
-		
+
 		int validInput = hero.UpdateMovement(playerMovement);
-		
-		if(validInput == 1){
-			//If the new position is a wall or is the exit but he hasn't killed the dragon, then the hero doesn't move
-			if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'X' || (maze.ReadInMaze(hero.getX(), hero.getY()) == 'S' && !dragon.getDragonState().equals(DragonState.dead)))
-			{
+
+		if (validInput == 1) {
+			if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'X') {
 				hero.setX(lastPositionX);
 				hero.setY(lastPositionY);
-				
 				return;
-			}
-			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'S' && dragon.getDragonState().equals(DragonState.dead))
-			{
-				maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
-				maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
-
+			} else if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'S'
+					&& dragon.getDragonState().equals(DragonState.dead)) {
 				SetGameOver();
-				DrawGame();
-				DisplayMessageWinning();
-			}
-			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'E')		//If the new position is where the sword is located, then the hero grabs the sword
-			{
+			} else if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'E') {
 				hero.setWieldingSword();
 				sword.setIsVisible(false);
 			}
 
-			maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
 			maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
+			maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
 		}
 	}
 	
@@ -134,10 +84,6 @@ public class Game {
 				dragon.setY(lastPositionY);
 				return;
 			}
-			//Since the verification of the movement occurence was done above, we're certain that he doesn't move to a wall.
-			//So, if he's in the same position as the sword,
-			//we change the name of the position so that both the dragon and the sword can be represented again.
-			// Careful: the position isn't changed if the dragon keeps still...
 			else if (dragon.getDragonOnTop() && (dragon.getX() != lastPositionX || dragon.getY() != lastPositionY)) {
 				dragon.setDragonOnTop(false);
 				sword.setIsVisible(true);
@@ -155,23 +101,42 @@ public class Game {
 		}
 	}
 	
-	public void UpdateMaze(Maze maze)
+	public boolean checkForBattle()
 	{
-		if(maze.checkForBattle(hero, dragon))
-			maze.doBattle(hero, dragon);
-		
-		if(hero.getIsDead())
-		{
-			SetGameOver();
-			DrawGame();
-			DisplayMessageLose();
+		if ((hero.getX() + 1 == dragon.getX() && hero.getY() == dragon.getY())
+				|| (hero.getX() - 1 == dragon.getX() && hero.getY() == dragon.getY())
+				|| (hero.getX() == dragon.getX() && hero.getY() - 1 == dragon.getY())
+				|| (hero.getX() == dragon.getX() && hero.getY() + 1 == dragon.getY()))
+			return true;
+
+		else
+			return false;
+	}
+	
+	public void doBattle()
+	{
+		if(hero.getWieldingSword()){
+			dragon.setDragonState(DragonState.dead);
+			maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
+			//9, 5 is the exit position. Only appears when the dragon is dead
+			maze.WriteInMaze(9, 5, 'S');
 		}
+		else if(dragon.getDragonState().equals(DragonState.sleeping) && !hero.getWieldingSword()){
+			return;
+		} else {
+			hero.setIsDead();
+			maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
+		}
+	}
+	
+	public void DrawGame()
+	{
+		this.maze.drawMaze();
 	}
 	
 	public void SetGameOver()
 	{
 		this.gameOver = true;
-		this.s.close();		
 	}
 	
 	public boolean GetGameOver()
