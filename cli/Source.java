@@ -21,6 +21,8 @@ public class Source
 		
 		mode = s.nextInt();
 		s.close();
+		
+		System.out.println();
 	}
 	
 	public static void main(String[] args)
@@ -39,8 +41,7 @@ public class Source
 				game.DrawGame();
 				game.UpdateGame();
 			}
-						
-			//ModeSelector();
+									
 			break;
 		}
 		case 2:

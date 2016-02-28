@@ -95,7 +95,11 @@ public class Game {
 			}
 			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'S' && dragon.getDragonState().equals(DragonState.dead))
 			{
+				maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
+				maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
+
 				SetGameOver();
+				DrawGame();
 				DisplayMessageWinning();
 			}
 			else if(maze.ReadInMaze(hero.getX(), hero.getY()) == 'E')		//If the new position is where the sword is located, then the hero grabs the sword
@@ -111,41 +115,44 @@ public class Game {
 	
 	public void UpdateDragon(Dragon dragon)
 	{
-		int lastPositionX = dragon.getX();
-		int lastPositionY = dragon.getY();
+		if(dragon.getDragonState() != DragonState.dead)
+		{
+			int lastPositionX = dragon.getX();
+			int lastPositionY = dragon.getY();
 
-		dragon.updateMovement();
+			dragon.updateMovement();
 			
-		//If the dragon keeps still, nothing changes
-		if(dragon.getX() == lastPositionX && dragon.getY() == lastPositionY){
-			maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
-			return;
-		}
+			//If the dragon keeps still, nothing changes
+			if(dragon.getX() == lastPositionX && dragon.getY() == lastPositionY){
+				maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
+				return;
+			}
 			
-		//If the new position is a wall, the dragon doesn't move
-		if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'X') {
-			dragon.setX(lastPositionX);
-			dragon.setY(lastPositionY);
-			return;
-		}
-		//Since the verification of the movement occurence was done above, we're certain that he doesn't move to a wall or the exit.
-		//So, if he's in the same position as the sword,
-		//we change the name of the position so that both the dragon and the sword can be represented again.
-		// Careful: the position isn't changed if the dragon keeps still...
-		else if (dragon.getDragonOnTop() && (dragon.getX() != lastPositionX || dragon.getY() != lastPositionY)) {
-			dragon.setDragonOnTop(false);
-			sword.setIsVisible(true);
+			//If the new position is a wall, the dragon doesn't move
+			if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'X') {
+				dragon.setX(lastPositionX);
+				dragon.setY(lastPositionY);
+				return;
+			}
+			//Since the verification of the movement occurence was done above, we're certain that he doesn't move to a wall.
+			//So, if he's in the same position as the sword,
+			//we change the name of the position so that both the dragon and the sword can be represented again.
+			// Careful: the position isn't changed if the dragon keeps still...
+			else if (dragon.getDragonOnTop() && (dragon.getX() != lastPositionX || dragon.getY() != lastPositionY)) {
+				dragon.setDragonOnTop(false);
+				sword.setIsVisible(true);
 
-			maze.WriteInMaze(sword.getX(), sword.getX(), sword.getName());
-			maze.WriteInMaze(dragon.getX(), dragon.getX(), dragon.getName());
-			return;
-		} else if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'E') {
-			sword.setIsVisible(false);
-			dragon.setDragonOnTop(true);
-		}
+				maze.WriteInMaze(sword.getX(), sword.getX(), sword.getName());
+				maze.WriteInMaze(dragon.getX(), dragon.getX(), dragon.getName());
+				return;
+			} else if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'E') {
+				sword.setIsVisible(false);
+				dragon.setDragonOnTop(true);
+			}
 		
-		maze.WriteInMaze(dragon.getX(), dragon.getX(), dragon.getName());
-		maze.WriteInMaze(lastPositionX, lastPositionX, ' ');
+			maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
+			maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
+		}
 	}
 	
 	public void UpdateMaze(Maze maze)
@@ -156,6 +163,7 @@ public class Game {
 		if(hero.getIsDead())
 		{
 			SetGameOver();
+			DrawGame();
 			DisplayMessageLose();
 		}
 	}
