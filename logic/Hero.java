@@ -10,22 +10,21 @@ public class Hero extends Elements {
 		isDead = false;
 	}
 
-	public int UpdateMovement(String direction)
+	public Coordinates UpdateMovement(String direction)
 	{
+		Coordinates c = this.getCoordinates();
 		if (direction.equals("W") || direction.equals("w")) {
-			setY(getY() - 1);
-			return 1;
+			c.setY(c.getY() - 1);
 		} else if (direction.equals("S") || direction.equals("s")) {
-			setY(getY() + 1);
-			return 1;
+			c.setY(c.getY() + 1);
 		} else if (direction.equals("A") || direction.equals("a")) {
-			setX(getX() - 1);
-			return 1;
+			c.setX(c.getX() - 1);
 		} else if (direction.equals("D") || direction.equals("d")) {
-			setX(getX() + 1);
-			return 1;
+			c.setX(c.getX() + 1);
 		} else
-			return -1;
+			return c;
+		
+		return c;
 	}
 	
 	public boolean getWieldingSword()

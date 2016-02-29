@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 import maze.logic.Game;
 
-//Apenas usar static no programa principal
-
 public class Source
 {	
 	public static int MenuSelector()
@@ -22,18 +20,18 @@ public class Source
 		System.out.println();
 		return menuMode;
 	}
-	
-	public static int DragonModeSelector()
-	{
-		Scanner s = new Scanner (System.in);
+
+	public static int DragonModeSelector() {
+		Scanner s = new Scanner(System.in);
 		int dragonMode;
-		
-		System.out.print("Dragon Modes:\n   1 - Standing\n   2 - Aleatory movement\n   3 - Aleatory movement and chance of sleeping\n\nSelect the desired dragon movement: ");
+
+		System.out.print(
+				"Dragon Modes:\n   1 - Standing\n   2 - Aleatory movement\n   3 - Aleatory movement and chance of sleeping\n\nSelect the desired dragon movement: ");
 		dragonMode = s.nextInt();
 		System.out.println();
-		
+
 		return dragonMode;
-		}
+	}
 
 	public static void main(String[] args)
 	{
@@ -47,7 +45,6 @@ public class Source
 			dragonMode = DragonModeSelector();
 			Game game = new Game(dragonMode);
 			DisplayMessageInstructions();
-			
 			while (!game.GetGameOver()) {
 				game.DrawGame();
 				System.out.print("\nMove the hero: \n>>");

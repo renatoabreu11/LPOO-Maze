@@ -22,14 +22,14 @@ public class Maze
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 	}
 	
-	public void WriteInMaze(int x, int y, char name)
+	public void WriteInMaze(Coordinates c, char name)
 	{
-		maze[y][x] = name;
+		maze[c.getY()][c.getX()] = name;
 	}
 
-	public char ReadInMaze(int x, int y)
+	public char ReadInMaze(Coordinates c)
 	{
-		return maze[y][x];
+		return maze[c.getY()][c.getX()];
 	}
 
 	public void drawMaze()

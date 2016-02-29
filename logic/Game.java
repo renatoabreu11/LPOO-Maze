@@ -4,13 +4,13 @@ import maze.logic.Dragon.DragonState;
 
 public class Game {
 	
-	private int dragonMode;
 	private Maze maze;
 	private Hero hero;
 	private Dragon dragon;
 	private Sword sword;
 	
 	private boolean gameOver;
+	private int dragonMode;
 	
 	public Game(int dragonMode)
 	{
@@ -20,9 +20,9 @@ public class Game {
 		dragon = new Dragon(1, 3, DragonState.standing);
 		sword = new Sword(1, 8);
 
-		maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
-		maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
-		maze.WriteInMaze(sword.getX(), sword.getY(), sword.getName());
+		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
+		maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
+		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
 		
 		this.gameOver = false;
 	}
@@ -39,79 +39,68 @@ public class Game {
 			DrawGame();
 		}
 	}
-	
-	public void UpdateHero(Hero hero, String playerMovement)
-	{
-		int lastPositionX = hero.getX();
-		int lastPositionY = hero.getY();
 
-		int validInput = hero.UpdateMovement(playerMovement);
-
-		if (validInput == 1) {
-			if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'X') {
-				hero.setX(lastPositionX);
-				hero.setY(lastPositionY);
+	public void UpdateHero(Hero hero, String playerMovement) {
+		
+		Coordinates newCoordinates = hero.UpdateMovement(playerMovement);
+		
+		if(!hero.getCoordinates().equals(newCoordinates)){
+			if (maze.ReadInMaze(newCoordinates) == 'X') {
 				return;
-			} else if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'S'
+			} else if (maze.ReadInMaze(newCoordinates) == 'S'
 					&& dragon.getDragonState().equals(DragonState.dead)) {
 				SetGameOver();
-			} else if (maze.ReadInMaze(hero.getX(), hero.getY()) == 'E') {
+			} else if (maze.ReadInMaze(newCoordinates) == 'E') {
 				hero.setWieldingSword();
 				sword.setIsVisible(false);
 			}
+		} else return;
 
-			maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
-			maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
-		}
+		maze.WriteInMaze(hero.getCoordinates(), ' ');
+		hero.setCoordinates(newCoordinates);
+		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 	}
-	
+
 	public void UpdateDragon(Dragon dragon)
-	{	
+	{
 		if(dragon.getDragonState() != DragonState.dead)
 		{
 			if(dragonMode == 1)
 				return;
 			
-			int lastPositionX = dragon.getX();
-			int lastPositionY = dragon.getY();
+			Coordinates c = dragon.updateMovement(this.dragonMode);
 
-			dragon.updateMovement(dragonMode);
-			
-			//If the dragon keeps still, nothing changes
-			if(dragon.getX() == lastPositionX && dragon.getY() == lastPositionY){
-				maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
+			// If the dragon keeps still, nothing changes
+			if (dragon.getCoordinates().equals(c) || maze.ReadInMaze(c) == 'X') {
 				return;
-			}
-			
-			//If the new position is a wall, the dragon doesn't move
-			if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'X') {
-				dragon.setX(lastPositionX);
-				dragon.setY(lastPositionY);
-				return;
-			}
-			else if (dragon.getDragonOnTop() && (dragon.getX() != lastPositionX || dragon.getY() != lastPositionY)) {
+			} else if (dragon.getDragonOnTop() && !dragon.getCoordinates().equals(c)) {
 				dragon.setDragonOnTop(false);
 				sword.setIsVisible(true);
+				
+				dragon.setCoordinates(c);
 
-				maze.WriteInMaze(sword.getX(), sword.getX(), sword.getName());
-				maze.WriteInMaze(dragon.getX(), dragon.getX(), dragon.getName());
+				maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+				maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
 				return;
-			} else if (maze.ReadInMaze(dragon.getX(), dragon.getY()) == 'E') {
+			} else if (maze.ReadInMaze(c) == 'E') {
 				sword.setIsVisible(false);
 				dragon.setDragonOnTop(true);
 			}
-		
-			maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
-			maze.WriteInMaze(lastPositionX, lastPositionY, ' ');
+			
+			maze.WriteInMaze(dragon.getCoordinates(), ' ');
+			dragon.setCoordinates(c);
+			maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
 		}
 	}
 	
 	public boolean checkForBattle()
 	{
-		if ((hero.getX() + 1 == dragon.getX() && hero.getY() == dragon.getY())
-				|| (hero.getX() - 1 == dragon.getX() && hero.getY() == dragon.getY())
-				|| (hero.getX() == dragon.getX() && hero.getY() - 1 == dragon.getY())
-				|| (hero.getX() == dragon.getX() && hero.getY() + 1 == dragon.getY()))
+		Coordinates heroCoord = hero.getCoordinates();
+		Coordinates dragonCoord = dragon.getCoordinates();
+		if ((heroCoord.getX() + 1 == dragonCoord.getX() && heroCoord.getY() == dragonCoord.getY())
+				|| (heroCoord.getX() - 1 == dragonCoord.getX() && heroCoord.getY() == dragonCoord.getY())
+				|| (heroCoord.getX() == dragonCoord.getX() && heroCoord.getY() - 1 == dragonCoord.getY())
+				|| (heroCoord.getX() == dragonCoord.getX() && heroCoord.getY() + 1 == dragonCoord.getY()))
 			return true;
 
 		else
@@ -122,15 +111,16 @@ public class Game {
 	{
 		if(hero.getWieldingSword()){
 			dragon.setDragonState(DragonState.dead);
-			maze.WriteInMaze(dragon.getX(), dragon.getY(), dragon.getName());
-			//9, 5 is the exit position. Only appears when the dragon is dead
-			maze.WriteInMaze(9, 5, 'S');
+			maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
+			maze.WriteInMaze(hero.getCoordinates(), hero.getName());
+			Coordinates c = new Coordinates(9, 5);
+			maze.WriteInMaze(c, 'S');
 		}
 		else if(dragon.getDragonState().equals(DragonState.sleeping) && !hero.getWieldingSword()){
 			return;
 		} else {
 			hero.setIsDead();
-			maze.WriteInMaze(hero.getX(), hero.getY(), hero.getName());
+			maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		}
 	}
 	
