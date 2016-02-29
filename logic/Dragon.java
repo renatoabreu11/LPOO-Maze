@@ -18,10 +18,9 @@ public class Dragon extends Elements {
 		state  = s;
 	}
 	
-	//zé carlos, vê o que achas da estruturação desta função
-	//pergunta: não seria melhor passar como argumento um objeto maze e fazer o update do dragao aqui? (tal como em hero)
-	public void updateMovement(){
+	public void updateMovement(int dragonMode){
 		int aux;
+		
 		switch (this.state){
 		case dead:
 			break;
@@ -37,18 +36,31 @@ public class Dragon extends Elements {
 			}
 		case standing:
 			//if 0 then it continues sleeping. If aux equals 1 the state stays the same. 
-			aux = seed.nextInt(6);
-			if (aux == 0) {
+			if(dragonMode == 2)
+				aux = seed.nextInt(5);
+			else
+				aux = seed.nextInt(6);
+			
+			switch(aux)
+			{
+			case 0:
+				break;
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				this.state = DragonState.moving;
+				break;
+			default: 
 				this.state = DragonState.sleeping;
 				this.setName('d');
 				break;
-			} else  if (aux == 1 || aux == 2){
-				break;
-			} else this.state = DragonState.moving; 
-			// if aux is 3 or more, the program jumps to the case moving because there is no break;
+			}
+			
+			break;
 			// temos que a probabilidade de voltar a dormir é 1/6, de ficar parado 2/6 e de se mover 3/6, parece-te bem?
 		case moving:
-			//acho que era melhor o programa verificar as posições de movimento livres e mover-se conforme
+			//acho que era melhor o programa verificar as posições de movimento livres e mover-se conforme!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			int movement = seed.nextInt(4) +1 ;
 			// 1 - east movement
 			// 2 - north movement

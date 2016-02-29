@@ -4,6 +4,7 @@ import maze.logic.Dragon.DragonState;
 
 public class Game {
 	
+	private int dragonMode;
 	private Maze maze;
 	private Hero hero;
 	private Dragon dragon;
@@ -11,8 +12,9 @@ public class Game {
 	
 	private boolean gameOver;
 	
-	public Game()
+	public Game(int dragonMode)
 	{
+		this.dragonMode = dragonMode;
 		maze = new Maze();
 		hero = new Hero(1, 1);
 		dragon = new Dragon(1, 3, DragonState.standing);
@@ -64,13 +66,16 @@ public class Game {
 	}
 	
 	public void UpdateDragon(Dragon dragon)
-	{
+	{	
 		if(dragon.getDragonState() != DragonState.dead)
 		{
+			if(dragonMode == 1)
+				return;
+			
 			int lastPositionX = dragon.getX();
 			int lastPositionY = dragon.getY();
 
-			dragon.updateMovement();
+			dragon.updateMovement(dragonMode);
 			
 			//If the dragon keeps still, nothing changes
 			if(dragon.getX() == lastPositionX && dragon.getY() == lastPositionY){

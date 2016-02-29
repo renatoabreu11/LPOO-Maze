@@ -9,30 +9,45 @@ import maze.logic.Game;
 
 public class Source
 {	
-	public static int ModeSelector()
+	public static int MenuSelector()
 	{
 		Scanner s = new Scanner(System.in);
-		int mode = 0;
+		int menuMode = 0;
 		
 		System.out
 				.print("The Labirinth\n" + "\n1 --> Play the Game" + "\n2 --> Quit the Game\n\n" + "Select the mode: ");
-		mode = s.nextInt();
+		menuMode = s.nextInt();
 		s.nextLine();
 		
 		System.out.println();
-		return mode;
+		return menuMode;
 	}
+	
+	public static int DragonModeSelector()
+	{
+		Scanner s = new Scanner (System.in);
+		int dragonMode;
+		
+		System.out.print("Dragon Modes:\n   1 - Standing\n   2 - Aleatory movement\n   3 - Aleatory movement and chance of sleeping\n\nSelect the desired dragon movement: ");
+		dragonMode = s.nextInt();
+		System.out.println();
+		
+		return dragonMode;
+		}
 
 	public static void main(String[] args)
 	{
 		String playerMovement = "";
-		int mode;
-		mode = ModeSelector();
+		int menuMode, dragonMode;
+		menuMode = MenuSelector();
 		Scanner s = new Scanner(System.in);
-		switch(mode){
+		
+		switch(menuMode){
 		case 1: {
-			Game game = new Game();
+			dragonMode = DragonModeSelector();
+			Game game = new Game(dragonMode);
 			DisplayMessageInstructions();
+			
 			while (!game.GetGameOver()) {
 				game.DrawGame();
 				System.out.print("\nMove the hero: \n>>");
