@@ -100,7 +100,9 @@ public class Game {
 	{
 		Coordinates heroCoord = hero.getCoordinates();
 		Coordinates dragonCoord = dragon.getCoordinates();
-		if ((heroCoord.getX() + 1 == dragonCoord.getX() && heroCoord.getY() == dragonCoord.getY())
+		if(heroCoord.equals(dragonCoord))
+			return true;
+		else if ((heroCoord.getX() + 1 == dragonCoord.getX() && heroCoord.getY() == dragonCoord.getY())
 				|| (heroCoord.getX() - 1 == dragonCoord.getX() && heroCoord.getY() == dragonCoord.getY())
 				|| (heroCoord.getX() == dragonCoord.getX() && heroCoord.getY() - 1 == dragonCoord.getY())
 				|| (heroCoord.getX() == dragonCoord.getX() && heroCoord.getY() + 1 == dragonCoord.getY()))
