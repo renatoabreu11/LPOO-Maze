@@ -37,6 +37,8 @@ public class Game {
 		if (hero.getIsDead()) {
 			SetGameOver();
 			DrawGame();
+		} else if(this.gameOver){
+			DrawGame();
 		}
 	}
 
@@ -72,6 +74,7 @@ public class Game {
 
 			// If the dragon keeps still, nothing changes
 			if (dragon.getCoordinates().equals(c) || maze.ReadInMaze(c) == 'X') {
+				maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
 				return;
 			} else if (dragon.getDragonOnTop() && !dragon.getCoordinates().equals(c)) {
 				dragon.setDragonOnTop(false);

@@ -26,36 +26,30 @@ public class Dragon extends Elements {
 		case dead:
 			break;
 		case sleeping:
-			//if 0 then it continues sleeping. If 1 the state change to standing.
 			aux = seed.nextInt(2);
 			if (aux == 1) {
 				this.state = DragonState.standing;
 				this.setName('D');
-				break;
 			} else break;
+			
+			break;
 		case standing:
 			if(dragonMode == 2)
 				aux = seed.nextInt(5);
 			else
 				aux = seed.nextInt(6);
 			
-			switch (aux) {
-			case 0:
+			//Se 0, o dragão continua no estado "Standing"
+			if(aux == 0){
 				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
+			} else if(aux > 0 && aux < 5){	//Se 1..4, o dragão muda de estado para "Moving"
 				this.state = DragonState.moving;
-				break;
-			default:
+			} else {	//Se 5, o dragão muda de estado para "Sleeping"
 				this.state = DragonState.sleeping;
 				this.setName('d');
 				break;
 			}
+
 		case moving:
 			int movement = seed.nextInt(4) +1 ;
 			// 1 - east movement
