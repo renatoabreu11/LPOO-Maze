@@ -16,9 +16,9 @@ public class Game {
 	{
 		this.dragonMode = dragonMode;
 		maze = new Maze();
-		hero = new Hero(1, 1);
-		dragon = new Dragon(1, 3, DragonState.standing);
-		sword = new Sword(1, 8);
+		hero = new Hero(3, 1);
+		dragon = new Dragon(3, 3, DragonState.standing);
+		sword = new Sword(1, 3);
 
 		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
@@ -118,7 +118,7 @@ public class Game {
 			dragon.setDragonState(DragonState.dead);
 			maze.WriteInMaze(dragon.getCoordinates(), dragon.getName());
 			maze.WriteInMaze(hero.getCoordinates(), hero.getName());
-			Coordinates c = new Coordinates(9, 5);
+			Coordinates c = new Coordinates(4, 1);
 			maze.WriteInMaze(c, 'S');
 		}
 		else if(dragon.getDragonState().equals(DragonState.sleeping) && !hero.getWieldingSword()){
@@ -142,5 +142,13 @@ public class Game {
 	public boolean GetGameOver()
 	{
 		return this.gameOver;
+	}
+	
+	public Hero getHero(){
+		return hero;
+	}
+	
+	public Dragon getDragon(){
+		return dragon;
 	}
 }

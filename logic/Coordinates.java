@@ -36,9 +36,17 @@ public class Coordinates {
 		return c;
 	}
 	
-	public boolean equals(Coordinates coord){
-		return (this.x == coord.x && this.y == coord.y);
-	}
+	 @Override
+	public boolean equals(Object obj){
+		if (!(obj instanceof Coordinates))
+            return false;
+        if (obj == this)
+            return true;
+
+        Coordinates rhs = (Coordinates) obj;
+        
+        return (rhs.x == this.x && rhs.y == this.y);
+    }
 	
 	public Coordinates(Coordinates coord){
 		this(coord.x, coord.y);
