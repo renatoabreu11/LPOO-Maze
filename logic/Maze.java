@@ -5,6 +5,12 @@ interface Printable
 	public abstract void drawMaze();
 }
 
+public interface IMazeBuilder {
+	public char[][] buildMaze(int size) throws IllegalArgumentException;
+}
+
+
+
 public class Maze
 {
 	private char[][] maze;

@@ -42,7 +42,7 @@ public class Dragon extends Elements {
 			//Se 0, o dragão continua no estado "Standing"
 			if(aux == 0){
 				break;
-			} else if(aux > 0 && aux < 5){	//Se 1..4, o dragão muda de estado para "Moving"
+			} else if(aux >= 1 && aux <= 4){	//Se 1..4, o dragão muda de estado para "Moving"
 				this.state = DragonState.moving;
 			} else {	//Se 5, o dragão muda de estado para "Sleeping"
 				this.state = DragonState.sleeping;

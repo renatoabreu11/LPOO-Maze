@@ -51,6 +51,11 @@ public class TestMazeWithDragonMovement {
 			game.UpdateGame("A");
 		
 		assertEquals(true, game.getDragon().getDragonOnTop());
+		
+		while(game.getDragon().getDragonOnTop())
+			game.UpdateGame("D");
+		
+		assertEquals(false, game.getDragon().getDragonOnTop());
 	}
 	
 	@Test
@@ -77,4 +82,5 @@ public class TestMazeWithDragonMovement {
 		
 		assertNotEquals(DragonState.sleeping, game.getDragon().getDragonState());
 	}
+	
 }

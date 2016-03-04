@@ -21,8 +21,7 @@ public class Hero extends Elements {
 			c.setX(c.getX() - 1);
 		} else if (direction.equals("D") || direction.equals("d")) {
 			c.setX(c.getX() + 1);
-		} else
-			return c;
+		}
 		
 		return c;
 	}

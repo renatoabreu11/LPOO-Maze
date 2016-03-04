@@ -15,7 +15,7 @@ public class TestMazeWithStaticDragon {
 	public void testMoveHeroToFreeCell() {
 		Game game = new Game(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
-		game.UpdateGame("A");
+		game.UpdateGame("a");
 		assertEquals(new Coordinates(2, 1), game.getHero().getCoordinates());
 	}
 	
@@ -31,7 +31,7 @@ public class TestMazeWithStaticDragon {
 	public void testMoveHeroToWall() {
 		Game game = new Game(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
-		game.UpdateGame("W");
+		game.UpdateGame("w");
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 	}
 	
@@ -41,9 +41,10 @@ public class TestMazeWithStaticDragon {
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("A");
 		game.UpdateGame("A");
-		game.UpdateGame("S");
+		game.UpdateGame("s");
 		game.UpdateGame("S");
 		assertEquals(true, game.getHero().getWieldingSword());
+		assertEquals(false, game.getSword().getIsVisible());
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class TestMazeWithStaticDragon {
 		game.UpdateGame("S");
 		game.UpdateGame("S");
 		assertEquals(true, game.getHero().getWieldingSword());
-		game.UpdateGame("D");
+		game.UpdateGame("d");
 		assertEquals(DragonState.dead, game.getDragon().getDragonState());
 	}
 	
@@ -68,12 +69,12 @@ public class TestMazeWithStaticDragon {
 		game.UpdateGame("S");
 		game.UpdateGame("S");
 		assertEquals(true, game.getHero().getWieldingSword());
-		game.UpdateGame("D");
+		game.UpdateGame("d");
 		assertEquals(DragonState.dead, game.getDragon().getDragonState());
 		game.UpdateGame("D");
 		game.UpdateGame("W");
 		game.UpdateGame("W");
-		game.UpdateGame("D");
+		game.UpdateGame("d");
 		assertEquals(new Coordinates(4, 1), game.getHero().getCoordinates());
 		assertEquals(true, game.GetGameOver());
 	}

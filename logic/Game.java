@@ -65,12 +65,13 @@ public class Game {
 
 	public void UpdateDragon(Dragon dragon)
 	{
+		
+		Coordinates c = dragon.updateMovement(this.dragonMode);
+		
 		if(dragon.getDragonState() != DragonState.dead)
 		{
 			if(dragonMode == 1)
 				return;
-			
-			Coordinates c = dragon.updateMovement(this.dragonMode);
 
 			// If the dragon keeps still, nothing changes
 			if (dragon.getCoordinates().equals(c) || maze.ReadInMaze(c) == 'X') {
@@ -150,5 +151,9 @@ public class Game {
 	
 	public Dragon getDragon(){
 		return dragon;
+	}
+	
+	public Sword getSword(){
+		return sword;
 	}
 }
