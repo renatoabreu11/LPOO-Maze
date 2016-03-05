@@ -12,10 +12,10 @@ public class Game {
 	private boolean gameOver;
 	private int dragonMode;
 	
-	public Game(int dragonMode)
+	public Game(int dragonMode, int size)
 	{
 		this.dragonMode = dragonMode;
-		maze = new Maze();
+		maze = new Maze(size);
 		hero = new Hero(3, 1);
 		dragon = new Dragon(3, 3, DragonState.standing);
 		sword = new Sword(1, 3);

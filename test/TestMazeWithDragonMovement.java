@@ -83,4 +83,19 @@ public class TestMazeWithDragonMovement {
 		assertNotEquals(DragonState.sleeping, game.getDragon().getDragonState());
 	}
 	
+	@Test
+	public void testDragonSleepingHeroPassingBy()
+	{
+		Game game = new Game(3);
+		
+		game.getHero().setCoordinates(new Coordinates(3, 1));
+		game.getDragon().setDragonState(DragonState.sleeping);
+		game.UpdateGame("S");
+		assertEquals(false, game.GetGameOver());
+		game.getDragon().setDragonState(DragonState.sleeping);
+		game.UpdateGame("W");
+		assertEquals(false, game.GetGameOver());
+
+	}
+	
 }

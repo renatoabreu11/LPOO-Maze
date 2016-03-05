@@ -56,42 +56,45 @@ public class Source {
 	}
 
 	public static void main(String[] args) {
-		String playerMovement = "";
-		int menuMode, dragonMode;
-		menuMode = MenuSelector();
-		Scanner s = new Scanner(System.in);
-
-		switch (menuMode) {
-		case 1: {
-			dragonMode = DragonModeSelector();
-
-			Game game = new Game(dragonMode);
-			DisplayMessageInstructions();
-			while (!game.GetGameOver()) {
-				game.DrawGame();
-				System.out.print("\nMove the hero: \n>>");
-
-				try {
-					playerMovement = s.nextLine();
-				} catch (InputMismatchException e) {
-					System.out.println("Invalid input. Try again.\n>>");
-					s.next(); // this consumes the invalid token
-				}
-
-				System.out.println();
-
-				if (playerMovement.equals("Q") || playerMovement.equals("q"))
-					game.SetGameOver();
-
-				game.UpdateGame(playerMovement);
-			}
-
-			break;
-		}
-		case 2:
-			System.exit(0);
-			break;
-		}
+		
+		Game game = new Game(1, 31);
+		game.DrawGame();
+//		String playerMovement = "";
+//		int menuMode, dragonMode;
+//		menuMode = MenuSelector();
+//		Scanner s = new Scanner(System.in);
+//
+//		switch (menuMode) {
+//		case 1: {
+//			dragonMode = DragonModeSelector();
+//
+//			Game game = new Game(dragonMode);
+//			DisplayMessageInstructions();
+//			while (!game.GetGameOver()) {
+//				game.DrawGame();
+//				System.out.print("\nMove the hero: \n>>");
+//
+//				try {
+//					playerMovement = s.nextLine();
+//				} catch (InputMismatchException e) {
+//					System.out.println("Invalid input. Try again.\n>>");
+//					s.next(); // this consumes the invalid token
+//				}
+//
+//				System.out.println();
+//
+//				if (playerMovement.equals("Q") || playerMovement.equals("q"))
+//					game.SetGameOver();
+//
+//				game.UpdateGame(playerMovement);
+//			}
+//
+//			break;
+//		}
+//		case 2:
+//			System.exit(0);
+//			break;
+//		}
 	}
 
 	public static void DisplayMessageInstructions() {
