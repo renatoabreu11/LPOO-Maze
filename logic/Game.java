@@ -183,4 +183,8 @@ public class Game {
 	public Sword getSword(){
 		return sword;
 	}
+	
+	public Maze getMaze(){
+		return maze;
+	}
 }

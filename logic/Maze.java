@@ -106,4 +106,8 @@ public class Maze
 		exit.setCoordinates(x, y);
 		maze[exit.getY()][exit.getX()] = 'S';
 	}
+	
+	public char[][] getMaze(){
+		return maze;
+	}
 }

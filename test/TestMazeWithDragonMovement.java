@@ -13,7 +13,7 @@ public class TestMazeWithDragonMovement {
 	@Test
 	public void testDragonAleatoryMovement()
 	{
-		Game game = new Game(1);
+		Game game = new Game(2);
 		
 		boolean moveUp = false;
 		boolean moveDown = false;
@@ -50,6 +50,7 @@ public class TestMazeWithDragonMovement {
 		while(!game.getDragon().getDragonOnTop())
 			game.UpdateGame("A");
 		
+		assertEquals(false, game.getSword().getIsVisible());
 		assertEquals(true, game.getDragon().getDragonOnTop());
 		
 		while(game.getDragon().getDragonOnTop())
@@ -61,7 +62,7 @@ public class TestMazeWithDragonMovement {
 	@Test
 	public void testDragonSleepingState()
 	{
-		Game game = new Game(1);
+		Game game = new Game(3);
 		
 		while(game.getDragon().getDragonState() != DragonState.sleeping)
 			game.UpdateGame("A");
@@ -72,7 +73,7 @@ public class TestMazeWithDragonMovement {
 	@Test
 	public void testDragonWakingUpAfterSleeping()
 	{
-		Game game = new Game(1);
+		Game game = new Game(3);
 		
 		while(game.getDragon().getDragonState() != DragonState.sleeping)
 			game.UpdateGame("A");
@@ -86,9 +87,8 @@ public class TestMazeWithDragonMovement {
 	@Test
 	public void testDragonSleepingHeroPassingBy()
 	{
-		Game game = new Game(1);
+		Game game = new Game(3);
 		
-		game.getHero().setCoordinates(new Coordinates(3, 1));
 		game.getDragon().setDragonState(DragonState.sleeping);
 		game.UpdateGame("S");
 		assertEquals(false, game.GetGameOver());
