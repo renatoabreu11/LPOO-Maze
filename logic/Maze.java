@@ -54,13 +54,56 @@ public class Maze
 		}
 	}
 	
-	public Coordinates GeneratePosition(){
+	public Coordinates GeneratePosition(int indicator){
 		Coordinates newPosition = new Coordinates(0, 0);
 		
-		do{
-			newPosition.setX(random.nextInt(hSize));
-			newPosition.setY(random.nextInt(vSize));
-		}while(ReadInMaze(newPosition) != (' '));
+		Coordinates northPosition;
+		Coordinates southPosition;
+		Coordinates westPosition;				
+		Coordinates eastPosition;
+		
+		switch(indicator)
+		{
+		case 0:		//Hero position
+			do{
+				newPosition.setX(random.nextInt(hSize));
+				newPosition.setY(random.nextInt(vSize));
+			}while(ReadInMaze(newPosition) != ' ');
+			
+			break;
+			
+		case 1:		//Sword position
+			do{
+				newPosition.setX(random.nextInt(hSize));
+				newPosition.setY(random.nextInt(vSize));
+			}while(ReadInMaze(newPosition) == 'X' 
+					|| ReadInMaze(newPosition) == 'H');
+			
+			break;
+		case 2:		//Dragon position
+			do{
+				newPosition.setX(random.nextInt(hSize));
+				newPosition.setY(random.nextInt(vSize));
+				
+				northPosition = new Coordinates(newPosition.getX(), newPosition.getY() - 1);
+				southPosition = new Coordinates(newPosition.getX(), newPosition.getY() + 1);
+				westPosition = new Coordinates(newPosition.getX() - 1, newPosition.getY());				
+				eastPosition = new Coordinates(newPosition.getX() + 1, newPosition.getY());
+			}while(ReadInMaze(newPosition) == 'X'
+					|| ReadInMaze(newPosition) == 'H'
+					|| ReadInMaze(newPosition) == 'E'
+					|| ReadInMaze(northPosition) == 'H'
+					|| ReadInMaze(southPosition) == 'H'
+					|| ReadInMaze(westPosition) == 'H'
+					|| ReadInMaze(eastPosition) == 'H');
+			
+			break;
+		case 3:		//Exit position
+			newPosition.setX(1);
+			newPosition.setY(0);
+			
+			break;
+		}
 		
 		return newPosition;
 	}

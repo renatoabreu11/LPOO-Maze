@@ -65,7 +65,7 @@ public class Source {
 		switch (menuMode) {
 		case 1: {
 			dragonMode = GameModeSelector();
-			int mazeSize = 31, numberOfDragons = 3;
+			int mazeSize = 9, numberOfDragons = 2;
 			
 			Game game = new Game(dragonMode, mazeSize, numberOfDragons);
 			DisplayMessageInstructions();
