@@ -4,8 +4,8 @@ public class Elements {
 	private Coordinates coord;
 	private char name;
 
-	public Elements(int x, int y, char name) {
-		this.coord = new Coordinates(x, y);
+	public Elements(Coordinates c, char name) {
+		this.coord = c;
 		this.name = name;
 	}
 

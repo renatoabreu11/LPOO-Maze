@@ -12,8 +12,8 @@ public class Dragon extends Elements {
 	private boolean dragonOnTop;
 	private Random seed = new Random(); // e faz sentido a classe dragão ter um atributo do genero random? não sei até que ponto...
 	
-	public Dragon(int x, int y, DragonState s) {
-		super(x, y, 'D');
+	public Dragon(Coordinates c, DragonState s) {
+		super(c, 'D');
 		dragonOnTop = false;
 		state  = s;
 	}
@@ -21,6 +21,9 @@ public class Dragon extends Elements {
 	public Coordinates updateMovement(int dragonMode){
 		int aux;
 		Coordinates c = this.getCoordinates();	
+		
+		if (dragonMode == 1)
+			return c;
 		
 		switch (this.state){
 		case dead:

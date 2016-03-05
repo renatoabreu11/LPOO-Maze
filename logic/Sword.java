@@ -4,9 +4,9 @@ public class Sword extends Elements
 {
 	private boolean isVisible;
 	
-	public Sword(int x, int y)
+	public Sword(Coordinates c)
 	{
-		super(x, y, 'E');
+		super(c, 'E');
 		isVisible = true;
 	}
 	

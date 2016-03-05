@@ -4,8 +4,8 @@ public class Hero extends Elements {
 	private boolean wieldingSword;
 	private boolean isDead;
 
-	public Hero(int x, int y) {
-		super(x, y, 'H');
+	public Hero(Coordinates c) {
+		super(c, 'H');
 		wieldingSword = false;
 		isDead = false;
 	}
