@@ -64,44 +64,28 @@ public class Maze
 		
 		switch(indicator)
 		{
-		case 0:		//Hero position
+		case 0:
 			do{
 				newPosition.setX(random.nextInt(hSize));
 				newPosition.setY(random.nextInt(vSize));
 			}while(ReadInMaze(newPosition) != ' ');
 			
 			break;
-			
-		case 1:		//Sword position
-			do{
-				newPosition.setX(random.nextInt(hSize));
-				newPosition.setY(random.nextInt(vSize));
-			}while(ReadInMaze(newPosition) == 'X' 
-					|| ReadInMaze(newPosition) == 'H');
-			
-			break;
-		case 2:		//Dragon position
+		case 1:		//Dragon position
 			do{
 				newPosition.setX(random.nextInt(hSize));
 				newPosition.setY(random.nextInt(vSize));
 				
 				northPosition = new Coordinates(newPosition.getX(), newPosition.getY() - 1);
 				southPosition = new Coordinates(newPosition.getX(), newPosition.getY() + 1);
-				westPosition = new Coordinates(newPosition.getX() - 1, newPosition.getY());				
+				westPosition = new Coordinates(newPosition.getX() - 1, newPosition.getY());
 				eastPosition = new Coordinates(newPosition.getX() + 1, newPosition.getY());
-			}while(ReadInMaze(newPosition) == 'X'
-					|| ReadInMaze(newPosition) == 'H'
-					|| ReadInMaze(newPosition) == 'E'
+			} while (ReadInMaze(newPosition) != ' ' 
 					|| ReadInMaze(northPosition) == 'H'
-					|| ReadInMaze(southPosition) == 'H'
+					|| ReadInMaze(southPosition) == 'H' 
 					|| ReadInMaze(westPosition) == 'H'
 					|| ReadInMaze(eastPosition) == 'H');
-			
-			break;
-		case 3:		//Exit position
-			newPosition.setX(1);
-			newPosition.setY(0);
-			
+
 			break;
 		}
 		

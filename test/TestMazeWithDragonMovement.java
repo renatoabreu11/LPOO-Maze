@@ -20,13 +20,11 @@ public class TestMazeWithDragonMovement {
 		boolean moveLeft = false;
 		boolean moveRight = false;
 		
-		boolean dragonOnTop = false;
-		
-		//Tests if the dragon moves in all directions
+		//Tests if the dragon moves to all directions
 		while(!(moveUp && moveDown && moveLeft && moveRight))
 		{
 			Coordinates c = game.getDragon().getCoordinates();
-			game.UpdateGame("A");
+			game.UpdateDragons();
 			
 			if(c.getX() - 1 == game.getDragon().getCoordinates().getX())
 				moveRight = true;
@@ -48,13 +46,13 @@ public class TestMazeWithDragonMovement {
 		
 		//Tests if the dragon can be on top of the sword
 		while(!game.getDragon().getDragonOnTop())
-			game.UpdateGame("A");
+			game.UpdateDragons();
 		
 		assertEquals(false, game.getSword().getIsVisible());
 		assertEquals(true, game.getDragon().getDragonOnTop());
 		
 		while(game.getDragon().getDragonOnTop())
-			game.UpdateGame("D");
+			game.UpdateDragons();
 		
 		assertEquals(false, game.getDragon().getDragonOnTop());
 	}
@@ -90,7 +88,8 @@ public class TestMazeWithDragonMovement {
 		Game game = new Game(3);
 		
 		game.getDragon().setDragonState(DragonState.sleeping);
-		game.UpdateGame("S");
+		game.UpdateHero(game.getHero(), "S");
+		game.Battle();
 		assertEquals(false, game.GetGameOver());
 		game.getDragon().setDragonState(DragonState.sleeping);
 		game.UpdateGame("W");

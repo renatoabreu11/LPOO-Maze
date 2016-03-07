@@ -95,6 +95,8 @@ public class Dragon extends Elements {
 		
 		if (s.equals(DragonState.dead))
 			this.setName(' ');
+		else if(s.equals(DragonState.sleeping))
+			this.setName('d');
 	}
 
 	public DragonState getDragonState(){

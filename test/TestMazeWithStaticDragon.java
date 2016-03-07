@@ -44,6 +44,7 @@ public class TestMazeWithStaticDragon {
 		game.UpdateGame("S");
 		game.UpdateGame("S");
 		assertEquals(true, game.getHero().getWieldingSword());
+		assertEquals(false, game.getSword().getIsVisible());
 	}
 
 	@Test
@@ -70,6 +71,7 @@ public class TestMazeWithStaticDragon {
 		assertEquals(true, game.getHero().getWieldingSword());
 		game.UpdateGame("D");
 		assertEquals(DragonState.dead, game.getDragon().getDragonState());
+		game.getMaze().WriteInMaze(new Coordinates(4, 1), 'S');
 		game.UpdateGame("D");
 		game.UpdateGame("W");
 		game.UpdateGame("W");
