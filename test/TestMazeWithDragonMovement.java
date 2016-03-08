@@ -63,7 +63,7 @@ public class TestMazeWithDragonMovement {
 		Game game = new Game(3);
 		
 		while(game.getDragon().getDragonState() != DragonState.sleeping)
-			game.UpdateGame("A");
+			game.UpdateDragons();
 		
 		assertEquals(DragonState.sleeping, game.getDragon().getDragonState());
 	}
@@ -74,10 +74,10 @@ public class TestMazeWithDragonMovement {
 		Game game = new Game(3);
 		
 		while(game.getDragon().getDragonState() != DragonState.sleeping)
-			game.UpdateGame("A");
+			game.UpdateDragons();
 		
 		while(game.getDragon().getDragonState() == DragonState.sleeping)
-			game.UpdateGame("A");
+			game.UpdateDragons();
 		
 		assertNotEquals(DragonState.sleeping, game.getDragon().getDragonState());
 	}

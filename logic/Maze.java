@@ -64,7 +64,7 @@ public class Maze
 		
 		switch(indicator)
 		{
-		case 0:
+		case 0:		//Sword position
 			do{
 				newPosition.setX(random.nextInt(hSize));
 				newPosition.setY(random.nextInt(vSize));
