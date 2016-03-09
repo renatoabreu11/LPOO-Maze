@@ -130,7 +130,8 @@ public class TestMazeBuilder {
 		
 		for (int i = 0; i < numMazes; i++) {
 			int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
-			Game g = new Game(1, size, 1);
+			Game g = new Game();
+			g.SetObjects(1, size, 1);
 			Maze m = g.getMaze();
 			m.GenerateExitPosition();
 			assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(m.getMaze()));			

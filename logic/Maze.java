@@ -43,22 +43,12 @@ public class Maze
 		return maze[y][x];
 	}
 
-	public String drawMaze()
-	{	
-//		for(int i = 0; i < maze.length; i++)
-//		{
-//			for(int j = 0; j < maze[i].length; j++)
-//				System.out.print(maze[i][j] + " ");
-//			
-//			System.out.println();
-//		}
-		
-		//Character s[][] = new Character[hSize][vSize];
+	public String toString(){
 		String s = "";
 		for(int i = 0; i < maze.length; i++)
 		{
 			for(int j = 0; j < maze[i].length; j++)
-				s += maze[i][j];
+				s += maze[i][j] + " ";
 			
 			s += "\n";
 		}

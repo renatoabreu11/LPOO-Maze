@@ -21,7 +21,20 @@ public class MainWindow {
 	private JFrame frmLabirinth;
 	private JTextField mazeSize;
 	private JTextField numberOfDragons;
+	private JLabel lblMazeSize;
+	private JLabel lblNumberOfDragons;
+	private JLabel lblDragonType;
+	private JComboBox dragonMode;
+	private JTextArea gameDisplayArea;
+	private JLabel gameMessage;
+	private JButton btnUp;
+	private JButton btnDown;
+	private JButton btnLeft;
+	private JButton btnRight;
+	private JButton btnNewMaze;
+	private JButton btnExit;
 	Game game = new Game();
+	String playerMovement = "";
 
 
 	/**
@@ -47,13 +60,21 @@ public class MainWindow {
 		initialize();
 	}
 
-	public void UpdateGame(String playerMovement, JTextArea gameDisplayArea, JLabel GameMessage, JButton btnUp, JButton btnDown, JButton btnLeft, JButton btnRight)
+	public void UpdateFrame()
 	{
 		game.UpdateGame(playerMovement);
 		
 		String maze = new String();
-		maze = game.getMaze().drawMaze();
+		maze = game.getMaze().toString();
 		gameDisplayArea.setText(maze);
+		
+		if(!game.getHero().getWieldingSword()){
+			gameMessage.setText("First you need to get the sword, marked as E");
+		} else if(game.getHero().getWieldingSword() && !game.checkDragonsDead()){
+			gameMessage.setText("Now you have to kill all the dragons");
+		} else if(game.getHero().getWieldingSword() && game.checkDragonsDead()){
+			gameMessage.setText("Very good! As you may have noticed, the S marks the exit!");
+		}
 		
 		if(game.GetGameOver())
 		{
@@ -62,7 +83,7 @@ public class MainWindow {
 			btnLeft.setEnabled(false);
 			btnRight.setEnabled(false);
 			
-			GameMessage.setText("The game is over!");
+			gameMessage.setText("The game is over!");
 		}		
 	}
 	
@@ -76,9 +97,9 @@ public class MainWindow {
 		frmLabirinth.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLabirinth.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Labirinth dimension");
-		lblNewLabel.setBounds(30, 43, 111, 14);
-		frmLabirinth.getContentPane().add(lblNewLabel);
+		lblMazeSize = new JLabel("Labirinth dimension");
+		lblMazeSize.setBounds(30, 43, 111, 14);
+		frmLabirinth.getContentPane().add(lblMazeSize);
 		
 		mazeSize = new JTextField();
 		mazeSize.setText("11");
@@ -86,9 +107,9 @@ public class MainWindow {
 		frmLabirinth.getContentPane().add(mazeSize);
 		mazeSize.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Number of dragons");
-		lblNewLabel_1.setBounds(30, 82, 111, 14);
-		frmLabirinth.getContentPane().add(lblNewLabel_1);
+		lblNumberOfDragons = new JLabel("Number of dragons");
+		lblNumberOfDragons.setBounds(30, 82, 111, 14);
+		frmLabirinth.getContentPane().add(lblNumberOfDragons);
 		
 		numberOfDragons = new JTextField();
 		numberOfDragons.setText("1");
@@ -96,81 +117,85 @@ public class MainWindow {
 		frmLabirinth.getContentPane().add(numberOfDragons);
 		numberOfDragons.setColumns(10);
 		
-		JLabel lblTipoDe = new JLabel("Dragon's behavior");
-		lblTipoDe.setBounds(30, 125, 111, 14);
-		frmLabirinth.getContentPane().add(lblTipoDe);
+		lblDragonType = new JLabel("Dragon's behavior");
+		lblDragonType.setBounds(30, 125, 111, 14);
+		frmLabirinth.getContentPane().add(lblDragonType);
 		
-		JComboBox dragonMode = new JComboBox();
+		dragonMode = new JComboBox();
 		dragonMode.setBounds(151, 122, 248, 20);
 		frmLabirinth.getContentPane().add(dragonMode);
 		dragonMode.addItem("Static");
 		dragonMode.addItem("Aleatory movement");
 		dragonMode.addItem("Aleatory movement and sleeping state");
 		
-		JTextArea gameDisplayArea = new JTextArea();
+		gameDisplayArea = new JTextArea();
 		gameDisplayArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		gameDisplayArea.setEditable(false);
-		gameDisplayArea.setBounds(30, 188, 216, 286);
+		gameDisplayArea.setBounds(30, 188, 270, 261);
 		frmLabirinth.getContentPane().add(gameDisplayArea);
 		
-		JLabel GameMessage = new JLabel("Ready to generate labirinth!");
-		GameMessage.setBounds(30, 498, 189, 14);
-		frmLabirinth.getContentPane().add(GameMessage);
+		gameMessage = new JLabel("Ready to generate labirinth!");
+		gameMessage.setBounds(30, 471, 428, 14);
+		frmLabirinth.getContentPane().add(gameMessage);
 		
 		/***********************************************MOVEMENT BUTTONS************************************************************************/
 		
 		//Up button
-		JButton btnUp = new JButton("Up");
+		btnUp = new JButton("Up");
 		btnUp.setEnabled(false);
-		btnUp.setBounds(328, 219, 89, 31);
+		btnUp.setBounds(369, 213, 89, 31);
 		frmLabirinth.getContentPane().add(btnUp);
 		
 		//Down button
-		JButton btnDown = new JButton("Down");
+		btnDown = new JButton("Down");
 		btnDown.setEnabled(false);
-		btnDown.setBounds(328, 303, 89, 31);
+		btnDown.setBounds(369, 303, 89, 31);
 		frmLabirinth.getContentPane().add(btnDown);
 		
 		//Left button
-		JButton btnLeft = new JButton("Left");
+		btnLeft = new JButton("Left");
 		btnLeft.setEnabled(false);
-		btnLeft.setBounds(268, 261, 89, 31);
+		btnLeft.setBounds(310, 261, 89, 31);
 		frmLabirinth.getContentPane().add(btnLeft);
 		
 		//Right button
-		JButton btnRight = new JButton("Right");
+		btnRight = new JButton("Right");
 		btnRight.setEnabled(false);
-		btnRight.setBounds(388, 261, 89, 31);
+		btnRight.setBounds(411, 261, 89, 31);
 		frmLabirinth.getContentPane().add(btnRight);
 		
 		btnUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateGame("W", gameDisplayArea, GameMessage, btnUp, btnDown, btnLeft, btnRight);
+				playerMovement = "W";
+				UpdateFrame();
 			}
 		});
 		
 		btnDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateGame("S", gameDisplayArea, GameMessage, btnUp, btnDown, btnLeft, btnRight);
+				playerMovement = "S";
+				UpdateFrame();
 			}
 		});
 		
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateGame("A", gameDisplayArea, GameMessage,btnUp, btnDown, btnLeft, btnRight);
+				playerMovement = "A";
+				UpdateFrame();
 			}
 		});
 		
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UpdateGame("D", gameDisplayArea, GameMessage, btnUp, btnDown, btnLeft, btnRight);
+				playerMovement = "D";
+				UpdateFrame();
 			}
 		});
 		
 		/***********************************************END MOVEMENT BUTTONS************************************************************************/
 		
-		JButton btnNewButton = new JButton("Generate new labirinth");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnNewMaze = new JButton("Generate new labirinth");
+		btnNewMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				int size, numDragons, dragonBehavior;	
 				
@@ -178,9 +203,10 @@ public class MainWindow {
 				{
 					size = Integer.parseInt(mazeSize.getText());
 					
-					if(size < 7 || size > 31)
+					//Só dá para ver até 17 na janela, depois altera-se o tamanho
+					if(size < 7 || size > 17)
 					{
-						JOptionPane.showMessageDialog(frmLabirinth, "The labirinth needs to be at leats 7 and no more than 31!");
+						JOptionPane.showMessageDialog(frmLabirinth, "The labirinth needs to be at leats 7 and no more than 17!");
 						return;
 					}
 					
@@ -197,7 +223,7 @@ public class MainWindow {
 					
 					if(numDragons <= 0)
 					{
-						JOptionPane.showMessageDialog(frmLabirinth, "The hero needs to fight at lears 1 dragon!");
+						JOptionPane.showMessageDialog(frmLabirinth, "The hero needs to fight at least 1 dragon!");
 						return;
 					}
 					
@@ -229,11 +255,9 @@ public class MainWindow {
 				{
 					return;
 				}
-				
-				String maze = new String();
 
-				game.SetInformation(dragonBehavior, size, numDragons);
-				maze = game.getMaze().drawMaze();
+				game.SetObjects(dragonBehavior, size, numDragons);
+				String maze = game.getMaze().toString();
 				gameDisplayArea.setText(maze);
 				
 				btnUp.setEnabled(true);
@@ -241,19 +265,20 @@ public class MainWindow {
 				btnLeft.setEnabled(true);
 				btnRight.setEnabled(true);
 				
-				GameMessage.setText("You can play!");
+				gameMessage.setText("You can play!");
 			}
 		});
-		btnNewButton.setBounds(314, 35, 144, 31);
-		frmLabirinth.getContentPane().add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Exit application");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnNewMaze.setBounds(314, 35, 144, 31);
+		frmLabirinth.getContentPane().add(btnNewMaze);
+		
+		btnExit = new JButton("Exit application");
+		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
-		btnNewButton_1.setBounds(314, 74, 144, 31);
-		frmLabirinth.getContentPane().add(btnNewButton_1);
+		btnExit.setBounds(314, 74, 144, 31);
+		frmLabirinth.getContentPane().add(btnExit);
 	}
 }

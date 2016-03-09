@@ -13,7 +13,8 @@ public class TestMazeWithStaticDragon {
 
 	@Test
 	public void testMoveHeroToFreeCell() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("A");
 		assertEquals(new Coordinates(2, 1), game.getHero().getCoordinates());
@@ -21,7 +22,8 @@ public class TestMazeWithStaticDragon {
 	
 	@Test
 	public void testHeroDies() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(false, game.getHero().getWieldingSword());
 		game.UpdateGame("S");
 		assertEquals(true, game.getHero().getIsDead());
@@ -29,7 +31,8 @@ public class TestMazeWithStaticDragon {
 	
 	@Test
 	public void testMoveHeroToWall() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("W");
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
@@ -37,7 +40,8 @@ public class TestMazeWithStaticDragon {
 	
 	@Test
 	public void testMoveHeroToSword() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("A");
 		game.UpdateGame("A");
@@ -49,7 +53,8 @@ public class TestMazeWithStaticDragon {
 
 	@Test
 	public void testHeroKillsDragon() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("A");
 		game.UpdateGame("A");
@@ -62,7 +67,8 @@ public class TestMazeWithStaticDragon {
 	
 	@Test
 	public void testHeroExitsMaze() {
-		Game game = new Game(1);
+		Game game = new Game();
+		game.SetObjects(1);
 		assertEquals(new Coordinates(3, 1), game.getHero().getCoordinates());
 		game.UpdateGame("A");
 		game.UpdateGame("A");

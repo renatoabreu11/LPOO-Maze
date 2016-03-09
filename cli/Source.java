@@ -120,11 +120,12 @@ public class Source {
 				mazeSize = GameModeSelector(1);
 				numberOfDragons = GameModeSelector(2);
 
-				Game game = new Game(dragonMode, mazeSize, numberOfDragons);
+				Game game = new Game();
+				game.SetObjects(dragonMode, mazeSize, numberOfDragons);
 				DisplayMessageInstructions();
 
 				while (!game.GetGameOver()) {
-					game.DrawGame();
+					System.out.println(game.getMazeString());
 					System.out.print("\nMove the hero: \n>>");
 
 					try {
@@ -142,6 +143,7 @@ public class Source {
 					game.UpdateGame(playerMovement);
 				}
 
+				System.out.println(game.getMazeString());
 				if (game.getHero().getIsDead()) {
 					DisplayMessageLose();
 				} else

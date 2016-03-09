@@ -15,63 +15,42 @@ public class Game {
 	private boolean exitSpawned;
 	private int dragonMode;
 
-	public Game()
-	{
-		
-	}
-	
-	public Game(int dragonMode, int size, int numberOfDragons) {
-		this.dragonMode = dragonMode;
-		maze = new Maze(size);
-		hero = new Hero(maze.GeneratePosition(0));
-		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
-		sword = new Sword(maze.GeneratePosition(0));
-		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
-		Dragons = new Vector<Dragon>();
-
-		for (int i = 0; i < numberOfDragons; i++) {
-			Dragons.addElement(new Dragon(maze.GeneratePosition(1), DragonState.standing));
-			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
-		}
-
+	public Game(){
 		this.gameOver = false;
 		this.exitSpawned = false;
 	}
-
-	public Game(int dragonMode) {
+	
+	public void SetObjects(int dragonMode){
 		this.dragonMode = dragonMode;
 		maze = new Maze();
 		hero = new Hero(new Coordinates(3, 1));
+		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		sword = new Sword(new Coordinates(1, 3));
+		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+
 		Dragons = new Vector<Dragon>();
 
 		for (int i = 0; i < 1; i++) {
 			Dragons.addElement(new Dragon(new Coordinates(3, 3), DragonState.standing));
 			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
 		}
-
-		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
-		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
-		this.gameOver = false;
 	}
 
-	public void SetInformation(int dragonMode, int size, int numberOfDragons)
-	{	
+	public void SetObjects(int dragonMode, int size, int numberOfDragons) {
 		this.dragonMode = dragonMode;
+
 		maze = new Maze(size);
 		hero = new Hero(maze.GeneratePosition(0));
 		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		sword = new Sword(maze.GeneratePosition(0));
 		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+
 		Dragons = new Vector<Dragon>();
 
 		for (int i = 0; i < numberOfDragons; i++) {
 			Dragons.addElement(new Dragon(maze.GeneratePosition(1), DragonState.standing));
 			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
 		}
-
-		this.gameOver = false;
-		this.exitSpawned = false;
 	}
 	
 	public void UpdateGame(String movement) {
@@ -82,9 +61,7 @@ public class Game {
 
 			if (hero.getIsDead()) {
 				SetGameOver();
-				DrawGame();
-			} else if (this.gameOver)
-				DrawGame();
+			} 
 		}
 
 		if (!this.gameOver && !exitSpawned) {
@@ -93,19 +70,13 @@ public class Game {
 
 			if (hero.getIsDead()) {
 				SetGameOver();
-				DrawGame();
-			} else if (this.gameOver) {
-				DrawGame();
 			}
 		}
 
 		boolean allDragonsDead = true;
+		
 		if (!exitSpawned) {
-			for (int i = 0; i < Dragons.size(); i++)
-				if (!(Dragons.elementAt(i).getDragonState().equals(DragonState.dead))) {
-					allDragonsDead = false;
-					break;
-				}
+			allDragonsDead = checkDragonsDead();
 		}
 
 		if (allDragonsDead && !exitSpawned) {
@@ -143,8 +114,7 @@ public class Game {
 			if (Dragons.elementAt(i).getDragonState() != DragonState.dead) {
 				if (dragonMode == 1)
 					break;
-
-				// If the dragon keeps still, nothing changes
+				
 				if (Dragons.elementAt(i).getCoordinates().equals(c) || maze.ReadInMaze(c) == 'X'
 						|| maze.ReadInMaze(c) == 'D' || maze.ReadInMaze(c) == 'd') {
 					c = Dragons.elementAt(i).getCoordinates();
@@ -202,8 +172,8 @@ public class Game {
 		}
 	}
 
-	public void DrawGame() {
-		this.maze.drawMaze();
+	public String getMazeString() {
+		return this.maze.toString();
 	}
 
 	public void SetGameOver() {
@@ -228,5 +198,16 @@ public class Game {
 
 	public Maze getMaze() {
 		return maze;
+	}
+	
+	public boolean checkDragonsDead() {
+		boolean allDragonsDead = true;
+		for (int i = 0; i < Dragons.size(); i++)
+			if (!(Dragons.elementAt(i).getDragonState().equals(DragonState.dead))) {
+				allDragonsDead = false;
+				break;
+			}
+		
+		return allDragonsDead;
 	}
 }
