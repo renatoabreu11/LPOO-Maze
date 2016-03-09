@@ -15,6 +15,11 @@ public class Game {
 	private boolean exitSpawned;
 	private int dragonMode;
 
+	public Game()
+	{
+		
+	}
+	
 	public Game(int dragonMode, int size, int numberOfDragons) {
 		this.dragonMode = dragonMode;
 		maze = new Maze(size);
@@ -50,6 +55,25 @@ public class Game {
 		this.gameOver = false;
 	}
 
+	public void SetInformation(int dragonMode, int size, int numberOfDragons)
+	{	
+		this.dragonMode = dragonMode;
+		maze = new Maze(size);
+		hero = new Hero(maze.GeneratePosition(0));
+		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
+		sword = new Sword(maze.GeneratePosition(0));
+		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+		Dragons = new Vector<Dragon>();
+
+		for (int i = 0; i < numberOfDragons; i++) {
+			Dragons.addElement(new Dragon(maze.GeneratePosition(1), DragonState.standing));
+			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
+		}
+
+		this.gameOver = false;
+		this.exitSpawned = false;
+	}
+	
 	public void UpdateGame(String movement) {
 		UpdateHero(hero, movement);
 

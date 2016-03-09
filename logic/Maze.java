@@ -43,15 +43,27 @@ public class Maze
 		return maze[y][x];
 	}
 
-	public void drawMaze()
+	public String drawMaze()
 	{	
+//		for(int i = 0; i < maze.length; i++)
+//		{
+//			for(int j = 0; j < maze[i].length; j++)
+//				System.out.print(maze[i][j] + " ");
+//			
+//			System.out.println();
+//		}
+		
+		//Character s[][] = new Character[hSize][vSize];
+		String s = "";
 		for(int i = 0; i < maze.length; i++)
 		{
 			for(int j = 0; j < maze[i].length; j++)
-				System.out.print(maze[i][j] + " ");
+				s += maze[i][j];
 			
-			System.out.println();
+			s += "\n";
 		}
+		
+		return s;
 	}
 	
 	public Coordinates GeneratePosition(int indicator){
