@@ -33,7 +33,7 @@ public class MainWindow {
 	private JButton btnRight;
 	private JButton btnNewMaze;
 	private JButton btnExit;
-	Game game = new Game();
+	Game game;
 	String playerMovement = "";
 
 
@@ -198,6 +198,7 @@ public class MainWindow {
 		btnNewMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				int size, numDragons, dragonBehavior;	
+				game = new Game();
 				
 				try
 				{

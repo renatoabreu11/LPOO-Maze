@@ -122,6 +122,8 @@ public class Game {
 				} else if (Dragons.elementAt(i).getDragonOnTop() && !Dragons.elementAt(i).getCoordinates().equals(c)) {
 					Dragons.elementAt(i).setDragonOnTop(false);
 					sword.setIsVisible(true);
+					maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+					Dragons.elementAt(i).setCoordinates(c);
 
 				} else if (maze.ReadInMaze(c) == 'E') {
 					sword.setIsVisible(false);
@@ -129,7 +131,6 @@ public class Game {
 				}
 
 				maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), ' ');
-				maze.WriteInMaze(sword.getCoordinates(), sword.getName());
 				Dragons.elementAt(i).setCoordinates(c);
 				maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
 			}

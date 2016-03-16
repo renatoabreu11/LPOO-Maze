@@ -112,6 +112,7 @@ public class TestMazeBuilder {
 		int maxMazeSize = 101; // can change to any odd number >= 5
 		int minMazeSize = 5;
 		
+		MazeBuilder builder = new MazeBuilder();
 		char[][] badWalls = {
 				{'X', 'X', 'X'},
 				{'X', 'X', 'X'},
@@ -130,21 +131,24 @@ public class TestMazeBuilder {
 		
 		for (int i = 0; i < numMazes; i++) {
 			int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
+			
 			Game g = new Game();
 			g.SetObjects(1, size, 1);
 			Maze m = g.getMaze();
 			m.GenerateExitPosition();
-			assertTrue("Invalid maze boundaries in maze:\n" + m, checkBoundaries(m.getMaze()));			
-			assertTrue("Invalid walls in maze:\n" + m, ! hasSquare(m.getMaze(), badWalls));
-			assertTrue("Invalid spaces in maze:\n" + m, ! hasSquare(m.getMaze(), badSpaces));
-			assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m.getMaze(), badDiagonalDown));
-			assertTrue("Invalid diagonals in maze:\n" + m, ! hasSquare(m.getMaze(), badDiagonalUp));
-			assertTrue("Maze exit not reachable in maze:\n" + m, checkExitReachable(m.getMaze()));			
-			assertNotNull("Missing exit in maze:\n" + m, findPos(m.getMaze(), 'S'));
-			assertNotNull("Missing hero in maze:\n" + m, findPos(m.getMaze(), 'H'));
-			assertNotNull("Missing dragon in maze:\n" + m, findPos(m.getMaze(), 'D'));
-			assertNotNull("Missing sward in maze:\n" + m, findPos(m.getMaze(), 'E'));
-			assertFalse("Adjacent hero and dragon in maze:\n" + str(m.getMaze()), findPos(m.getMaze(), 'H').adjacentTo(findPos(m.getMaze(), 'D')));
+			char[][] mazeChar = m.getMaze();
+			
+			assertTrue("Invalid maze boundaries in maze:\n" + mazeChar, checkBoundaries(mazeChar));			
+			assertTrue("Invalid walls in maze:\n" + mazeChar, ! hasSquare(mazeChar, badWalls));
+			assertTrue("Invalid spaces in maze:\n" + mazeChar, ! hasSquare(mazeChar, badSpaces));
+			assertTrue("Invalid diagonals in maze:\n" + mazeChar, ! hasSquare(mazeChar, badDiagonalDown));
+			assertTrue("Invalid diagonals in maze:\n" + mazeChar, ! hasSquare(mazeChar, badDiagonalUp));
+			assertTrue("Maze exit not reachable in maze:\n" + mazeChar, checkExitReachable(mazeChar));			
+			assertNotNull("Missing exit in maze:\n" + mazeChar, findPos(mazeChar, 'S'));
+			assertNotNull("Missing hero in maze:\n" + mazeChar, findPos(mazeChar, 'H'));
+			assertNotNull("Missing dragon in maze:\n" + mazeChar, findPos(mazeChar, 'D'));
+			assertNotNull("Missing sward in maze:\n" + mazeChar, findPos(mazeChar, 'E'));
+			assertFalse("Adjacent hero and dragon in maze:\n" + str(mazeChar), findPos(mazeChar, 'H').adjacentTo(findPos(mazeChar, 'D')));
 		}	
 	}
 	
