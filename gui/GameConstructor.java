@@ -17,10 +17,11 @@ import javax.swing.Timer;
 
 import maze.logic.Game;
 import maze.logic.Sprite;
+import java.awt.event.KeyAdapter;
 
 @SuppressWarnings("serial")
 public class GameConstructor extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
-	Sprite hero = new Sprite();
+	Sprite hero = new Sprite(); 
 	Sprite dragon = new Sprite();
 	Sprite heroWithSword = new Sprite();
 	private BufferedImage wall, sword;
@@ -31,7 +32,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
 		try {
 			for (int i = 0; i < numUp; i++)
-				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
+				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png"))); 
 
 			for (int i = numUp; i < numUp + numDown; i++)
 				sprite.downSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
@@ -46,13 +47,23 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 
 		sprite.alternate = 0;
-		sprite.facingUp = false;
+		sprite.facingUp = false; 
 		sprite.facingDown = true;
 		sprite.facingLeft = false;
 		sprite.facingRight = false;
 	}
 
-	public GameConstructor() {
+	public GameConstructor(){
+		
+	}
+	
+	public GameConstructor(GameOptions gameOptions) {
+		int size, numDragons, dragonType;
+		
+		size = gameOptions.getMazeSize();
+		numDragons = gameOptions.getNumberOfDragons();
+		dragonType = gameOptions.getDragonBehavior();
+		
 		Random r = new Random();
 		int swordNumber = r.nextInt(141) + 1;
 		int wallNumber = r.nextInt(1) + 1;
@@ -76,7 +87,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		requestFocus();
 
 		game = new Game();
-		game.SetObjects(3, 11, 1);
+		game.SetObjects(numDragons, size, dragonType);
 	}
 
 	public void imageAnimationStep() {
