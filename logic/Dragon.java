@@ -10,6 +10,7 @@ public class Dragon extends Elements {
 	
 	private DragonState state;
 	private boolean dragonOnTop;
+	private String movedTo;
 	Random seed = new Random();
 	
 	public Dragon(Coordinates c, DragonState s) {
@@ -33,9 +34,11 @@ public class Dragon extends Elements {
 			if (aux == 1) {
 				this.state = DragonState.standing;
 				this.setName('D');
-			} else break;
-			
+				movedTo = "Standing";
+			} else 
+				movedTo = "Sleeping";
 			break;
+			
 		case standing:
 			if(dragonMode == 2)
 				aux = seed.nextInt(5);
@@ -49,6 +52,7 @@ public class Dragon extends Elements {
 			} else {
 				this.state = DragonState.sleeping;
 				this.setName('d');
+				movedTo = "Sleeping";
 				break;
 			}
 
@@ -58,15 +62,19 @@ public class Dragon extends Elements {
 			switch (movement) {
 			case 1:
 				c.setX(c.getX() - 1);
+				movedTo = "Left";
 				break;
 			case 2:
 				c.setY(c.getY() - 1);
+				movedTo = "Up";
 				break;
 			case 3:
 				c.setX(c.getX() + 1);
+				movedTo = "Right";
 				break;
 			case 4:
 				c.setY(c.getY() + 1);
+				movedTo = "Down";
 				break;
 			}
 			this.state = DragonState.standing;
@@ -102,5 +110,10 @@ public class Dragon extends Elements {
 	public boolean getDragonOnTop()
 	{
 		return this.dragonOnTop;
+	}
+	
+	public String getMovedTo()
+	{
+		return this.movedTo;
 	}
 }
