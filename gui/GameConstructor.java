@@ -1,6 +1,5 @@
 package maze.gui;
 
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,11 +9,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -113,8 +110,10 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					drawFacingDirection(dragon, g, i, j);
 				else if (maze[i][j] == 'E') 	//Draw sword
 					g.drawImage(sword, j * 20, i * 20 + 5, 20, 10, null);
-				 else if(maze[i][j] == 'A')
+				 else if(maze[i][j] == 'A')		//Draw heroWithSword
 					 drawFacingDirection(heroWithSword, g, i, j);
+				 else if(maze[i][j] == 'd' || maze[i][j] == 'F')		//Draw dragon sleeping or dragon on top of sword
+					 drawFacingDirection(dragon, g, i, j);
 			}
 		}
 	}
@@ -178,6 +177,12 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				dragon.facingDown = false;
 				dragon.facingLeft = false;
 				dragon.facingRight = true;
+			}
+			else if (game.getDragon().getMovedTo().equals("Standing")) {
+				if(dragon.alternate == 0)
+					dragon.alternate = 1;
+				else
+					dragon.alternate = 0;
 			}
 		}
 	}
