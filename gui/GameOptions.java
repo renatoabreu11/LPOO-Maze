@@ -101,6 +101,7 @@ public class GameOptions extends JPanel {
 	}
 	
 	private void addListeners() {
+		
 		mazeSize.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -150,18 +151,21 @@ public class GameOptions extends JPanel {
 			}
 		});
 		
+		personalizedMaze.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				personalizedMaze.setSelected(true);
+				randomMaze.setSelected(false);
+			}
+		});
 		
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				if (randomMaze.isSelected() && personalizedMaze.isSelected()) {
-					JOptionPane.showMessageDialog(getRootPane(), "Only one choice can be selected! Default values restored.");
-					personalizedMaze.setSelected(false);
-					return;
-				} else if(!randomMaze.isSelected() && !personalizedMaze.isSelected()){
-					JOptionPane.showMessageDialog(getRootPane(), "At least one choice must be selected! Default values restored.");
-					randomMaze.setSelected(true);
-					return;
-				}
+		randomMaze.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				randomMaze.setSelected(true);
+				personalizedMaze.setSelected(false);
 			}
 		});
 	}

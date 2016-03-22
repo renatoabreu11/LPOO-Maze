@@ -28,6 +28,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 	private Timer myTimer;
 	Game game;
+	int size, numDragons, dragonType;
 
 	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
 		try {
@@ -58,7 +59,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	}
 	
 	public GameConstructor(GameOptions gameOptions) {
-		int size, numDragons, dragonType;
 		
 		size = gameOptions.getMazeSize();
 		numDragons = gameOptions.getNumberOfDragons();
@@ -110,8 +110,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		super.paintComponent(g);
 		char maze[][] = game.getMaze().getMaze();
 
-		for (int i = 0; i < 11; i++) {
-			for (int j = 0; j < 11; j++) {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
 				
 				if (maze[i][j] == 'X') 			//Draw wall
 					g.drawImage(wall, j * 20, i * 20, 20, 20, null);

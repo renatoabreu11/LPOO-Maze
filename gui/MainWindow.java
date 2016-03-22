@@ -114,7 +114,7 @@ public class MainWindow extends JFrame {
 		game.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				if (arg0.equals(KeyEvent.VK_ESCAPE)) {
+				if (arg0.getKeyCode() == (KeyEvent.VK_ESCAPE)) {
 					int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish to exit the game?", null,
 							JOptionPane.YES_NO_OPTION);
 					
