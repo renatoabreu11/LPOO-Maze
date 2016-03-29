@@ -23,6 +23,8 @@ public class MainOptions extends JPanel {
 	private JButton btnLoadGame;
 	private JButton btnExitGame; 
 	
+	private JButton btnMazeBuilder;
+	
 	public MainOptions() { 
 		
 		setBtnNewGame(new JButton("New Game"));
@@ -33,10 +35,14 @@ public class MainOptions extends JPanel {
 
 		btnExitGame = new JButton("Exit Game");
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
+		
 		setBtnOptions(new JButton("Options"));
 		add(getBtnOptions());
 		add(btnExitGame);
+		
+		//MAZE
+		setBtnMazeBuilder(new JButton("Maze Builder"));
+		add(getBtnMazeBuilder());
 		
 		addListeners();
 	}
@@ -71,5 +77,13 @@ public class MainOptions extends JPanel {
 
 	public void setBtnNewGame(JButton btnNewGame) {
 		this.btnNewGame = btnNewGame;
+	}
+	
+	public JButton getBtnMazeBuilder() {
+		return btnMazeBuilder;
+	}
+
+	public void setBtnMazeBuilder(JButton btnMazeBuilder) {
+		this.btnMazeBuilder = btnMazeBuilder;
 	}
 }

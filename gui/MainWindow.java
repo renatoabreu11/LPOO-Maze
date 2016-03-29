@@ -19,6 +19,7 @@ public class MainWindow extends JFrame {
 	private MainOptions mainOptions;
 	private GameOptions gameOptions;
 	private GameConstructor game;
+	private MazeConstructor builder;
 	private JPanel contentPane;
 
 	/**
@@ -65,15 +66,18 @@ public class MainWindow extends JFrame {
 		game = new GameConstructor();
 		game.setVisible(true);
 		
+		builder = new MazeConstructor(gameOptions);
+		builder.setVisible(true);
+		
 		contentPane.add(gameOptions, "Game Options");
 		contentPane.add(mainOptions, "Main Options");
 		contentPane.add(game, "Game");
+		contentPane.add(builder, "Maze builder");
 	
 		addListeners();
 		
 		CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 		cardLayout.show(contentPane, "Main Options");
-
 	}
 
 	private void addListeners(){
@@ -97,6 +101,15 @@ public class MainWindow extends JFrame {
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
 			}
+		});
+		
+		mainOptions.getBtnMazeBuilder().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				builder = new MazeConstructor(gameOptions);
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "Maze builder");
+			}
+
 		});
 		
 		gameOptions.getBtnExit().addActionListener(new ActionListener() {
