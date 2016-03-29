@@ -24,7 +24,6 @@ public class MazeConstructor extends JPanel {
 	private int mazeSize;
 	private char maze[][];
 	
-	
 	/**
 	 * Create the panel.
 	 */
@@ -79,6 +78,7 @@ public class MazeConstructor extends JPanel {
 				mouseX = e.getX();
 				mouseY = e.getY();
 				
+				//Selects wall
 				if(mouseX >= mazeSize * 20 + 10 && mouseX <= mazeSize * 20 + 30 && mouseY >= 40 && mouseY <= 60)
 					selected = wall;
 				
@@ -153,10 +153,5 @@ public class MazeConstructor extends JPanel {
 			}
 		
 		g.drawImage(wall, mazeSize * 20 + 10, 40, 20, 20, null);
-		
-		if(selected != null)
-		{
-			g.drawImage(selected, mouseX, mouseY, 20, 20, null);
-		}
 	}
 }
