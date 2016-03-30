@@ -84,7 +84,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
 		myTimer.start();
-		requestFocus();
 
 		game = new Game();
 		game.SetObjects(numDragons, size, dragonType);

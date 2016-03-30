@@ -100,6 +100,7 @@ public class MainWindow extends JFrame {
 				contentPane.add(game, "Game");
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
+				game.requestFocusInWindow();
 			}
 		});
 		
