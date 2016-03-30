@@ -2,12 +2,16 @@ package maze.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -42,9 +46,8 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		getContentPane().setLayout(new CardLayout());
 		setTitle("Labirinth");
-		setBounds(100, 100, 1000, 800);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel(new CardLayout());
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,7 +69,7 @@ public class MainWindow extends JFrame {
 		game = new GameConstructor();
 		game.setVisible(true);
 		
-		builder = new MazeConstructor(gameOptions);
+		builder = new MazeConstructor();
 		builder.setVisible(true);
 		
 		contentPane.add(gameOptions, "Game Options");
@@ -106,7 +109,7 @@ public class MainWindow extends JFrame {
 		
 		mainOptions.getBtnMazeBuilder().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				builder = new MazeConstructor(gameOptions);
+				builder = new MazeConstructor();
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Maze builder");
 			}
