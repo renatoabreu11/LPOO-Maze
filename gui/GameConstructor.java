@@ -1,5 +1,6 @@
 package maze.gui;
 
+import java.awt.CardLayout;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,54 +13,36 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import maze.logic.Game;
 import maze.logic.Sprite;
+import maze.logic.Dragon.DragonState;
+
 import java.awt.event.KeyAdapter;
 
 @SuppressWarnings("serial")
 public class GameConstructor extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
-	Sprite hero = new Sprite(); 
-	Sprite dragon = new Sprite();
-	Sprite heroWithSword = new Sprite();
+	private Sprite hero = new Sprite(); 
+	private Sprite dragon = new Sprite();
+	private Sprite heroWithSword = new Sprite();
 	private BufferedImage wall, sword;
 
 	private Timer myTimer;
-	Game game;
-	int size, numDragons, dragonType;
-
-	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
-		try {
-			for (int i = 0; i < numUp; i++)
-				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png"))); 
-
-			for (int i = numUp; i < numUp + numDown; i++)
-				sprite.downSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-
-			for (int i = numUp + numDown; i < numUp + numDown + numLeft; i++)
-				sprite.leftSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-
-			for (int i = numUp + numDown + numLeft; i < numUp + numDown + numLeft + numRight; i++)
-				sprite.rightSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		sprite.alternate = 0;
-		sprite.facingUp = false; 
-		sprite.facingDown = true;
-		sprite.facingLeft = false;
-		sprite.facingRight = false;
-	}
+	private Game game;
+	private int size, numDragons, dragonType;
+	private JPanel mainPanel;
+	private JOptionPane message;
 
 	public GameConstructor(){
 		
 	}
 	
-	public GameConstructor(GameOptions gameOptions) {
+	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
 		
+		this.mainPanel = mainPanel;
 		size = gameOptions.getMazeSize();
 		numDragons = gameOptions.getNumberOfDragons();
 		dragonType = gameOptions.getDragonBehavior();
@@ -86,9 +69,33 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		myTimer.start();
 
 		game = new Game();
-		game.SetObjects(numDragons, size, dragonType);
+		game.SetObjects(dragonType, size, numDragons);
 	}
 
+	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
+		try {
+			for (int i = 0; i < numUp; i++)
+				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png"))); 
+
+			for (int i = numUp; i < numUp + numDown; i++)
+				sprite.downSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
+
+			for (int i = numUp + numDown; i < numUp + numDown + numLeft; i++)
+				sprite.leftSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
+
+			for (int i = numUp + numDown + numLeft; i < numUp + numDown + numLeft + numRight; i++)
+				sprite.rightSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		sprite.alternate = 0;
+		sprite.facingUp = false; 
+		sprite.facingDown = true;
+		sprite.facingLeft = false;
+		sprite.facingRight = false;
+	}
+	
 	public void imageAnimationStep() {
 		repaint();
 	}
@@ -200,6 +207,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
+		if(!game.getHero().getIsDead())
+		{
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			game.UpdateGame("W");
@@ -237,8 +246,21 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				animationHandler(hero, "Right");
 			break;
 		}
+		}
 		
-		animationHandler(dragon, "");
+		if(!(game.getDragon().getDragonState().equals(DragonState.dead)))
+			animationHandler(dragon, "");
+		
+		if(game.GetGameOver())
+		{
+			if(game.getHero().getIsDead())
+				message.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
+			else
+				message.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
+			
+			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+			cardLayout.show(mainPanel, "Main Options");
+		}
 	}
 
 	@Override

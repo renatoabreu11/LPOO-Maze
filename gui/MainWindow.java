@@ -99,7 +99,7 @@ public class MainWindow extends JFrame {
 		mainOptions.getBtnNewGame().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.remove(game);
-				game = new GameConstructor(gameOptions);
+				game = new GameConstructor(gameOptions, contentPane);
 				contentPane.add(game, "Game");
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
