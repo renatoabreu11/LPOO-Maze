@@ -7,20 +7,28 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import maze.logic.MazeBuilder;
+import maze.logic.Coordinates;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
 import java.awt.BorderLayout;
+
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Canvas;
 
 public class MazeConstructor extends JPanel {
 
@@ -29,9 +37,12 @@ public class MazeConstructor extends JPanel {
 	private BufferedImage dragon;
 	private BufferedImage sword;
 	private BufferedImage selected;
+	
+	private int hSize, vSize;
 	private int x, y;
 	private int mouseX, mouseY;
-	private char maze[][];
+	private HashMap<Coordinates, Character> maze;
+	
 	private JTextField textFieldHorizontalSize;
 	private JTextField textFieldVerticalSize;
 	private JLabel lblHorizontalSize;
@@ -48,44 +59,43 @@ public class MazeConstructor extends JPanel {
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		
 		lblHorizontalSize = new JLabel("Horizontal Size");
-		lblHorizontalSize.setBounds(23, 638, 99, 17);
+		lblHorizontalSize.setBounds(20, 10, 100, 20);
 		add(lblHorizontalSize);
 		
 		lblVerticalSize = new JLabel("Vertical Size");
-		lblVerticalSize.setBounds(23, 670, 99, 20);
+		lblVerticalSize.setBounds(20, 30, 100, 20);
 		add(lblVerticalSize);
 		
-		textFieldHorizontalSize = new JTextField();
-		textFieldHorizontalSize.setText("11");
-		textFieldHorizontalSize.setBounds(132, 636, 86, 20);
+		textFieldHorizontalSize = new JTextField("11", 10);
+		textFieldHorizontalSize.setBounds(140, 10, 100, 20);
 		add(textFieldHorizontalSize);
-		textFieldHorizontalSize.setColumns(10);
 		
-		textFieldVerticalSize = new JTextField();
-		textFieldVerticalSize.setText("11");
-		textFieldVerticalSize.setBounds(132, 670, 86, 20);
+		textFieldVerticalSize = new JTextField("11", 10);
+		textFieldVerticalSize.setBounds(140, 30, 100, 20);
 		add(textFieldVerticalSize);
-		textFieldVerticalSize.setColumns(10);
+
+		hSize = 11;
+		vSize = 11;
+		
+		btnResize = new JButton("Resize");
+		btnResize.setBounds(320, 20, 100, 20);
+		add(btnResize);
 		
 		lblObjects = new JLabel("Objects");
-		lblObjects.setBounds(463, 638, 56, 17);
+		lblObjects.setBounds(600, 10, 100, 20);
 		add(lblObjects);
 		
 		lblSelected = new JLabel("Selected");
-		lblSelected.setBounds(698, 638, 77, 17);
+		lblSelected.setBounds(825, 10, 100, 20);
 		add(lblSelected);
 		
 		btnExitConstructor = new JButton("Exit Constructor");
-		btnExitConstructor.setBounds(1159, 638, 142, 36);
+		btnExitConstructor.setBounds(1200, 10, 150, 40);
 		add( btnExitConstructor);
 		
 		btnSaveMaze = new JButton("Save Maze");
-		btnSaveMaze.setBounds(956, 638, 127, 36);
+		btnSaveMaze.setBounds(1000, 10, 125, 40);
 		add(btnSaveMaze);
-		
-		btnResize = new JButton("Resize");
-		btnResize.setBounds(285, 645, 89, 23);
-		add(btnResize);
 		
 		try {
 			wall =  ImageIO.read(new File("wall (1).png"));
@@ -96,16 +106,15 @@ public class MazeConstructor extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
+
+		maze = new HashMap<Coordinates, Character>();
 		
-		int mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-		int mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
-		maze = new char[mazeVerticalSize][mazeHorizontalSize];
-		
-		for(int i = 0; i < mazeVerticalSize; i++)
-			for(int j = 0; j < mazeHorizontalSize; j++){
-				if(i == 0 || j == 0 || j == mazeHorizontalSize - 1 || i == mazeVerticalSize - 1)
-					maze[i][j] = 'X';
-				else maze[i][j] = ' ';
+		for(int i = 0; i < vSize; i++)
+			for(int j = 0; j < hSize; j++){
+				if(i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1){
+					Coordinates c = new Coordinates(j, i);
+					maze.put(c, 'X');
+				}
 			}
 		
 		addListeners();
@@ -114,15 +123,70 @@ public class MazeConstructor extends JPanel {
 	public void addListeners(){
 		btnResize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-				int mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
+				int mazeHorizontalSize = 0, mazeVerticalSize = 0;
+				int width = getWidth();
+				int height = getHeight();
 				
-				if(mazeHorizontalSize != maze.length || mazeVerticalSize != maze[0].length){
+				try{
+					mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
+					if(mazeHorizontalSize < 7 || mazeHorizontalSize > width / 20)
+					{
+						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 20 + "!\n");
+						textFieldHorizontalSize.setText(Integer.toString(hSize));
+					}
 					
+				}catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(getRootPane(), "Invalid input in the labirinth size! Default values restored.");
+					textFieldHorizontalSize.setText(Integer.toString(hSize));
+				}
+				
+				try{
+					mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
+					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 20)
+					{
+						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 20 + "!\n");
+						textFieldVerticalSize.setText(Integer.toString(vSize));
+					}
+					
+				}catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(getRootPane(), "Invalid input in the labirinth size! Default values restored.");
+					textFieldVerticalSize.setText(Integer.toString(vSize));
+				}
+				
+				mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
+				mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
+			
+				if(vSize != mazeVerticalSize || hSize != mazeHorizontalSize){
+					for (int i = 0; i < vSize; i++){
+						Coordinates c1 = new Coordinates(0, i);
+						maze.entrySet().removeIf(entry -> entry.getKey().equals(c1));
+						Coordinates c2 = new Coordinates(hSize - 1, i);
+						maze.entrySet().removeIf(entry -> entry.getKey().equals(c2));
+					}
+					
+					for (int i = 0; i < hSize; i++){
+						Coordinates c1 = new Coordinates(i, 0);
+						maze.entrySet().removeIf(entry -> entry.getKey().equals(c1));
+						Coordinates c2 = new Coordinates(i, vSize - 1);
+						maze.entrySet().removeIf(entry -> entry.getKey().equals(c2));
+					}
+					
+					hSize = mazeHorizontalSize;
+					vSize = mazeVerticalSize;
+					
+					for (int i = 0; i < vSize; i++)
+						for (int j = 0; j < hSize; j++) {
+							if (i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1) {
+								Coordinates c = new Coordinates(j, i);
+								maze.put(c, 'X');
+							}
+						}
+					
+					repaint();
 				}
 			}
 		});
-		
+
 		addMouseListener(new MouseListener() {
 
 			@Override
@@ -149,60 +213,54 @@ public class MazeConstructor extends JPanel {
 				int mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
 				mouseX = e.getX();
 				mouseY = e.getY();
+				
+				if (SwingUtilities.isRightMouseButton(e)) {
+					if (mouseX >= 20 && mouseX <= (mazeHorizontalSize - 1) * 20 && mouseY >= 100
+							&& mouseY <= (mazeVerticalSize - 1) * 20 + 80) {
 
-				// Selects wall
-				if (mouseX >= 400 && mouseX <= 400 + 20 && mouseY >= 665 && mouseY <= 685)
-					selected = wall;
-				else if (mouseX >= 450 && mouseX <= 450 + 20 && mouseY >= 665 && mouseY <= 685)
-					selected = hero;
-				else if (mouseX >= 500 && mouseX <= 500 + 20 && mouseY >= 665 && mouseY <= 685)
-					selected = dragon;
-				else if (mouseX >= 550 && mouseX <= 550 + 20 && mouseY >= 665 && mouseY <= 685)
-					selected = sword;
+						int newX = mouseX / 20;
+						int newY = (mouseY - 80) / 20;
 
-				// Calculates drawing position into char maze
-				if (mouseX >= 20 && mouseX <= (mazeHorizontalSize - 1) * 20 && mouseY >= 20
-						&& mouseY <= (mazeHorizontalSize - 1) * 20) {
-					int newX = 0, newY = 0;
-					int auxX = 0, auxY = 0;
-					int rX = 0, rY = 0;
-					boolean foundX = false, foundY = false;
+						Coordinates c = new Coordinates(newX, newY);
+						maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
+					}
+				} else if(SwingUtilities.isLeftMouseButton(e)){
+					
+					if (mouseX >= 500 && mouseX <= 500 + 20 && mouseY >= 30 && mouseY <= 50)
+						selected = wall;
+					else if (mouseX >= 575 && mouseX <= 575 + 20 && mouseY >= 30 && mouseY <= 50)
+						selected = hero;
+					else if (mouseX >= 650 && mouseX <= 650 + 20 && mouseY >= 30 && mouseY <= 50)
+						selected = dragon;
+					else if (mouseX >= 725 && mouseX <= 725 + 20 && mouseY >= 30 && mouseY <= 50)
+						selected = sword;
+					else {
+						// Calculates drawing position into char maze
+						if (mouseX >= 20 && mouseX <= (mazeHorizontalSize - 1) * 20 && mouseY >= 100
+								&& mouseY <= (mazeVerticalSize - 1) * 20 + 80) {
 
-					while (!(foundX && foundY)) {
-						if (!foundX) {
-							if (auxX >= mouseX) {
-								newX = rX;
-								foundX = true;
-							} else {
-								auxX += 20;
-								rX++;
-							}
-						}
+							int newX = mouseX / 20;
+							int newY = (mouseY - 80) / 20;
+							
+							Coordinates c = new Coordinates(newX, newY);
+							char symbol = ' ';
+							
+							maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
 
-						if (!foundY) {
-							if (auxY >= mouseY) {
-								newY = rY;
-								foundY = true;
-							} else {
-								auxY += 20;
-								rY++;
-							}
+							if (selected.equals(wall))
+								symbol = 'X';
+							else if (selected.equals(hero))
+								symbol = 'H';
+							else if (selected.equals(dragon))
+								symbol = 'D';
+							else if (selected.equals(sword))
+								symbol = 'E';
+							
+							if(symbol != ' ')
+								maze.put(c,  symbol);
 						}
 					}
-
-					newX--;
-					newY--;
-
-					if (selected.equals(wall))
-						maze[newY][newX] = 'X';
-					else if (selected.equals(hero))
-						maze[newY][newX] = 'H';
-					else if (selected.equals(dragon))
-						maze[newY][newX] = 'D';
-					else if (selected.equals(sword))
-						maze[newY][newX] = 'E';
 				}
-
 				repaint();
 			}
 
@@ -218,28 +276,31 @@ public class MazeConstructor extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		int mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-		int mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
-		for(int i = 0; i < mazeVerticalSize; i++)
-			for(int j = 0; j < mazeHorizontalSize; j++)
-			{
-				if(maze[i][j] == 'X')
-					g.drawImage(wall, j * 20, i * 20, 20, 20, null);
-				else if(maze[i][j] == 'H')
-					g.drawImage(hero, j * 20, i * 20, 20, 20, null);
-				else if(maze[i][j] == 'E')
-					g.drawImage(sword, j * 20, i * 20, 20, 20, null);
-				else if(maze[i][j] == 'D')
-					g.drawImage(dragon, j * 20, i * 20, 20, 20, null);
-			}
+		int mazeYPos = 80;
+		Iterator<Coordinates> it = maze.keySet().iterator(); 
 		
-		int width = this.getWidth();
-		int height = this.getHeight();
+		while(it.hasNext()){ 
+			Coordinates key = it.next(); 
+			char symbol = maze.get(key);
+			
+			if(symbol == 'X')
+				g.drawImage(wall, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
+			else if(symbol == 'H')
+				g.drawImage(hero, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
+			else if(symbol == 'E')
+				g.drawImage(sword, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+			else if(symbol == 'D')
+				g.drawImage(dragon, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+		}
 		
-		g.drawImage(wall, width - 966, height - 30, 20, 20, null);
-		g.drawImage(hero, 450, 665, 20, 20, null);
-		g.drawImage(dragon, 500, 665, 20, 20, null);
-		g.drawImage(sword, 550, 665, 20, 20, null);
-		g.drawImage(selected, 715, 665, 20, 20, null);
+		g.drawImage(wall, 500, 30, 20, 20, null);
+		g.drawImage(hero, 575, 30, 20, 20, null);
+		g.drawImage(dragon, 650, 30, 20, 20, null);
+		g.drawImage(sword, 725, 30, 20, 20, null);
+		g.drawImage(selected, 840, 30, 20, 20, null);
+	}
+
+	public JButton getBtnExitConstructor() {
+		return btnExitConstructor;
 	}
 }
