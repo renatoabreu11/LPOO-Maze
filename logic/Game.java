@@ -229,4 +229,9 @@ public class Game {
 		
 		return allDragonsDead;
 	}
+	
+	public int getDragonMode()
+	{
+		return dragonMode;
+	}
 }

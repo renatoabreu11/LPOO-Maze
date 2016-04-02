@@ -34,6 +34,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private int horizontalSize, numDragons, dragonType, verticalSize;
 	private JPanel mainPanel;
 	private long startedTime;
+	private boolean dragonMoves;
+	private float FPS = 0.1f;
 
 	/***
 	 * Default constructor
@@ -74,6 +76,11 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
 		myTimer.start();		
 		
+		if(game.getDragonMode() == 1)
+			dragonMoves = false;
+		else
+			dragonMoves = true;
+		
 		startedTime = System.currentTimeMillis();
 	}
 	
@@ -111,6 +118,11 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
 		myTimer.start();
 		
+		if(game.getDragonMode() == 1)
+			dragonMoves = false;
+		else
+			dragonMoves = true;
+		
 		startedTime = System.currentTimeMillis();
 	}
 
@@ -137,8 +149,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 
 		sprite.alternate = 0;
-		sprite.facingUp = true; 
-		sprite.facingDown = false;
+		sprite.facingUp = false; 
+		sprite.facingDown = true;
 		sprite.facingLeft = false;
 		sprite.facingRight = false;		
 	}
@@ -152,15 +164,15 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		float elapsedTimeSec = elapsedTimeMillis/1000F;
 		
 		if(!game.GetGameOver())
-			if(elapsedTimeSec >= 0.1)
+			if(elapsedTimeSec >= FPS)
 			{
-				if(hero.alternate >= 8)
+				if(hero.alternate >= 7)
 					hero.alternate = 0;
 				else
 					hero.alternate++;
 			
 				if(!game.getDragon().getDragonState().equals(DragonState.sleeping))
-					if(dragon.alternate >= 6)
+					if(dragon.alternate >= 5)
 						dragon.alternate = 0;
 					else
 						dragon.alternate++;
@@ -175,7 +187,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 * Set's the 'sprite' direction to be drew.
 	 */
 	void drawFacingDirection(Sprite sprite, Graphics g, int i, int j)
-	{
+	{		
 		if (sprite.facingUp)
 			g.drawImage(sprite.upSprites.get(sprite.alternate), j * 20, i * 20, 20, 20, null);
 		else if (sprite.facingDown)
@@ -216,10 +228,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					else if (maze.ReadInMaze(j, i) == 'H') // Draw Hero
 						drawFacingDirection(hero, g, i, j);
 					else if (maze.ReadInMaze(j, i) == 'D') // Draw dragon
-					{
 						drawFacingDirection(dragon, g, i, j);
-						System.out.println("Acordado");
-					} else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
+					else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
 						g.drawImage(sword, j * 20, i * 20 + 5, 20, 10, null);
 					else if (maze.ReadInMaze(j, i) == 'A') // Draw heroWithSword
 						drawFacingDirection(hero, g, i, j);
@@ -234,13 +244,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 * Animation handler of the objects that have more than one sprite associated
 	 */
 	void animationHandler(Sprite sprite, String myKey)
-	{
-		if(sprite.equals(hero))
-			if(sprite.alternate < 8)
-				sprite.alternate++;
-			else
-				sprite.alternate = 0;
-		
+	{		
 		if (!myKey.equals("")) // hero
 		{
 			if (myKey.equals("Up")) {
@@ -294,8 +298,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				dragon.facingLeft = false;
 				dragon.facingRight = true;
 			}
-			else if(game.getDragon().getDragonState().equals(DragonState.sleeping))
-				dragon.alternate = 0;
 		}
 	}
 
@@ -354,7 +356,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		if(game.GetGameOver())
 			endGame();
 		
-		if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
+		if(dragonMoves && !(game.getDragon().getDragonState() == (DragonState.dead)) && validKeyPressed)
 			animationHandler(dragon, "");
 	}
 	
