@@ -1,15 +1,18 @@
 package maze.gui;
 
 import java.awt.CardLayout;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,13 +26,12 @@ public class GameTypeDecision extends JPanel {
 	private JButton btnRandomMaze;
 	private JButton btnLoadMaze;
 	private JLabel lblMessage;
-	
 	private JPanel mainPanel;
 	private GameConstructor game;
 	private GameOptions options;
-	
 	private Vector<JButton> mazes;
 	private int selectedMaze;
+	private BufferedImage background;
 	
 	/**
 	 * Create the panel.
@@ -65,6 +67,17 @@ public class GameTypeDecision extends JPanel {
 		
 		importMazes();
 		addListeners();
+		
+		try {
+			background = ImageIO.read(new File("mazeWallpaper.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);		
+		g.drawImage(background, 0, 0, 1920, 1000, null);
 	}
 	
 	public void importMazes()

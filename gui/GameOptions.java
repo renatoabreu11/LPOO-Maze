@@ -1,5 +1,6 @@
 package maze.gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -10,7 +11,11 @@ import javax.swing.JTextField;
 import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.Font;
+import java.awt.Graphics;
 
 public class GameOptions extends JPanel {
 	
@@ -23,7 +28,7 @@ public class GameOptions extends JPanel {
 	private JTextField mazeHorizontalSize;
 	private JTextField mazeVerticalSize;
 	private JButton btnExit;
-	
+	private BufferedImage background;
 
 	/**
 	 * Create the frame.
@@ -80,6 +85,17 @@ public class GameOptions extends JPanel {
 		dragonMode.addItem("Aleatory movement and sleeping state");
 		
 		addListeners();
+		
+		try {
+			background = ImageIO.read(new File("mazeWallpaper.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);		
+		g.drawImage(background, 0, 0, 1920, 1000, null);
 	}
 	
 	private void addListeners() {

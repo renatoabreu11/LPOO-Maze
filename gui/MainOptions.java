@@ -69,7 +69,6 @@ public class MainOptions extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);		
 		g.drawImage(background, 0, 0, 1920, 1000, null);
-
 	}
 
 	public JButton getBtnOptions() {
