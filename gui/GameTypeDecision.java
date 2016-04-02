@@ -151,6 +151,19 @@ public class GameTypeDecision extends JPanel {
 	
 	public void addListeners()
 	{	
+		btnRandomMaze.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainPanel.remove(game);
+				Maze maze = new Maze(options.getHorizontalSize(), options.getVerticalSize());
+				game = new GameConstructor(options, mainPanel, maze);
+				mainPanel.add(game, "Game");
+				CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+				cardLayout.show(mainPanel, "Game");
+				game.requestFocusInWindow();
+			}
+		});
+		
 		btnLoadMaze.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

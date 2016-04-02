@@ -29,16 +29,12 @@ import java.awt.event.KeyAdapter;
 public class GameConstructor extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private Sprite hero = new Sprite(); 
 	private Sprite dragon = new Sprite();
-	private Sprite heroWithSword = new Sprite();
 	private BufferedImage wall, sword;
-
 	private Timer myTimer;
 	private Game game;
 	private int size, numDragons, dragonType;
 	private JPanel mainPanel;
-	private JOptionPane message;
-	
-	private ArrayList<BufferedImage> s;
+	private long startedTime;
 
 	/***
 	 * Default constructor
@@ -65,9 +61,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 
-		fillSprites(hero, "hero", 2, 2, 2, 2);
-		fillSprites(dragon, "dragon", 2, 2, 2, 2);
-		fillSprites(heroWithSword, "heroWithSword", 2, 2, 2, 2);
+		fillSprites(hero, "hero", 8);
+		fillSprites(dragon, "dragon", 6);
 
 		try {
 			wall = ImageIO.read(new File("wall (" + wallNumber + ").png"));
@@ -81,6 +76,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		game = new Game();
 		game.SetObjects(dragonType, size, numDragons);
+		
+		startedTime = System.currentTimeMillis();
 	}
 	
 	/***
@@ -99,20 +96,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		this.addMouseListener(this);
 		this.addKeyListener(this);
-
-//		SpriteSheetLoader spri = null;
-//		try {
-//			spri = new SpriteSheetLoader("hero.jpg", 1, 1, 15, 25);
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
-//		
-//		s = spri.getSprites();
 		
-		
-		fillSprites(hero, "hero", 2, 2, 2, 2);
-		fillSprites(dragon, "dragon", 2, 2, 2, 2);
-		fillSprites(heroWithSword, "heroWithSword", 2, 2, 2, 2);
+		fillSprites(hero, "hero", 8);
+		fillSprites(dragon, "dragon", 6);
 
 		try {
 			wall = ImageIO.read(new File("wall (" + wallNumber + ").png"));
@@ -126,39 +112,64 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		game = new Game();
 		game.SetObjects(dragonType, size, numDragons, maze);
+		
+		startedTime = System.currentTimeMillis();
 	}
 
 	/***
 	 * Fills sprites
 	 */
-	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
-		try {
-			for (int i = 0; i < numUp; i++)
-				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png"))); 
-
-			for (int i = numUp; i < numUp + numDown; i++)
+	void fillSprites(Sprite sprite, String name, int num) {
+		
+		try{
+			for(int i = 0; i < num; i++)
+				sprite.upSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
+			for (int i = num; i < num * 2; i++)
 				sprite.downSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-
-			for (int i = numUp + numDown; i < numUp + numDown + numLeft; i++)
+			for (int i = num * 2; i < num * 3; i++)
 				sprite.leftSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-
-			for (int i = numUp + numDown + numLeft; i < numUp + numDown + numLeft + numRight; i++)
+			for (int i = num * 3; i < num * 4; i++)
 				sprite.rightSprites.add(ImageIO.read(new File(name + " (" + (i + 1) + ").png")));
-		} catch (IOException e) {
+			
+			if(name.equals("dragon"))
+				for (int i = 0; i < 4; i++)
+					sprite.sleepSprites.add(ImageIO.read(new File("dragonSleeping (" + (i + 1) + ").png")));
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 
 		sprite.alternate = 0;
-		sprite.facingUp = false; 
-		sprite.facingDown = true;
+		sprite.facingUp = true; 
+		sprite.facingDown = false;
 		sprite.facingLeft = false;
-		sprite.facingRight = false;
+		sprite.facingRight = false;		
 	}
 	
 	/***
 	 * Called when something changes in the display and it needs to update the output generated.
 	 */
 	public void imageAnimationStep() {
+		
+		long elapsedTimeMillis = System.currentTimeMillis() - startedTime;
+		float elapsedTimeSec = elapsedTimeMillis/1000F;
+		
+		if(!game.GetGameOver())
+			if(elapsedTimeSec >= 0.1)
+			{
+				if(hero.alternate >= 8)
+					hero.alternate = 0;
+				else
+					hero.alternate++;
+			
+				if(!game.getDragon().getDragonState().equals(DragonState.sleeping))
+					if(dragon.alternate >= 6)
+						dragon.alternate = 0;
+					else
+						dragon.alternate++;
+			
+				startedTime = System.currentTimeMillis();
+			}
+		
 		repaint();
 	}
 
@@ -177,6 +188,18 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			g.drawImage(sprite.rightSprites.get(sprite.alternate), j * 20, i * 20, 20, 20, null);
 	}
 	
+	void drawFacingDirection(Sprite sprite, String name, Graphics g, int i, int j)
+	{	
+		if (sprite.facingUp)
+			g.drawImage(sprite.sleepSprites.get(0), j * 20, i * 20, 20, 20, null);
+		else if (sprite.facingDown)
+			g.drawImage(sprite.sleepSprites.get(1), j * 20, i * 20, 20, 20, null);
+		else if (sprite.facingLeft)
+			g.drawImage(sprite.sleepSprites.get(2), j * 20, i * 20, 20, 20, null);
+		else if (sprite.facingRight)
+			g.drawImage(sprite.sleepSprites.get(3), j * 20, i * 20, 20, 20, null);
+	}
+	
 	/***
 	 * Draw all the maze components, such as the walls, hero, dragon and sword.
 	 */
@@ -191,15 +214,17 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					g.drawImage(wall, j * 20, i * 20, 20, 20, null);
 				else if (maze[i][j] == 'H') 	//Draw Hero
 					drawFacingDirection(hero, g, i, j);
-					//g.drawImage(s.get(0), j * 20, i * 20, 20, 20, null);
 				else if(maze[i][j] == 'D')		//Draw dragon
+				{
 					drawFacingDirection(dragon, g, i, j);
+					System.out.println("Acordado");
+				}
 				else if (maze[i][j] == 'E') 	//Draw sword
 					g.drawImage(sword, j * 20, i * 20 + 5, 20, 10, null);
 				 else if(maze[i][j] == 'A')		//Draw heroWithSword
-					 drawFacingDirection(heroWithSword, g, i, j);
+					 drawFacingDirection(hero, g, i, j);
 				 else if(maze[i][j] == 'd' || maze[i][j] == 'F')		//Draw dragon sleeping or dragon on top of sword
-					 drawFacingDirection(dragon, g, i, j);
+					 drawFacingDirection(dragon, "dragon", g, i, j);
 			}
 		}
 	}
@@ -209,12 +234,13 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 */
 	void animationHandler(Sprite sprite, String myKey)
 	{
-		if (sprite.alternate == 0)
-			sprite.alternate = 1;
-		else
-			sprite.alternate = 0;
-
-		if (!myKey.equals("")) // hero and heroWithSword handler
+		if(sprite.equals(hero))
+			if(sprite.alternate < 8)
+				sprite.alternate++;
+			else
+				sprite.alternate = 0;
+		
+		if (!myKey.equals("")) // hero
 		{
 			if (myKey.equals("Up")) {
 				sprite.facingUp = true;
@@ -267,12 +293,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				dragon.facingLeft = false;
 				dragon.facingRight = true;
 			}
-			else if (game.getDragon().getMovedTo().equals("Standing")) {
-				if(dragon.alternate == 0)
-					dragon.alternate = 1;
-				else
-					dragon.alternate = 0;
-			}
+			else if(game.getDragon().getDragonState().equals(DragonState.sleeping))
+				dragon.alternate = 0;
 		}
 	}
 
@@ -292,40 +314,28 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				validKeyPressed = true;
 				game.UpdateGame("W");
 			
-				if(game.getHero().getWieldingSword())
-					animationHandler(heroWithSword, "Up");
-				else
-					animationHandler(hero, "Up");
+				animationHandler(hero, "Up");
 				break;
 
 			case KeyEvent.VK_DOWN:
 				validKeyPressed = true;
 				game.UpdateGame("S");
 			
-				if(game.getHero().getWieldingSword())
-					animationHandler(heroWithSword, "Down");
-				else
-					animationHandler(hero, "Down");
+				animationHandler(hero, "Down");
 				break;
 
 			case KeyEvent.VK_LEFT:
 				validKeyPressed = true;
 				game.UpdateGame("A");
 			
-				if(game.getHero().getWieldingSword())
-					animationHandler(heroWithSword, "Left");
-				else
-					animationHandler(hero, "Left");
+				animationHandler(hero, "Left");
 				break;
 
 			case KeyEvent.VK_RIGHT:
 				validKeyPressed = true;
 				game.UpdateGame("D");
 			
-				if(game.getHero().getWieldingSword())
-					animationHandler(heroWithSword, "Right");
-				else
-					animationHandler(hero, "Right");
+				animationHandler(hero, "Right");
 				break;
 		
 			case KeyEvent.VK_ESCAPE:
@@ -340,20 +350,23 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				}
 			}
 		
-	if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
-		animationHandler(dragon, "");
+		if(game.GetGameOver())
+			endGame();
 		
-	if(game.GetGameOver())
+		if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
+			animationHandler(dragon, "");
+	}
+	
+	public void endGame()
 	{
 		if(game.getHero().getIsDead())
-			message.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
+			JOptionPane.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
 		else
-			message.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
+			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
 			
 		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 		cardLayout.show(mainPanel, "Main Options");
 	}
-}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
