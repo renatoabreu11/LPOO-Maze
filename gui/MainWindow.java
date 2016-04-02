@@ -157,5 +157,15 @@ public class MainWindow extends JFrame {
 				game.requestFocusInWindow();
 			}
 		});
+		
+		gameDecision.getBtnStart().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Maze maze = gameDecision.importSelectedMaze();
+				game = new GameConstructor(gameOptions, contentPane, maze);
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "Game");
+				game.requestFocusInWindow();
+			}
+		});
 	}
 }
