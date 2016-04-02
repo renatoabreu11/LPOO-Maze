@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -43,6 +44,7 @@ public class MazeConstructor extends JPanel {
 	private BufferedImage sword;
 	private BufferedImage selected;
 	
+	private int numOfDragons, numOfHeros;
 	private int hSize, vSize;
 	private int x, y;
 	private int mouseX, mouseY;
@@ -57,6 +59,7 @@ public class MazeConstructor extends JPanel {
 	private JButton btnExitConstructor;
 	private JButton btnSaveMaze;
 	private JButton btnResize;
+	private JButton btnClean;
 	
 	public MazeConstructor()
 	{
@@ -79,12 +82,16 @@ public class MazeConstructor extends JPanel {
 		textFieldVerticalSize.setBounds(140, 30, 100, 20);
 		add(textFieldVerticalSize);
 
-		hSize = 11;
-		vSize = 11;
+		hSize = 11; vSize = 11;
+		numOfDragons = 0; numOfHeros = 0;
 		
 		btnResize = new JButton("Resize");
-		btnResize.setBounds(320, 20, 100, 20);
+		btnResize.setBounds(320, 10, 100, 20);
 		add(btnResize);
+		
+		btnClean = new JButton("Clean");
+		btnClean.setBounds(320, 30, 100, 20);
+		add(btnClean);
 		
 		lblObjects = new JLabel("Objects");
 		lblObjects.setBounds(600, 10, 100, 20);
@@ -161,19 +168,24 @@ public class MazeConstructor extends JPanel {
 				mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
 			
 				if(vSize != mazeVerticalSize || hSize != mazeHorizontalSize){
-					for (int i = 0; i < vSize; i++){
-						Coordinates c1 = new Coordinates(0, i);
-						maze.entrySet().removeIf(entry -> entry.getKey().equals(c1));
-						Coordinates c2 = new Coordinates(hSize - 1, i);
-						maze.entrySet().removeIf(entry -> entry.getKey().equals(c2));
-					}
+					for (int i = 0; i < vSize; i++)
+						for (int j = 0; j < hSize; j++) {
+							if (i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1) {
+								Coordinates c = new Coordinates(j, i);
+								maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
+							}
+							
+							if (j >= mazeHorizontalSize) {
+								Coordinates c = new Coordinates(j, i);
+								maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
+							}
+							
+							if (i >= mazeVerticalSize) {
+								Coordinates c = new Coordinates(j, i);
+								maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
+							}
+						}
 					
-					for (int i = 0; i < hSize; i++){
-						Coordinates c1 = new Coordinates(i, 0);
-						maze.entrySet().removeIf(entry -> entry.getKey().equals(c1));
-						Coordinates c2 = new Coordinates(i, vSize - 1);
-						maze.entrySet().removeIf(entry -> entry.getKey().equals(c2));
-					}
 					
 					hSize = mazeHorizontalSize;
 					vSize = mazeVerticalSize;
@@ -182,6 +194,7 @@ public class MazeConstructor extends JPanel {
 						for (int j = 0; j < hSize; j++) {
 							if (i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1) {
 								Coordinates c = new Coordinates(j, i);
+								maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
 								maze.put(c, 'X');
 							}
 						}
@@ -191,48 +204,80 @@ public class MazeConstructor extends JPanel {
 			}
 		});
 		
+		btnClean.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to clean this maze?", null,
+						JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION){
+					maze.clear();
+					numOfHeros = 0;
+					numOfDragons = 0;
+					for (int i = 0; i < vSize; i++)
+						for (int j = 0; j < hSize; j++) {
+							if (i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1) {
+								Coordinates c = new Coordinates(j, i);
+								maze.put(c, 'X');
+							}
+						}
+					
+					repaint();
+				} 
+			}
+		});
+		
 		btnSaveMaze.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				File folder = new File(".");
-				
-				//Searches for the maze files
-				File[] mazeFiles = folder.listFiles(new FilenameFilter() {
-					@Override
-					public boolean accept(File folder, String name)
-					{
-						return name.startsWith("Maze") && name.endsWith(".txt");
-					}
-				});
-				
-				String fileName;
-				if(mazeFiles.length == 0)
-					fileName = "Maze (1).txt";
-				else
-					fileName = "Maze (" + (mazeFiles.length + 1) + ").txt";
-				
-				BufferedWriter writer;
-				try {
-					writer = new BufferedWriter(new FileWriter(".\\" + fileName));
-					writer.write(hSize + " " + vSize + '\n');					
+				if(numOfHeros != 1){
+					JOptionPane.showMessageDialog(new JPanel(), "There needs to be one hero in the maze!");
+				} else if(numOfDragons < 1){
+					JOptionPane.showMessageDialog(new JPanel(),"At least one dragon must be in the maze!");
+				} else if(numOfDragons > ((hSize + vSize) /2) / 3){
+					JOptionPane.showMessageDialog(new JPanel(), "The maximum number of dragons in the maze is " + ((hSize + vSize) /2) / 3);
+				} else {
+					File folder = new File(".");
 					
-					Iterator<Coordinates> it = maze.keySet().iterator(); 
+					//Searches for the maze files
+					File[] mazeFiles = folder.listFiles(new FilenameFilter() {
+						@Override
+						public boolean accept(File folder, String name)
+						{
+							return name.startsWith("Maze") && name.endsWith(".txt");
+						}
+					});
+					
+					String fileName;
+					if(mazeFiles.length == 0)
+						fileName = "Maze (1).txt";
+					else
+						fileName = "Maze (" + (mazeFiles.length + 1) + ").txt";
+					
+					BufferedWriter writer;
+					try {
+						writer = new BufferedWriter(new FileWriter(".\\" + fileName));
+						writer.write(hSize + " " + vSize + '\n');					
+						
+						Iterator<Coordinates> it = maze.keySet().iterator(); 
 
-					while(it.hasNext()){ 
-						Coordinates key = it.next();
-						char symbol = maze.get(key);
-						writer.write(key.getX() + " " + key.getY() + " " + symbol + '\n');					
+						while(it.hasNext()){ 
+							Coordinates key = it.next();
+							char symbol = maze.get(key);
+							if(key.getX() != 0 && key.getX() != hSize -1 && key.getY() != vSize -1 && key.getY() != 0)
+								writer.write(key.getX() + " " + key.getY() + " " + symbol + '\n');					
+						}
+						
+						writer.close();
+						
+						JOptionPane.showMessageDialog(new JPanel(), "Maze saved!");
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
-					
-					writer.close();
-					
-					JOptionPane.showMessageDialog(new JPanel(), "Maze saved!");
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
 				}
 			}
+				
 		});
 
 		addMouseListener(new MouseListener() {
@@ -297,10 +342,14 @@ public class MazeConstructor extends JPanel {
 
 							if (selected.equals(wall))
 								symbol = 'X';
-							else if (selected.equals(hero))
+							else if (selected.equals(hero)){
 								symbol = 'H';
-							else if (selected.equals(dragon))
+								numOfHeros++;
+							}
+							else if (selected.equals(dragon)){
 								symbol = 'D';
+								numOfDragons++;
+							}
 							else if (selected.equals(sword))
 								symbol = 'E';
 							
