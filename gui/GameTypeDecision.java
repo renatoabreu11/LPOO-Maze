@@ -154,7 +154,12 @@ public class GameTypeDecision extends JPanel {
 							//Fills maze with white spaces
 							for(int i = 0; i < maze.getVSize(); i++)
 								for(int j = 0; j < maze.getHSize(); j++)
-									maze.WriteInMaze(new Coordinates(i, j), ' ');
+								{
+									if(i == 0 || i == maze.getVSize() - 1 || j == 0 || j == maze.getHSize() - 1)
+										maze.WriteInMaze(new Coordinates(i, j), 'X');
+									else
+										maze.WriteInMaze(new Coordinates(i, j), ' ');
+								}
 							
 							firstLine = false;
 						}

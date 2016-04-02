@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -36,11 +37,20 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private int size, numDragons, dragonType;
 	private JPanel mainPanel;
 	private JOptionPane message;
+	
+	private ArrayList<BufferedImage> s;
 
+	/***
+	 * Default constructor
+	 */
 	public GameConstructor(){
 		
 	}
 	
+	/***
+	 * Constructor used when the player selects "Random Maze".
+	 * It inicializes variables, !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
 	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
 		
 		this.mainPanel = mainPanel;
@@ -67,12 +77,15 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
-		myTimer.start();
+		myTimer.start();		
 
 		game = new Game();
 		game.SetObjects(dragonType, size, numDragons);
 	}
 	
+	/***
+	 * Constructor used when the player selects "Load Maze"
+	 */
 	public GameConstructor(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
 		
 		this.mainPanel = mainPanel;
@@ -87,6 +100,16 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 
+//		SpriteSheetLoader spri = null;
+//		try {
+//			spri = new SpriteSheetLoader("hero.jpg", 1, 1, 15, 25);
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		
+//		s = spri.getSprites();
+		
+		
 		fillSprites(hero, "hero", 2, 2, 2, 2);
 		fillSprites(dragon, "dragon", 2, 2, 2, 2);
 		fillSprites(heroWithSword, "heroWithSword", 2, 2, 2, 2);
@@ -105,6 +128,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		game.SetObjects(dragonType, size, numDragons, maze);
 	}
 
+	/***
+	 * Fills sprites
+	 */
 	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {
 		try {
 			for (int i = 0; i < numUp; i++)
@@ -129,10 +155,16 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		sprite.facingRight = false;
 	}
 	
+	/***
+	 * Called when something changes in the display and it needs to update the output generated.
+	 */
 	public void imageAnimationStep() {
 		repaint();
 	}
 
+	/***
+	 * Set's the 'sprite' direction to be drew.
+	 */
 	void drawFacingDirection(Sprite sprite, Graphics g, int i, int j)
 	{
 		if (sprite.facingUp)
@@ -145,6 +177,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			g.drawImage(sprite.rightSprites.get(sprite.alternate), j * 20, i * 20, 20, 20, null);
 	}
 	
+	/***
+	 * Draw all the maze components, such as the walls, hero, dragon and sword.
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		char maze[][] = game.getMaze().getMaze();
@@ -156,6 +191,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					g.drawImage(wall, j * 20, i * 20, 20, 20, null);
 				else if (maze[i][j] == 'H') 	//Draw Hero
 					drawFacingDirection(hero, g, i, j);
+					//g.drawImage(s.get(0), j * 20, i * 20, 20, 20, null);
 				else if(maze[i][j] == 'D')		//Draw dragon
 					drawFacingDirection(dragon, g, i, j);
 				else if (maze[i][j] == 'E') 	//Draw sword
@@ -168,6 +204,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 	}
 
+	/***
+	 * Animation handler of the objects that have more than one sprite associated
+	 */
 	void animationHandler(Sprite sprite, String myKey)
 	{
 		if (sprite.alternate == 0)
@@ -237,69 +276,84 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 	}
 
+	/***
+	 * Event that fires every time a key is pressed.
+	 * This function handles 4 different arrow keys: Up, Down, Left and Right.
+	 * Every time one of this 4 keys is pressed, the game updates, and runs the animationHandler function for all the objects.
+	 * It also verifies if the game is over, and if it is, displays a message and return to Main Screen.
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		boolean validKeyPressed = false;
 		
 		if(!game.getHero().getIsDead())
-		{
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			validKeyPressed = true;
-			game.UpdateGame("W");
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				validKeyPressed = true;
+				game.UpdateGame("W");
 			
-			if(game.getHero().getWieldingSword())
-				animationHandler(heroWithSword, "Up");
-			else
-				animationHandler(hero, "Up");
-			break;
+				if(game.getHero().getWieldingSword())
+					animationHandler(heroWithSword, "Up");
+				else
+					animationHandler(hero, "Up");
+				break;
 
-		case KeyEvent.VK_DOWN:
-			validKeyPressed = true;
-			game.UpdateGame("S");
+			case KeyEvent.VK_DOWN:
+				validKeyPressed = true;
+				game.UpdateGame("S");
 			
-			if(game.getHero().getWieldingSword())
-				animationHandler(heroWithSword, "Down");
-			else
-				animationHandler(hero, "Down");
-			break;
+				if(game.getHero().getWieldingSword())
+					animationHandler(heroWithSword, "Down");
+				else
+					animationHandler(hero, "Down");
+				break;
 
-		case KeyEvent.VK_LEFT:
-			validKeyPressed = true;
-			game.UpdateGame("A");
+			case KeyEvent.VK_LEFT:
+				validKeyPressed = true;
+				game.UpdateGame("A");
 			
-			if(game.getHero().getWieldingSword())
-				animationHandler(heroWithSword, "Left");
-			else
-				animationHandler(hero, "Left");
-			break;
+				if(game.getHero().getWieldingSword())
+					animationHandler(heroWithSword, "Left");
+				else
+					animationHandler(hero, "Left");
+				break;
 
-		case KeyEvent.VK_RIGHT:
-			validKeyPressed = true;
-			game.UpdateGame("D");
+			case KeyEvent.VK_RIGHT:
+				validKeyPressed = true;
+				game.UpdateGame("D");
 			
-			if(game.getHero().getWieldingSword())
-				animationHandler(heroWithSword, "Right");
-			else
-				animationHandler(hero, "Right");
-			break;
-		}
-		}
+				if(game.getHero().getWieldingSword())
+					animationHandler(heroWithSword, "Right");
+				else
+					animationHandler(hero, "Right");
+				break;
 		
-		if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
-			animationHandler(dragon, "");
-		
-		if(game.GetGameOver())
-		{
-			if(game.getHero().getIsDead())
-				message.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
-			else
-				message.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
+			case KeyEvent.VK_ESCAPE:
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish to exit the game?", null,
+						JOptionPane.YES_NO_OPTION);
 			
-			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-			cardLayout.show(mainPanel, "Main Options");
-		}
+				if(result == JOptionPane.YES_OPTION)
+				{
+					CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+					cardLayout.show(mainPanel, "Main Options");
+					break;
+				}
+			}
+		
+	if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
+		animationHandler(dragon, "");
+		
+	if(game.GetGameOver())
+	{
+		if(game.getHero().getIsDead())
+			message.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
+		else
+			message.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
+			
+		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+		cardLayout.show(mainPanel, "Main Options");
 	}
+}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {

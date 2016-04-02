@@ -20,29 +20,23 @@ public class MainOptions extends JPanel {
 
 	private JButton btnNewGame;
 	private JButton btnOptions;
-	private JButton btnLoadGame;
 	private JButton btnExitGame; 
-	
 	private JButton btnMazeBuilder;
 	
 	public MainOptions() { 
 		
 		setBtnNewGame(new JButton("New Game"));
 		add(getBtnNewGame());
-		
-		setBtnLoadGame(new JButton("Load Game")); 
-		add(getBtnLoadGame());
 
 		btnExitGame = new JButton("Exit Game");
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		setBtnMazeBuilder(new JButton("Maze Builder"));
+		add(getBtnMazeBuilder());
+		
 		setBtnOptions(new JButton("Options"));
 		add(getBtnOptions());
 		add(btnExitGame);
-		
-		//MAZE
-		setBtnMazeBuilder(new JButton("Maze Builder"));
-		add(getBtnMazeBuilder());
 		
 		addListeners();
 	}
@@ -50,17 +44,13 @@ public class MainOptions extends JPanel {
 	private void addListeners() {
 		btnExitGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish to exit?", null,
+						JOptionPane.YES_NO_OPTION);
+			
+				if(result == JOptionPane.YES_OPTION)
 				System.exit(0);
 			}
 		});
-	}
-
-	public JButton getBtnLoadGame() {
-		return btnLoadGame;
-	}
-
-	public void setBtnLoadGame(JButton btnLoadGame) {
-		this.btnLoadGame = btnLoadGame;
 	}
 
 	public JButton getBtnOptions() {

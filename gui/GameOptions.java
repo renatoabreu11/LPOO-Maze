@@ -35,8 +35,6 @@ public class GameOptions extends JPanel {
 	private JTextField numberOfDragons;
 	private JTextField mazeSize;
 	private JButton btnExit;
-	private JCheckBox randomMaze;
-	private JCheckBox personalizedMaze;
 	
 
 	/**
@@ -79,23 +77,12 @@ public class GameOptions extends JPanel {
 		getBtnExit().setBounds(211, 293, 82, 23);
 		add(getBtnExit());
 		
-		randomMaze = (new JCheckBox("Random maze"));
-		randomMaze.setSelected(true);
-		randomMaze.setHorizontalAlignment(SwingConstants.CENTER);
-		randomMaze.setBounds(93, 198, 125, 43);
-		add(randomMaze);
-		
 		dragonMode = new JComboBox();
 		dragonMode.setBounds(278, 137, 210, 20);
 		add(dragonMode);
 		dragonMode.addItem("Static");
 		dragonMode.addItem("Aleatory movement");
 		dragonMode.addItem("Aleatory movement and sleeping state");
-		
-		personalizedMaze = (new JCheckBox("Personalized maze"));
-		personalizedMaze.setHorizontalAlignment(SwingConstants.CENTER);
-		personalizedMaze.setBounds(316, 196, 172, 47);
-		add(personalizedMaze);
 		
 		addListeners();
 	}
@@ -148,24 +135,6 @@ public class GameOptions extends JPanel {
 					JOptionPane.showMessageDialog(getRootPane(), "Invalid input in the dragons number! Default values restored.");
 					numberOfDragons.setText("1");
 				}
-			}
-		});
-		
-		personalizedMaze.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				personalizedMaze.setSelected(true);
-				randomMaze.setSelected(false);
-			}
-		});
-		
-		randomMaze.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent arg0)
-			{
-				randomMaze.setSelected(true);
-				personalizedMaze.setSelected(false);
 			}
 		});
 	}

@@ -89,10 +89,6 @@ public class MainWindow extends JFrame {
 	}
 
 	private void addListeners(){
-		mainOptions.getBtnLoadGame().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		
 		mainOptions.getBtnOptions().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,22 +127,6 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Main Options");				
-			}
-		});
-		
-		//ESTA FUNCIONALIDADE NAO FINCUINA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		game.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				if (arg0.getKeyCode() == (KeyEvent.VK_ESCAPE)) {
-					int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish to exit the game?", null,
-							JOptionPane.YES_NO_OPTION);
-					
-					if(result == JOptionPane.YES_OPTION){
-						CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-						cardLayout.show(contentPane, "Main Options");
-					} 
-				}
 			}
 		});
 	}
