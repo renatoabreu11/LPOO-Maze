@@ -82,6 +82,7 @@ public class Dragon extends Elements {
 		default:
 			break;
 		}
+		
 		return c;
 	}
 	

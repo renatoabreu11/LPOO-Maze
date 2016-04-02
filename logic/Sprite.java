@@ -9,6 +9,8 @@ public class Sprite {
 	public ArrayList<BufferedImage> downSprites = new ArrayList<BufferedImage>();
 	public ArrayList<BufferedImage> leftSprites = new ArrayList<BufferedImage>();
 	public ArrayList<BufferedImage> rightSprites = new ArrayList<BufferedImage>();
+	public ArrayList<BufferedImage> sleepSprites = new ArrayList<BufferedImage>();
+
 	public int alternate;
-	public boolean facingUp, facingDown, facingLeft, facingRight;
+	public boolean facingUp, facingDown, facingLeft, facingRight;	
 }
