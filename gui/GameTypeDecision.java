@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 
 import maze.logic.Coordinates;
 import maze.logic.Maze;
+
+import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
@@ -114,6 +116,8 @@ public class GameTypeDecision extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		repaint();
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -260,6 +264,22 @@ public class GameTypeDecision extends JPanel {
 			mazeList.addItem("Maze (" + numOfMazes + ")");	
 			numOfMazes++;
 		}
+	}
+	
+	public void refresh()
+	{
+		maze = null;
+		lblMessage.setVisible(true);
+		lblSelectMaze.setVisible(false);
+		btnRandomMaze.setVisible(true);
+		btnLoadMaze.setVisible(true);
+		getBtnStart().setVisible(false);
+		btnVisualize.setVisible(false);
+		btnBack.setVisible(false);
+		btnReturn.setVisible(false);
+		mazeList.setVisible(false);
+		
+		repaint();
 	}
 	
 	public JButton getBtnRandomMaze() {

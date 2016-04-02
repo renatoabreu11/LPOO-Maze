@@ -92,6 +92,7 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game Type Decision");
+				gameDecision.refresh();
 			}
 		});
 		
