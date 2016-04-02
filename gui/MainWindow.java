@@ -17,7 +17,6 @@ public class MainWindow extends JFrame {
 	private MazeConstructor builder;
 	private GameTypeDecision gameDecision;
 	private JPanel contentPane;
-	private static BufferedImage background;
 
 	/**
 	 * Launch the application.
@@ -122,6 +121,9 @@ public class MainWindow extends JFrame {
 		gameDecision.getBtnRandomMaze().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				contentPane.remove(game);
+				game = new GameConstructor();
+				contentPane.add(game, "Game");
 				game.setRandomGame(gameOptions, contentPane);
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
@@ -130,7 +132,10 @@ public class MainWindow extends JFrame {
 		});
 		
 		gameDecision.getBtnStart().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {				
+				contentPane.remove(game);
+				game = new GameConstructor();
+				contentPane.add(game, "Game");				
 				Maze maze = gameDecision.importSelectedMaze();
 				game.setPersonalizedGame(gameOptions, contentPane, maze);
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
