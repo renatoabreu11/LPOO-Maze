@@ -121,7 +121,7 @@ public class Source {
 				numberOfDragons = GameModeSelector(2);
 
 				Game game = new Game();
-				game.SetObjects(dragonMode, mazeSize, numberOfDragons);
+				game.SetObjects(dragonMode, mazeSize, mazeSize, numberOfDragons);
 				DisplayMessageInstructions();
 
 				while (!game.GetGameOver()) {

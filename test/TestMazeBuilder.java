@@ -133,7 +133,7 @@ public class TestMazeBuilder {
 			int size = maxMazeSize == minMazeSize? minMazeSize : minMazeSize + 2 * rand.nextInt((maxMazeSize - minMazeSize)/2);
 			
 			Game g = new Game();
-			g.SetObjects(1, size, 1);
+			g.SetObjects(1, size, size, 1);
 			Maze m = g.getMaze();
 			m.GenerateExitPosition();
 			char[][] mazeChar = m.getMaze();

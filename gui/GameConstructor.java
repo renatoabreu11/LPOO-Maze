@@ -10,7 +10,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -32,7 +31,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private BufferedImage wall, sword;
 	private Timer myTimer;
 	private Game game;
-	private int size, numDragons, dragonType;
+	private int horizontalSize, numDragons, dragonType, verticalSize;
 	private JPanel mainPanel;
 	private long startedTime;
 
@@ -40,19 +39,20 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 * Default constructor
 	 */
 	public GameConstructor(){
-		
 	}
 	
 	/***
-	 * Constructor used when the player selects "Random Maze".
-	 * It inicializes variables, !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 *  used when the player selects "Random Maze".
 	 */
-	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
-		
+	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel) {
 		this.mainPanel = mainPanel;
-		size = gameOptions.getHorizontalSize();
+		horizontalSize = gameOptions.getHorizontalSize();
+		verticalSize = gameOptions.getVerticalSize();
 		numDragons = gameOptions.getNumberOfDragons();
 		dragonType = gameOptions.getDragonBehavior();
+		
+		game = new Game();
+		game.SetObjects(dragonType, horizontalSize, verticalSize, numDragons);
 		
 		Random r = new Random();
 		int swordNumber = r.nextInt(141) + 1;
@@ -73,22 +73,23 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
 		myTimer.start();		
-
-		game = new Game();
-		game.SetObjects(dragonType, size, numDragons);
 		
 		startedTime = System.currentTimeMillis();
 	}
 	
 	/***
-	 * Constructor used when the player selects "Load Maze"
+	 * used when the player selects "Load Maze"
 	 */
-	public GameConstructor(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
+	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
 		
 		this.mainPanel = mainPanel;
-		size = gameOptions.getHorizontalSize();
+		horizontalSize = gameOptions.getHorizontalSize();
+		verticalSize = gameOptions.getVerticalSize();
 		numDragons = gameOptions.getNumberOfDragons();
 		dragonType = gameOptions.getDragonBehavior();
+		
+		game = new Game();
+		game.SetMaze(maze);
 		
 		Random r = new Random();
 		int swordNumber = r.nextInt(141) + 1;
@@ -109,9 +110,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
 		myTimer.start();
-
-		game = new Game();
-		game.SetObjects(dragonType, size, numDragons, maze);
 		
 		startedTime = System.currentTimeMillis();
 	}
@@ -205,26 +203,29 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		char maze[][] = game.getMaze().getMaze();
+		if(game != null){
+			Maze maze = game.getMaze();
+			int hSize = maze.getHSize();
+			int vSize = maze.getVSize();
 
-		for (int i = 0; i < game.getMaze().getVSize(); i++) {
-			for (int j = 0; j < game.getMaze().getHSize(); j++) {
-				
-				if (maze[i][j] == 'X') 			//Draw wall
-					g.drawImage(wall, j * 20, i * 20, 20, 20, null);
-				else if (maze[i][j] == 'H') 	//Draw Hero
-					drawFacingDirection(hero, g, i, j);
-				else if(maze[i][j] == 'D')		//Draw dragon
-				{
-					drawFacingDirection(dragon, g, i, j);
-					System.out.println("Acordado");
+			for (int i = 0; i < vSize; i++) {
+				for (int j = 0; j < hSize; j++) {
+
+					if (maze.ReadInMaze(j, i) == 'X') // Draw wall
+						g.drawImage(wall, j * 20, i * 20, 20, 20, null);
+					else if (maze.ReadInMaze(j, i) == 'H') // Draw Hero
+						drawFacingDirection(hero, g, i, j);
+					else if (maze.ReadInMaze(j, i) == 'D') // Draw dragon
+					{
+						drawFacingDirection(dragon, g, i, j);
+						System.out.println("Acordado");
+					} else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
+						g.drawImage(sword, j * 20, i * 20 + 5, 20, 10, null);
+					else if (maze.ReadInMaze(j, i) == 'A') // Draw heroWithSword
+						drawFacingDirection(hero, g, i, j);
+					 else if(maze.ReadInMaze(j, i) == 'd' || maze.ReadInMaze(j, i) == 'F')		//Draw dragon sleeping or dragon on top of sword
+						 drawFacingDirection(dragon, "dragon", g, i, j);
 				}
-				else if (maze[i][j] == 'E') 	//Draw sword
-					g.drawImage(sword, j * 20, i * 20 + 5, 20, 10, null);
-				 else if(maze[i][j] == 'A')		//Draw heroWithSword
-					 drawFacingDirection(hero, g, i, j);
-				 else if(maze[i][j] == 'd' || maze[i][j] == 'F')		//Draw dragon sleeping or dragon on top of sword
-					 drawFacingDirection(dragon, "dragon", g, i, j);
 			}
 		}
 	}

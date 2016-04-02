@@ -36,10 +36,10 @@ public class Game {
 		}
 	}
 
-	public void SetObjects(int dragonMode, int size, int numberOfDragons) {
+	public void SetObjects(int dragonMode, int horizontalSize, int verticalSize, int numberOfDragons) {
 		this.dragonMode = dragonMode;
-
-		maze = new Maze(size, size);
+		
+		maze = new Maze(horizontalSize, verticalSize);
 		hero = new Hero(maze.GeneratePosition(0));
 		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		sword = new Sword(maze.GeneratePosition(0));
@@ -53,21 +53,22 @@ public class Game {
 		}
 	}
 	
-	public void SetObjects(int dragonMode, int size, int numberOfDragons, Maze maze) {
-		this.dragonMode = dragonMode;
-
+	public void SetMaze(Maze maze) {
 		this.maze = maze;
-		hero = new Hero(maze.GeneratePosition(0));
-		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
-		sword = new Sword(maze.GeneratePosition(0));
-		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
-
+		this.dragonMode = 3;
 		Dragons = new Vector<Dragon>();
 
-		for (int i = 0; i < numberOfDragons; i++) {
-			Dragons.addElement(new Dragon(maze.GeneratePosition(1), DragonState.standing));
-			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
-		}
+		for(int i = 0; i < maze.getVSize(); i++)
+			for(int j = 0; j < maze.getHSize(); j++){
+				if(maze.ReadInMaze(j, i) == 'H'){
+					hero = new Hero(new Coordinates(j, i));
+				} else if(maze.ReadInMaze(j, i) == 'D'){
+					Dragons.addElement( new Dragon((new Coordinates(j, i)), DragonState.standing));
+				} else if(maze.ReadInMaze(j, i) == 'E'){
+					sword = new Sword(new Coordinates(j, i));
+				}
+			}
+		
 	}
 	
 	public void UpdateGame(String movement) {
@@ -215,7 +216,7 @@ public class Game {
 	}
 
 	public Maze getMaze() {
-		return maze;
+		return this.maze;
 	}
 	
 	public boolean checkDragonsDead() {

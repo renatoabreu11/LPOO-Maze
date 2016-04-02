@@ -1,6 +1,5 @@
 package maze.gui;
 
-import java.awt.CardLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -10,12 +9,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import maze.logic.Coordinates;
@@ -40,20 +37,13 @@ public class GameTypeDecision extends JPanel {
 	private JButton btnVisualize;
 	private JButton btnBack;
 	private JLabel lblMessage;
-	private JPanel mainPanel;
-	private GameConstructor game;
-	private GameOptions options;
 	private BufferedImage background;
 	private Maze maze;
 	
 	/**
 	 * Create the panel.
 	 */
-	public GameTypeDecision(JPanel mainPanel, GameConstructor game, GameOptions options) {
-		
-		this.mainPanel = mainPanel;
-		this.game = game;
-		this.options = options;
+	public GameTypeDecision() {
 		maze = null;
 		
 		setLayout(null);
@@ -126,10 +116,6 @@ public class GameTypeDecision extends JPanel {
 		}
 	}
 	
-	public void setOptions(GameOptions options){
-		this.options = options;
-	}
-	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (maze != null) {
@@ -151,19 +137,6 @@ public class GameTypeDecision extends JPanel {
 	
 	public void addListeners()
 	{	
-		btnRandomMaze.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainPanel.remove(game);
-				Maze maze = new Maze(options.getHorizontalSize(), options.getVerticalSize());
-				game = new GameConstructor(options, mainPanel, maze);
-				mainPanel.add(game, "Game");
-				CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-				cardLayout.show(mainPanel, "Game");
-				game.requestFocusInWindow();
-			}
-		});
-		
 		btnLoadMaze.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

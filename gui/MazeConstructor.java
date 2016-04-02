@@ -36,7 +36,6 @@ public class MazeConstructor extends JPanel {
 	
 	private int numOfDragons, numOfHeros, numOfSwords;
 	private int hSize, vSize;
-	private int x, y;
 	private int mouseX, mouseY;
 	private HashMap<Coordinates, Character> maze;
 	
