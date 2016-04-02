@@ -116,10 +116,14 @@ public class GameOptions extends JPanel {
 				try{
 					size = Integer.parseInt(mazeHorizontalSize.getText());
 					
-					if(size < 7 || size > 31)
+					if(size < 7 || size > width/ 20)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The labirinth needs to be at least 7 and no more than " + (width / 2 ) + "!");
+						JOptionPane.showMessageDialog(getRootPane(), "The labirinth needs to be at least 7 and no more than " + (width) / 20  + "!");
 						mazeHorizontalSize.setText("11");
+					} else if(size % 2 == 0){
+						JOptionPane.showMessageDialog(getRootPane(), "The horizontal labirinth size needs to be an odd number!");
+						size--;
+						mazeHorizontalSize.setText(Integer.toString(size));
 					}
 					
 				}catch(NumberFormatException ex){
@@ -135,10 +139,14 @@ public class GameOptions extends JPanel {
 				int size;
 				try {
 					size = Integer.parseInt(mazeVerticalSize.getText());
-					if (size < 7 || size > 31) {
+					if (size < 7 || size > height / 20) {
 						JOptionPane.showMessageDialog(getRootPane(),
-								"The vertical labirinth size needs to be at least 7 and no more than " + (height / 2 ) + "!");
+								"The vertical labirinth size needs to be at least 7 and no more than " + (height) / 20 + "!");
 						mazeVerticalSize.setText("11");
+					}else if(size % 2 == 0){
+						JOptionPane.showMessageDialog(getRootPane(), "The vertical labirinth size needs to be an odd number!");
+						size--;
+						mazeVerticalSize.setText(Integer.toString(size));
 					}
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(getRootPane(),
