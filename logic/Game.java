@@ -53,6 +53,23 @@ public class Game {
 		}
 	}
 	
+	public void SetObjects(int dragonMode, int size, int numberOfDragons, Maze maze) {
+		this.dragonMode = dragonMode;
+
+		this.maze = maze;
+		hero = new Hero(maze.GeneratePosition(0));
+		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
+		sword = new Sword(maze.GeneratePosition(0));
+		maze.WriteInMaze(sword.getCoordinates(), sword.getName());
+
+		Dragons = new Vector<Dragon>();
+
+		for (int i = 0; i < numberOfDragons; i++) {
+			Dragons.addElement(new Dragon(maze.GeneratePosition(1), DragonState.standing));
+			maze.WriteInMaze(Dragons.elementAt(i).getCoordinates(), Dragons.elementAt(i).getName());
+		}
+	}
+	
 	public void UpdateGame(String movement) {
 		UpdateHero(hero, movement);
 

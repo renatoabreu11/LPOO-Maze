@@ -5,11 +5,15 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -106,15 +110,14 @@ public class MazeConstructor extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
-
+		
 		maze = new HashMap<Coordinates, Character>();
 		
 		for(int i = 0; i < vSize; i++)
-			for(int j = 0; j < hSize; j++){
+			for(int j = 0; j < hSize; j++)
 				if(i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1){
 					Coordinates c = new Coordinates(j, i);
 					maze.put(c, 'X');
-				}
 			}
 		
 		addListeners();
@@ -183,6 +186,33 @@ public class MazeConstructor extends JPanel {
 						}
 					
 					repaint();
+				}
+			}
+		});
+		
+		btnSaveMaze.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				BufferedWriter writer;
+				try {
+					writer = new BufferedWriter(new FileWriter(".\\maze.txt"));
+					writer.write(hSize + " " + vSize + '\n');					
+					
+					Iterator<Coordinates> it = maze.keySet().iterator(); 
+
+					while(it.hasNext()){ 
+						Coordinates key = it.next();
+						char symbol = maze.get(key);
+						writer.write(key.getX() + " " + key.getY() + " " + symbol + '\n');					
+					}
+					
+					writer.close();
+					
+					JOptionPane.showMessageDialog(new JPanel(), "Maze saved!");
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -291,6 +321,8 @@ public class MazeConstructor extends JPanel {
 				g.drawImage(sword, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
 			else if(symbol == 'D')
 				g.drawImage(dragon, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+			
+			//DRAGAO ADORMECE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		
 		g.drawImage(wall, 500, 30, 20, 20, null);

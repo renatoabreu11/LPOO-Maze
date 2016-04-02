@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import maze.logic.Game;
+import maze.logic.Maze;
 import maze.logic.Sprite;
 import maze.logic.Dragon.DragonState;
 
@@ -40,7 +41,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 	}
 	
-	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
+	public GameConstructor(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
 		
 		this.mainPanel = mainPanel;
 		size = gameOptions.getMazeSize();
@@ -69,7 +70,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		myTimer.start();
 
 		game = new Game();
-		game.SetObjects(dragonType, size, numDragons);
+		game.SetObjects(dragonType, size, numDragons, maze);
 	}
 
 	void fillSprites(Sprite sprite, String name, int numUp, int numDown, int numLeft, int numRight) {

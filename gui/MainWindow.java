@@ -24,6 +24,7 @@ public class MainWindow extends JFrame {
 	private GameOptions gameOptions;
 	private GameConstructor game;
 	private MazeConstructor builder;
+	private GameTypeDecision gameDecision;
 	private JPanel contentPane;
 
 	/**
@@ -72,10 +73,14 @@ public class MainWindow extends JFrame {
 		builder = new MazeConstructor();
 		builder.setVisible(true);
 		
+		gameDecision = new GameTypeDecision();
+		gameDecision.setVisible(true);
+		
 		contentPane.add(gameOptions, "Game Options");
 		contentPane.add(mainOptions, "Main Options");
 		contentPane.add(game, "Game");
 		contentPane.add(builder, "Maze builder");
+		contentPane.add(gameDecision, "Game Type Decision");
 	
 		addListeners();
 		
@@ -98,12 +103,11 @@ public class MainWindow extends JFrame {
 		
 		mainOptions.getBtnNewGame().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane.remove(game);
-				game = new GameConstructor(gameOptions, contentPane);
-				contentPane.add(game, "Game");
+				
+				gameDecision = new GameTypeDecision(contentPane, game, gameOptions);
+				contentPane.add(gameDecision, "Game Type Decision");
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "Game");
-				game.requestFocusInWindow();
+				cardLayout.show(contentPane, "Game Type Decision");
 			}
 		});
 		
@@ -118,14 +122,9 @@ public class MainWindow extends JFrame {
 		
 		gameOptions.getBtnExit().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish to exit the options menu?", null,
-						JOptionPane.YES_NO_OPTION);
-				
-				if(result == JOptionPane.YES_OPTION){
-					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-					cardLayout.show(contentPane, "Main Options");
-				} 
-			}
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "Main Options");
+			} 
 		});
 		
 		game.addKeyListener(new KeyAdapter() {

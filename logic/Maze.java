@@ -28,6 +28,23 @@ public class Maze
 			{'X', 'X', 'X', 'X', 'X'}};
 	}
 	
+	public Maze(int hSize, int vSize)
+	{
+		this.hSize = hSize;
+		this.vSize = vSize;
+		maze = new char[vSize][hSize];
+	}
+	
+	public int getHSize()
+	{
+		return this.hSize;
+	}
+	
+	public int getVSize()
+	{
+		return this.vSize;
+	}
+	
 	public void WriteInMaze(Coordinates c, char name)
 	{
 		maze[c.getY()][c.getX()] = name;
