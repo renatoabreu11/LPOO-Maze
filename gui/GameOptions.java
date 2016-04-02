@@ -43,47 +43,47 @@ public class GameOptions extends JPanel {
 		lblMazeHorizontalSize = new JLabel("Maze horizontal size");
 		lblMazeHorizontalSize.setForeground(Color.WHITE);
 		lblMazeHorizontalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
-		lblMazeHorizontalSize.setBounds(width/2 - 200, height/2 - 400, 200, 40);
+		lblMazeHorizontalSize.setBounds(width/2 - 200, height/2 - 300, 200, 40);
 		add(lblMazeHorizontalSize);
 		
 		mazeHorizontalSize = new JTextField("11", 10);
-		mazeHorizontalSize.setBounds(width/2 + 50, height/2 - 400, 100, 40);
+		mazeHorizontalSize.setBounds(width/2 + 50, height/2 - 300, 100, 40);
 		add(mazeHorizontalSize);
 		
 		lblMazeVerticalSize = new JLabel("Maze vertical size");
 		lblMazeVerticalSize.setForeground(Color.WHITE);
 		lblMazeVerticalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
-		lblMazeVerticalSize.setBounds(width/2 - 200, height/2 - 300, 200, 40);
+		lblMazeVerticalSize.setBounds(width/2 - 200, height/2 - 200, 200, 40);
 		add(lblMazeVerticalSize);
 		
 		mazeVerticalSize = new JTextField("11", 10);
-		mazeVerticalSize.setBounds(width/2 + 50, height/2 - 300, 100, 40);
+		mazeVerticalSize.setBounds(width/2 + 50, height/2 - 200, 100, 40);
 		add(mazeVerticalSize);
 		
 		lblNumberOfDragons = new JLabel("Number of dragons");
 		lblNumberOfDragons.setForeground(Color.WHITE);
 		lblNumberOfDragons.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
-		lblNumberOfDragons.setBounds(width/2 - 200, height/2 - 200, 200, 40);
+		lblNumberOfDragons.setBounds(width/2 - 200, height/2 - 100, 200, 40);
 		add(lblNumberOfDragons);
 		
 		numberOfDragons = new JTextField("1", 10);
-		numberOfDragons.setBounds(width/2 + 50, height/2 - 200, 100, 40);
+		numberOfDragons.setBounds(width/2 + 50, height/2 - 100, 100, 40);
 		add(numberOfDragons);
 		
 		lblDragonType = new JLabel("Dragon type");
 		lblDragonType.setForeground(Color.WHITE);
 		lblDragonType.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
-		lblDragonType.setBounds(width/2 - 225, height/2 - 100, 150, 40);
+		lblDragonType.setBounds(width/2 - 225, height/2 , 150, 40);
 		add(lblDragonType);
 		
 		btnExit = (new JButton("Exit"));
 		btnExit.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
-		getBtnExit().setBounds(width/2 - 100, height/2, 200, 40);
+		getBtnExit().setBounds(width/2 - 100, height/2 + 100, 200, 40);
 		add(getBtnExit());
 		
 		dragonMode = new JComboBox<String>();
 		dragonMode.setFont(new Font("Monotype Corsiva", Font.PLAIN, 15));
-		dragonMode.setBounds(width/2 - 75, height/2 - 100, 250, 40);
+		dragonMode.setBounds(width/2 - 75, height/2 , 250, 40);
 		add(dragonMode);
 		dragonMode.addItem("Static");
 		dragonMode.addItem("Aleatory movement");

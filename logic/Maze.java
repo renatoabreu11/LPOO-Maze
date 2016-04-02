@@ -13,7 +13,7 @@ public class Maze
 	public Maze(int hSize, int vSize)
 	{
 		MazeBuilder mazebuilder = new MazeBuilder();
-		maze = mazebuilder.buildMaze(hSize, vSize);
+		maze = mazebuilder.buildMaze(vSize, hSize);
 		this.hSize = hSize;
 		this.vSize = vSize;
 	}

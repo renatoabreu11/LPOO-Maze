@@ -17,9 +17,9 @@ public class MazeBuilder {
 		for (int i = 0; i < vSize; i++)
 			for (int j = 0; j < hSize; j++){
 				if(j == 0 || j == hSize -1 || i == vSize - 1 || i == 0)
-					this.maze[i][j] = 'X';
+					this.maze[j][i] = 'X';
 				else if(i % 2 == 0 || j % 2 ==0 )
-					this.maze[i][j] = 'X';
+					this.maze[j][i] = 'X';
 			}
 		
 		int x;
