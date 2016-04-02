@@ -1,39 +1,28 @@
 package maze.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
+
+import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
+import java.awt.Font;
 
 public class GameOptions extends JPanel {
 	
-	private JLabel lblMazeSize;
+	private JLabel lblMazeHorizontalSize;
+	private JLabel lblMazeVerticalSize;
 	private JLabel lblNumberOfDragons;
 	private JLabel lblDragonType;
 	private JComboBox dragonMode;
 	private JTextField numberOfDragons;
-	private JTextField mazeSize;
+	private JTextField mazeHorizontalSize;
+	private JTextField mazeVerticalSize;
 	private JButton btnExit;
 	
 
@@ -41,44 +30,51 @@ public class GameOptions extends JPanel {
 	 * Create the frame.
 	 */
 	public GameOptions() {
-		setBounds(100, 100, 543, 391);
+		setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		int width = getWidth();
+		int height = getHeight();
 		setLayout(null);
 		
-		lblMazeSize = new JLabel("Maze size");
-		lblMazeSize.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMazeSize.setBounds(111, 31, 69, 17);
-		add(lblMazeSize);
+		lblMazeHorizontalSize = new JLabel("Maze horizontal size");
+		lblMazeHorizontalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
+		lblMazeHorizontalSize.setBounds(width/2 - 200, height/2 - 400, 200, 40);
+		add(lblMazeHorizontalSize);
 		
-		mazeSize = new JTextField();
-		mazeSize.setHorizontalAlignment(SwingConstants.CENTER);
-		mazeSize.setBounds(364, 29, 86, 20);
-		mazeSize.setText("11");
-		add(mazeSize);
-		mazeSize.setColumns(10);
+		mazeHorizontalSize = new JTextField("11", 10);
+		mazeHorizontalSize.setBounds(width/2 + 50, height/2 - 400, 100, 40);
+		add(mazeHorizontalSize);
+		
+		lblMazeVerticalSize = new JLabel("Maze vertical size");
+		lblMazeVerticalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
+		lblMazeVerticalSize.setBounds(width/2 - 200, height/2 - 300, 200, 40);
+		add(lblMazeVerticalSize);
+		
+		mazeVerticalSize = new JTextField("11", 10);
+		mazeVerticalSize.setBounds(width/2 + 50, height/2 - 300, 100, 40);
+		add(mazeVerticalSize);
 		
 		lblNumberOfDragons = new JLabel("Number of dragons");
-		lblNumberOfDragons.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNumberOfDragons.setBounds(93, 85, 103, 17);
+		lblNumberOfDragons.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
+		lblNumberOfDragons.setBounds(width/2 - 200, height/2 - 200, 200, 40);
 		add(lblNumberOfDragons);
 		
-		numberOfDragons = new JTextField();
-		numberOfDragons.setHorizontalAlignment(SwingConstants.CENTER);
-		numberOfDragons.setBounds(364, 83, 86, 20);
-		numberOfDragons.setText("1");
+		numberOfDragons = new JTextField("1", 10);
+		numberOfDragons.setBounds(width/2 + 50, height/2 - 200, 100, 40);
 		add(numberOfDragons);
-		numberOfDragons.setColumns(10);
 		
 		lblDragonType = new JLabel("Dragon type");
-		lblDragonType.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDragonType.setBounds(93, 132, 105, 31);
+		lblDragonType.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+		lblDragonType.setBounds(width/2 - 225, height/2 - 100, 150, 40);
 		add(lblDragonType);
 		
 		btnExit = (new JButton("Exit"));
-		getBtnExit().setBounds(211, 293, 82, 23);
+		btnExit.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
+		getBtnExit().setBounds(width/2 - 100, height/2, 200, 40);
 		add(getBtnExit());
 		
 		dragonMode = new JComboBox();
-		dragonMode.setBounds(278, 137, 210, 20);
+		dragonMode.setFont(new Font("Monotype Corsiva", Font.PLAIN, 15));
+		dragonMode.setBounds(width/2 - 75, height/2 - 100, 250, 40);
 		add(dragonMode);
 		dragonMode.addItem("Static");
 		dragonMode.addItem("Aleatory movement");
@@ -89,23 +85,23 @@ public class GameOptions extends JPanel {
 	
 	private void addListeners() {
 		
-		mazeSize.addFocusListener(new FocusAdapter() {
+		mazeHorizontalSize.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				int size;
 				
 				try{
-					size = Integer.parseInt(mazeSize.getText());
+					size = Integer.parseInt(mazeHorizontalSize.getText());
 					
 					if(size < 7 || size > 31)
 					{
 						JOptionPane.showMessageDialog(getRootPane(), "The labirinth needs to be at least 7 and no more than 31!");
-						mazeSize.setText("11");
+						mazeHorizontalSize.setText("11");
 					}
 					
 				}catch(NumberFormatException ex){
-					JOptionPane.showMessageDialog(getRootPane(), "Invalid input in the labirinth size! Default values restored.");
-					mazeSize.setText("11");
+					JOptionPane.showMessageDialog(getRootPane(), "Invalid input in the horizontal labirinth size! Default values restored.");
+					mazeHorizontalSize.setText("11");
 				}
 			} 
 		});
@@ -116,7 +112,7 @@ public class GameOptions extends JPanel {
 				int size, numDragons;
 				try
 				{
-					size = Integer.parseInt(mazeSize.getText());
+					size = Integer.parseInt(mazeHorizontalSize.getText());
 					numDragons = Integer.parseInt(numberOfDragons.getText());
 					
 					if(numDragons <= 0)
@@ -140,7 +136,7 @@ public class GameOptions extends JPanel {
 	}
 	
 	public int getMazeSize(){
-		return Integer.parseInt(mazeSize.getText());
+		return Integer.parseInt(mazeHorizontalSize.getText());
 	}
 	
 	public int getNumberOfDragons(){

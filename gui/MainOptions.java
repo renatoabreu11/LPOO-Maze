@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 
@@ -25,17 +27,25 @@ public class MainOptions extends JPanel {
 	
 	public MainOptions() { 
 		
+		setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		int width = getWidth();
+		int height = getHeight();
+		setLayout(null);
+		
 		setBtnNewGame(new JButton("New Game"));
+		btnNewGame.setBounds(width/2 - 75, height/2 - 200, 150, 40);
 		add(getBtnNewGame());
-
-		btnExitGame = new JButton("Exit Game");
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		setBtnMazeBuilder(new JButton("Maze Builder"));
-		add(getBtnMazeBuilder());
-		
+		btnMazeBuilder.setBounds(width/2 - 75, height/2 - 100, 150, 40);
+		add(btnMazeBuilder);
+
 		setBtnOptions(new JButton("Options"));
+		btnOptions.setBounds(width/2 - 75, height/2, 150, 40);
 		add(getBtnOptions());
+
+		btnExitGame = new JButton("Exit Game");
+		btnExitGame.setBounds(width/2 - 75, height/2 + 100, 150, 40);
 		add(btnExitGame);
 		
 		addListeners();

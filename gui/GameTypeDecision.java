@@ -48,17 +48,19 @@ public class GameTypeDecision extends JPanel {
 		
 		setLayout(null);
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		int width = getWidth();
+		int height = getHeight();
 		
 		lblMessage = new JLabel("Maze Selection");
-		lblMessage.setBounds(195, 30, 100, 50);
+		lblMessage.setBounds(width/2 - 100, height/2 - 200, 200, 40);
 		add(lblMessage);
 		
 		btnRandomMaze = new JButton("Random Maze");
-		btnRandomMaze.setBounds(130, 80, 120, 20);
+		btnRandomMaze.setBounds(width/2 - 300, height/2 - 100, 200, 40);
 		add(btnRandomMaze);
 		
 		btnLoadMaze = new JButton("Load Maze");
-		btnLoadMaze.setBounds(270, 80, 120, 20);
+		btnLoadMaze.setBounds(width/2 , height/2 - 100, 200, 40);
 		add(btnLoadMaze);
 		
 		importMazes();

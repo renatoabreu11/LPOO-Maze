@@ -44,7 +44,7 @@ public class MazeConstructor extends JPanel {
 	private BufferedImage sword;
 	private BufferedImage selected;
 	
-	private int numOfDragons, numOfHeros;
+	private int numOfDragons, numOfHeros, numOfSwords;
 	private int hSize, vSize;
 	private int x, y;
 	private int mouseX, mouseY;
@@ -83,7 +83,7 @@ public class MazeConstructor extends JPanel {
 		add(textFieldVerticalSize);
 
 		hSize = 11; vSize = 11;
-		numOfDragons = 0; numOfHeros = 0;
+		numOfDragons = 0; numOfHeros = 0; numOfSwords = 0;
 		
 		btnResize = new JButton("Resize");
 		btnResize.setBounds(320, 10, 100, 20);
@@ -186,7 +186,6 @@ public class MazeConstructor extends JPanel {
 							}
 						}
 					
-					
 					hSize = mazeHorizontalSize;
 					vSize = mazeVerticalSize;
 					
@@ -236,6 +235,8 @@ public class MazeConstructor extends JPanel {
 					JOptionPane.showMessageDialog(new JPanel(),"At least one dragon must be in the maze!");
 				} else if(numOfDragons > ((hSize + vSize) /2) / 3){
 					JOptionPane.showMessageDialog(new JPanel(), "The maximum number of dragons in the maze is " + ((hSize + vSize) /2) / 3);
+				} else if(numOfSwords != 1){
+					JOptionPane.showMessageDialog(new JPanel(), "There needs to be one sword in the maze!");
 				} else {
 					File folder = new File(".");
 					
@@ -248,11 +249,7 @@ public class MazeConstructor extends JPanel {
 						}
 					});
 					
-					String fileName;
-					if(mazeFiles.length == 0)
-						fileName = "Maze (1).txt";
-					else
-						fileName = "Maze (" + (mazeFiles.length + 1) + ").txt";
+					String fileName = "Maze (" + (mazeFiles.length + 1) + ").txt";
 					
 					BufferedWriter writer;
 					try {
@@ -302,14 +299,12 @@ public class MazeConstructor extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-				int mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
 				mouseX = e.getX();
 				mouseY = e.getY();
 				
 				if (SwingUtilities.isRightMouseButton(e)) {
-					if (mouseX >= 20 && mouseX <= (mazeHorizontalSize - 1) * 20 && mouseY >= 100
-							&& mouseY <= (mazeVerticalSize - 1) * 20 + 80) {
+					if (mouseX >= 20 && mouseX <= (hSize - 1) * 20 && mouseY >= 100
+							&& mouseY <= (vSize - 1) * 20 + 80) {
 
 						int newX = mouseX / 20;
 						int newY = (mouseY - 80) / 20;
@@ -329,8 +324,8 @@ public class MazeConstructor extends JPanel {
 						selected = sword;
 					else {
 						// Calculates drawing position into char maze
-						if (mouseX >= 20 && mouseX <= (mazeHorizontalSize - 1) * 20 && mouseY >= 100
-								&& mouseY <= (mazeVerticalSize - 1) * 20 + 80) {
+						if (mouseX >= 20 && mouseX <= (hSize  - 1) * 20 && mouseY >= 100
+								&& mouseY <= (vSize - 1) * 20 + 80) {
 
 							int newX = mouseX / 20;
 							int newY = (mouseY - 80) / 20;
@@ -342,14 +337,10 @@ public class MazeConstructor extends JPanel {
 
 							if (selected.equals(wall))
 								symbol = 'X';
-							else if (selected.equals(hero)){
+							else if (selected.equals(hero))
 								symbol = 'H';
-								numOfHeros++;
-							}
-							else if (selected.equals(dragon)){
+							else if (selected.equals(dragon))
 								symbol = 'D';
-								numOfDragons++;
-							}
 							else if (selected.equals(sword))
 								symbol = 'E';
 							
@@ -373,6 +364,7 @@ public class MazeConstructor extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		numOfDragons = 0; numOfHeros = 0; numOfSwords = 0;
 		int mazeYPos = 80;
 		Iterator<Coordinates> it = maze.keySet().iterator(); 
 		
@@ -382,12 +374,18 @@ public class MazeConstructor extends JPanel {
 			
 			if(symbol == 'X')
 				g.drawImage(wall, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
-			else if(symbol == 'H')
+			else if(symbol == 'H'){
 				g.drawImage(hero, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
-			else if(symbol == 'E')
+				numOfHeros++;
+			}
+			else if(symbol == 'E'){
 				g.drawImage(sword, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
-			else if(symbol == 'D')
+				numOfSwords++;
+			}
+			else if(symbol == 'D'){
 				g.drawImage(dragon, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+				numOfDragons++;
+			}
 			
 			//DRAGAO ADORMECE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
