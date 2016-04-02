@@ -127,6 +127,14 @@ public class MainWindow extends JFrame {
 			} 
 		});
 		
+		builder.getBtnExitConstructor().addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "Main Options");				
+			}
+		});
+		
 		game.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {

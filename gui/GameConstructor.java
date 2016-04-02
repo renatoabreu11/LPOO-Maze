@@ -41,6 +41,38 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 	}
 	
+	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
+		
+		this.mainPanel = mainPanel;
+		size = gameOptions.getMazeSize();
+		numDragons = gameOptions.getNumberOfDragons();
+		dragonType = gameOptions.getDragonBehavior();
+		
+		Random r = new Random();
+		int swordNumber = r.nextInt(141) + 1;
+		int wallNumber = r.nextInt(1) + 1;
+
+		this.addMouseListener(this);
+		this.addKeyListener(this);
+
+		fillSprites(hero, "hero", 2, 2, 2, 2);
+		fillSprites(dragon, "dragon", 2, 2, 2, 2);
+		fillSprites(heroWithSword, "heroWithSword", 2, 2, 2, 2);
+
+		try {
+			wall = ImageIO.read(new File("wall (" + wallNumber + ").png"));
+			sword = ImageIO.read(new File("sword (" + swordNumber + ").png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		myTimer = new Timer(10, (arg) -> {imageAnimationStep();});
+		myTimer.start();
+
+		game = new Game();
+		game.SetObjects(dragonType, size, numDragons);
+	}
+	
 	public GameConstructor(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
 		
 		this.mainPanel = mainPanel;
@@ -117,8 +149,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		super.paintComponent(g);
 		char maze[][] = game.getMaze().getMaze();
 
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < game.getMaze().getVSize(); i++) {
+			for (int j = 0; j < game.getMaze().getHSize(); j++) {
 				
 				if (maze[i][j] == 'X') 			//Draw wall
 					g.drawImage(wall, j * 20, i * 20, 20, 20, null);

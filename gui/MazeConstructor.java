@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,9 +195,26 @@ public class MazeConstructor extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				File folder = new File(".");
+				
+				//Searches for the maze files
+				File[] mazeFiles = folder.listFiles(new FilenameFilter() {
+					@Override
+					public boolean accept(File folder, String name)
+					{
+						return name.startsWith("Maze") && name.endsWith(".txt");
+					}
+				});
+				
+				String fileName;
+				if(mazeFiles.length == 0)
+					fileName = "Maze (1).txt";
+				else
+					fileName = "Maze (" + (mazeFiles.length + 1) + ").txt";
+				
 				BufferedWriter writer;
 				try {
-					writer = new BufferedWriter(new FileWriter(".\\maze.txt"));
+					writer = new BufferedWriter(new FileWriter(".\\" + fileName));
 					writer.write(hSize + " " + vSize + '\n');					
 					
 					Iterator<Coordinates> it = maze.keySet().iterator(); 

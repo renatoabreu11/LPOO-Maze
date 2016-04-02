@@ -5,12 +5,14 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import maze.logic.Coordinates;
@@ -27,6 +29,7 @@ public class GameTypeDecision extends JPanel {
 	private GameOptions options;
 	
 	private Vector<JButton> mazes;
+	private int selectedMaze;
 	
 	/**
 	 * Create the panel.
@@ -65,26 +68,32 @@ public class GameTypeDecision extends JPanel {
 	public void importMazes()
 	{
 		mazes = new Vector();
-		
-		File folder = new File(".");
-		File[] listOfFiles = folder.listFiles();
 		int numMazes = 1;
+		File folder = new File(".");
 		
-		for(int i = 0; i < listOfFiles.length; i++)
+		//Searches for the maze files
+		File[] mazeFiles = folder.listFiles(new FilenameFilter()
 		{
-			if(listOfFiles[i].getName().equals("maze.txt"))
+			@Override
+			public boolean accept(File folder, String name)
 			{
-				JButton btnMaze = new JButton("Maze " + numMazes);
-				btnMaze.setBounds(400, 200 + 100 * numMazes, 100, 30);
-				add(btnMaze);
-				numMazes++;
-				mazes.add(btnMaze);
-				repaint();
+				return name.startsWith("Maze") && name.endsWith(".txt");
 			}
+		});
+		
+		//Creates all the necessary maze buttons
+		for(int i = 0; i < mazeFiles.length; i++)
+		{
+			JButton btnMaze = new JButton("Maze " + numMazes++);
+			btnMaze.setBounds(280, 90 + 35 * (numMazes - 1), 100, 30);
+			add(btnMaze);
+			mazes.add(btnMaze);			
 		}
 		
 		for(int i = 0; i < mazes.size(); i++)
 			mazes.elementAt(i).setVisible(false);
+		
+		repaint();
 	}
 	
 	public void addListeners()
@@ -105,12 +114,19 @@ public class GameTypeDecision extends JPanel {
 		btnLoadMaze.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(int i = 0; i < mazes.size(); i++)
-					mazes.elementAt(i).setVisible(true);
+				
+				if(mazes.size() == 0)
+					JOptionPane.showMessageDialog(new JPanel(), "There are no saved mazes!");
+				else
+					for(int i = 0; i < mazes.size(); i++)
+						mazes.elementAt(i).setVisible(true);
 			}
 		});
 		
 		for(int i = 0; i < mazes.size(); i++)
+		{
+			selectedMaze = i + 1;
+			
 			mazes.elementAt(i).addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -118,7 +134,7 @@ public class GameTypeDecision extends JPanel {
 					Scanner file = null;
 					
 					try{
-						file = new Scanner(new File("maze.txt"));
+						file = new Scanner(new File("Maze (" + selectedMaze + ").txt"));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -163,5 +179,6 @@ public class GameTypeDecision extends JPanel {
 					game.requestFocusInWindow();
 				}	
 			});
+		}
 	}
 }
