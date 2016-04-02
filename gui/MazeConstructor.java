@@ -10,28 +10,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import maze.logic.MazeBuilder;
 import maze.logic.Coordinates;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

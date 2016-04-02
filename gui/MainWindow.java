@@ -4,13 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -26,6 +31,7 @@ public class MainWindow extends JFrame {
 	private MazeConstructor builder;
 	private GameTypeDecision gameDecision;
 	private JPanel contentPane;
+	private static BufferedImage background;
 
 	/**
 	 * Launch the application.
@@ -50,8 +56,8 @@ public class MainWindow extends JFrame {
 		setTitle("Labirinth");
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		contentPane = new JPanel(new CardLayout());
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		contentPane = new JPanel(new CardLayout());		
 		setContentPane(contentPane);
 		initialize();
 		setVisible(true);
@@ -81,15 +87,15 @@ public class MainWindow extends JFrame {
 		contentPane.add(game, "Game");
 		contentPane.add(builder, "Maze builder");
 		contentPane.add(gameDecision, "Game Type Decision");
-	
+				
 		addListeners();
 		
 		CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 		cardLayout.show(contentPane, "Main Options");
 	}
-
+	
 	private void addListeners(){
-		
+	
 		mainOptions.getBtnOptions().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();

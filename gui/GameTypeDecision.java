@@ -158,9 +158,9 @@ public class GameTypeDecision extends JPanel {
 								for(int j = 0; j < maze.getHSize(); j++)
 								{
 									if(i == 0 || i == maze.getVSize() - 1 || j == 0 || j == maze.getHSize() - 1)
-										maze.WriteInMaze(new Coordinates(i, j), 'X');
+										maze.WriteInMaze(new Coordinates(j, i), 'X');
 									else
-										maze.WriteInMaze(new Coordinates(i, j), ' ');
+										maze.WriteInMaze(new Coordinates(j, i), ' ');
 								}
 							
 							firstLine = false;
