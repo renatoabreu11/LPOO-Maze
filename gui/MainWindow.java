@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import maze.logic.Maze;
+
 public class MainWindow extends JFrame {
 	
 	private MainOptions mainOptions;
@@ -79,7 +81,7 @@ public class MainWindow extends JFrame {
 		builder = new MazeConstructor();
 		builder.setVisible(true);
 		
-		gameDecision = new GameTypeDecision();
+		gameDecision = new GameTypeDecision(contentPane, game, gameOptions);
 		gameDecision.setVisible(true);
 		
 		contentPane.add(gameOptions, "Game Options");
@@ -105,8 +107,7 @@ public class MainWindow extends JFrame {
 		
 		mainOptions.getBtnNewGame().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameDecision = new GameTypeDecision(contentPane, game, gameOptions);
-				contentPane.add(gameDecision, "Game Type Decision");
+				gameDecision.setOptions(gameOptions);
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game Type Decision");
 			}
@@ -133,6 +134,17 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Main Options");				
+			}
+		});
+		
+		gameDecision.getBtnRandomMaze().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Maze maze = new Maze(gameOptions.getHorizontalSize(), gameOptions.getVerticalSize());
+				game = new GameConstructor(gameOptions, contentPane, maze);
+				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+				cardLayout.show(contentPane, "Game");
+				game.requestFocusInWindow();
 			}
 		});
 	}

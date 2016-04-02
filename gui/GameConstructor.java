@@ -54,7 +54,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	public GameConstructor(GameOptions gameOptions, JPanel mainPanel) {
 		
 		this.mainPanel = mainPanel;
-		size = gameOptions.getMazeSize();
+		size = gameOptions.getHorizontalSize();
 		numDragons = gameOptions.getNumberOfDragons();
 		dragonType = gameOptions.getDragonBehavior();
 		
@@ -89,7 +89,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	public GameConstructor(GameOptions gameOptions, JPanel mainPanel, Maze maze) {
 		
 		this.mainPanel = mainPanel;
-		size = gameOptions.getMazeSize();
+		size = gameOptions.getHorizontalSize();
 		numDragons = gameOptions.getNumberOfDragons();
 		dragonType = gameOptions.getDragonBehavior();
 		

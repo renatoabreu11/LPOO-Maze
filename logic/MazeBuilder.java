@@ -171,14 +171,14 @@ public class MazeBuilder {
 		} while (!guideCellUpdated);
 	}
 	
-	public char[][] buildMaze(int size) throws IllegalArgumentException {
-		maze = new char[size][size];
-		cellsVisited = new char[(size - 1) / 2][(size - 1) / 2];
+	public char[][] buildMaze(int horizontalSize, int verticalSize) throws IllegalArgumentException {
+		maze = new char[horizontalSize][verticalSize];
+		cellsVisited = new char[(horizontalSize - 1) / 2][(verticalSize - 1) / 2];
 		pathHistory = new Stack<Coordinates>();
 		guideCell = new Coordinates(0, 0);
 		guideCellUpdated = false;
 
-		FillMaze(size, size, guideCell);
+		FillMaze(horizontalSize, verticalSize, guideCell);
 
 		for (int i = 0; i < cellsVisited.length; i++)
 			for (int j = 0; j < cellsVisited[i].length; j++)

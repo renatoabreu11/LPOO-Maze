@@ -9,13 +9,13 @@ public class Maze
 	private int vSize;
 	
 	Random random = new Random();
-
-	public Maze(int size)
+	
+	public Maze(int hSize, int vSize)
 	{
 		MazeBuilder mazebuilder = new MazeBuilder();
-		maze = mazebuilder.buildMaze(size);
-		hSize = size;
-		vSize = size;
+		maze = mazebuilder.buildMaze(hSize, vSize);
+		this.hSize = hSize;
+		this.vSize = vSize;
 	}
 	
 	public Maze(){
@@ -28,7 +28,7 @@ public class Maze
 			{'X', 'X', 'X', 'X', 'X'}};
 	}
 	
-	public Maze(int hSize, int vSize)
+	public void setMaze(int hSize, int vSize)
 	{
 		this.hSize = hSize;
 		this.vSize = vSize;

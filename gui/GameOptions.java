@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Color;
 
 public class GameOptions extends JPanel {
 	
@@ -23,7 +24,7 @@ public class GameOptions extends JPanel {
 	private JLabel lblMazeVerticalSize;
 	private JLabel lblNumberOfDragons;
 	private JLabel lblDragonType;
-	private JComboBox dragonMode;
+	private JComboBox<String> dragonMode;
 	private JTextField numberOfDragons;
 	private JTextField mazeHorizontalSize;
 	private JTextField mazeVerticalSize;
@@ -40,6 +41,7 @@ public class GameOptions extends JPanel {
 		setLayout(null);
 		
 		lblMazeHorizontalSize = new JLabel("Maze horizontal size");
+		lblMazeHorizontalSize.setForeground(Color.WHITE);
 		lblMazeHorizontalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
 		lblMazeHorizontalSize.setBounds(width/2 - 200, height/2 - 400, 200, 40);
 		add(lblMazeHorizontalSize);
@@ -49,6 +51,7 @@ public class GameOptions extends JPanel {
 		add(mazeHorizontalSize);
 		
 		lblMazeVerticalSize = new JLabel("Maze vertical size");
+		lblMazeVerticalSize.setForeground(Color.WHITE);
 		lblMazeVerticalSize.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
 		lblMazeVerticalSize.setBounds(width/2 - 200, height/2 - 300, 200, 40);
 		add(lblMazeVerticalSize);
@@ -58,6 +61,7 @@ public class GameOptions extends JPanel {
 		add(mazeVerticalSize);
 		
 		lblNumberOfDragons = new JLabel("Number of dragons");
+		lblNumberOfDragons.setForeground(Color.WHITE);
 		lblNumberOfDragons.setFont(new Font("Monotype Corsiva", Font.PLAIN, 25));
 		lblNumberOfDragons.setBounds(width/2 - 200, height/2 - 200, 200, 40);
 		add(lblNumberOfDragons);
@@ -67,6 +71,7 @@ public class GameOptions extends JPanel {
 		add(numberOfDragons);
 		
 		lblDragonType = new JLabel("Dragon type");
+		lblDragonType.setForeground(Color.WHITE);
 		lblDragonType.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
 		lblDragonType.setBounds(width/2 - 225, height/2 - 100, 150, 40);
 		add(lblDragonType);
@@ -76,7 +81,7 @@ public class GameOptions extends JPanel {
 		getBtnExit().setBounds(width/2 - 100, height/2, 200, 40);
 		add(getBtnExit());
 		
-		dragonMode = new JComboBox();
+		dragonMode = new JComboBox<String>();
 		dragonMode.setFont(new Font("Monotype Corsiva", Font.PLAIN, 15));
 		dragonMode.setBounds(width/2 - 75, height/2 - 100, 250, 40);
 		add(dragonMode);
@@ -100,6 +105,9 @@ public class GameOptions extends JPanel {
 	
 	private void addListeners() {
 		
+		int width = getWidth();
+		int height = getHeight();
+		
 		mazeHorizontalSize.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -110,7 +118,7 @@ public class GameOptions extends JPanel {
 					
 					if(size < 7 || size > 31)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The labirinth needs to be at least 7 and no more than 31!");
+						JOptionPane.showMessageDialog(getRootPane(), "The labirinth needs to be at least 7 and no more than " + (width / 2 ) + "!");
 						mazeHorizontalSize.setText("11");
 					}
 					
@@ -121,13 +129,31 @@ public class GameOptions extends JPanel {
 			} 
 		});
 		
+		mazeVerticalSize.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				int size;
+				try {
+					size = Integer.parseInt(mazeVerticalSize.getText());
+					if (size < 7 || size > 31) {
+						JOptionPane.showMessageDialog(getRootPane(),
+								"The vertical labirinth size needs to be at least 7 and no more than " + (height / 2 ) + "!");
+						mazeVerticalSize.setText("11");
+					}
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(getRootPane(),
+							"Invalid input in the vertical labirinth size! Default values restored.");
+					mazeVerticalSize.setText("11");
+				}
+			}
+		});
+		
 		numberOfDragons.addFocusListener(new FocusAdapter(){ 
 			@Override
 			public void focusLost(FocusEvent e) {
-				int size, numDragons;
+				int numDragons;
 				try
 				{
-					size = Integer.parseInt(mazeHorizontalSize.getText());
 					numDragons = Integer.parseInt(numberOfDragons.getText());
 					
 					if(numDragons <= 0)
@@ -136,10 +162,9 @@ public class GameOptions extends JPanel {
 						numberOfDragons.setText("1");
 					}
 					
-					if(numDragons > size / 3)
+					if(numDragons > ((height + width / 2 )) / 3)
  {
-						JOptionPane.showMessageDialog(getRootPane(), "There's too many dragons in the " + size
-								+ " sized labirinth!\nThe maximum number is " + size / 3 + " dragons!");
+						JOptionPane.showMessageDialog(getRootPane(), "There's too many dragons in the labirinth!\nThe maximum number is " + ((height + width / 2 )) / 3 + " dragons!");
 						numberOfDragons.setText("1");
 					}
 				} catch (NumberFormatException ex) {
@@ -150,8 +175,12 @@ public class GameOptions extends JPanel {
 		});
 	}
 	
-	public int getMazeSize(){
+	public int getHorizontalSize(){
 		return Integer.parseInt(mazeHorizontalSize.getText());
+	}
+	
+	public int getVerticalSize(){
+		return Integer.parseInt(mazeVerticalSize.getText());
 	}
 	
 	public int getNumberOfDragons(){

@@ -39,7 +39,7 @@ public class Game {
 	public void SetObjects(int dragonMode, int size, int numberOfDragons) {
 		this.dragonMode = dragonMode;
 
-		maze = new Maze(size);
+		maze = new Maze(size, size);
 		hero = new Hero(maze.GeneratePosition(0));
 		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 		sword = new Sword(maze.GeneratePosition(0));
