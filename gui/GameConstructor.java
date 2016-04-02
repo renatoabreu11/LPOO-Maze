@@ -239,11 +239,13 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		boolean validKeyPressed = false;
 		
 		if(!game.getHero().getIsDead())
 		{
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
+			validKeyPressed = true;
 			game.UpdateGame("W");
 			
 			if(game.getHero().getWieldingSword())
@@ -253,6 +255,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			break;
 
 		case KeyEvent.VK_DOWN:
+			validKeyPressed = true;
 			game.UpdateGame("S");
 			
 			if(game.getHero().getWieldingSword())
@@ -262,6 +265,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			break;
 
 		case KeyEvent.VK_LEFT:
+			validKeyPressed = true;
 			game.UpdateGame("A");
 			
 			if(game.getHero().getWieldingSword())
@@ -271,6 +275,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			break;
 
 		case KeyEvent.VK_RIGHT:
+			validKeyPressed = true;
 			game.UpdateGame("D");
 			
 			if(game.getHero().getWieldingSword())
@@ -281,7 +286,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 		}
 		
-		if(!(game.getDragon().getDragonState().equals(DragonState.dead)))
+		if(!(game.getDragon().getDragonState().equals(DragonState.dead)) && validKeyPressed)
 			animationHandler(dragon, "");
 		
 		if(game.GetGameOver())

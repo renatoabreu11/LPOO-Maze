@@ -103,7 +103,6 @@ public class MainWindow extends JFrame {
 		
 		mainOptions.getBtnNewGame().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				gameDecision = new GameTypeDecision(contentPane, game, gameOptions);
 				contentPane.add(gameDecision, "Game Type Decision");
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
@@ -135,6 +134,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 		
+		//ESTA FUNCIONALIDADE NAO FINCUINA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		game.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {

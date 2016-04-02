@@ -124,14 +124,16 @@ public class GameTypeDecision extends JPanel {
 		});
 		
 		for(int i = 0; i < mazes.size(); i++)
-		{
-			selectedMaze = i + 1;
-			
+		{			
 			mazes.elementAt(i).addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Maze maze = null;
 					Scanner file = null;
+					
+					String mazePressed = e.getActionCommand().toString();
+					String aux = mazePressed.substring(mazePressed.length() - 1);
+					selectedMaze = Integer.parseInt(aux);
 					
 					try{
 						file = new Scanner(new File("Maze (" + selectedMaze + ").txt"));
