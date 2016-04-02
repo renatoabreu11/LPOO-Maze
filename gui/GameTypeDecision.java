@@ -82,10 +82,10 @@ public class GameTypeDecision extends JPanel {
 		btnLoadMaze.setBounds(width/2 , height/2 - 100, 200, 40);
 		add(btnLoadMaze);
 		
-		btnStart = new JButton("Play");
-		btnStart.setBounds(width/2 - 100 , height/2 - 100, 200, 40);
-		btnStart.setVisible(false);
-		add(btnStart);
+		setBtnStart(new JButton("Play"));
+		getBtnStart().setBounds(width/2 - 100 , height/2 - 100, 200, 40);
+		getBtnStart().setVisible(false);
+		add(getBtnStart());
 		
 		btnVisualize = new JButton("Visualize maze");
 		btnVisualize.setBounds(width/2 - 100 , height/2 , 200, 40);
@@ -158,7 +158,7 @@ public class GameTypeDecision extends JPanel {
 				btnLoadMaze.setVisible(false);
 				lblMessage.setVisible(false);
 				btnRandomMaze.setVisible(false);
-				btnStart.setVisible(true);
+				getBtnStart().setVisible(true);
 				btnBack.setVisible(true);
 				lblSelectMaze.setVisible(true);
 				btnVisualize.setVisible(true);
@@ -172,7 +172,7 @@ public class GameTypeDecision extends JPanel {
 				btnLoadMaze.setVisible(true);
 				lblMessage.setVisible(true);
 				btnRandomMaze.setVisible(true);
-				btnStart.setVisible(false);
+				getBtnStart().setVisible(false);
 				btnBack.setVisible(false);
 				lblSelectMaze.setVisible(false);
 				btnVisualize.setVisible(false);
@@ -186,7 +186,7 @@ public class GameTypeDecision extends JPanel {
 				importSelectedMaze();
 				mazeList.setVisible(false);
 				btnLoadMaze.setVisible(false);
-				btnStart.setVisible(false);
+				getBtnStart().setVisible(false);
 				btnBack.setVisible(false);
 				lblSelectMaze.setVisible(false);
 				btnVisualize.setVisible(false);
@@ -198,7 +198,7 @@ public class GameTypeDecision extends JPanel {
 		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mazeList.setVisible(true);
-				btnStart.setVisible(true);
+				getBtnStart().setVisible(true);
 				btnBack.setVisible(true);
 				lblSelectMaze.setVisible(true);
 				btnVisualize.setVisible(true);
@@ -210,7 +210,7 @@ public class GameTypeDecision extends JPanel {
 		});
 	}
 
-	public void importSelectedMaze() {
+	public Maze importSelectedMaze() {
 
 		String name = mazeList.getSelectedItem().toString();
 		
@@ -252,6 +252,7 @@ public class GameTypeDecision extends JPanel {
 			}
 		}
 		file.close();
+		return maze;
 	}
 
 	public void importMazes(){
@@ -281,5 +282,13 @@ public class GameTypeDecision extends JPanel {
 
 	public void setBtnRandomMaze(JButton btnRandomMaze) {
 		this.btnRandomMaze = btnRandomMaze;
+	}
+
+	public JButton getBtnStart() {
+		return btnStart;
+	}
+
+	public void setBtnStart(JButton btnStart) {
+		this.btnStart = btnStart;
 	}
 }
