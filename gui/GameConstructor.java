@@ -25,12 +25,10 @@ import maze.logic.Dragon.DragonState;
 @SuppressWarnings("serial")
 public class GameConstructor extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	private ArrayList<BufferedImage> hero;
+	private ArrayList<BufferedImage> heroWithSword;
 	private ArrayList<BufferedImage> dragon;
 	private BufferedImage sword;
-	private BufferedImage wall;
-	private BufferedImage grass;
 	private BufferedImage dirt;
-	private BufferedImage herbs;
 	private BufferedImage rocks;
 	private int dragonIndex;
 	private int heroIndex;
@@ -70,18 +68,18 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 		SpriteSheetLoader dragonSS;
 		SpriteSheetLoader heroSS;
+		SpriteSheetLoader heroWithSwordSS;
 		BufferedImage image = ImageIO.read(new File("Swords.png"));
 		int i = r.nextInt(6) * 120;
 		int j = r.nextInt(6) * 100;
 		try {
 			dragonSS = new SpriteSheetLoader("Dragons.png", 4, 4, 96, 96);
 			heroSS = new SpriteSheetLoader("Heros.png", 4, 6, 32, 64);
+			heroWithSwordSS = new SpriteSheetLoader("HeroWithSword.png", 4, 6, 32, 64);
 			dragon = dragonSS.getSprites();
 			hero = heroSS.getSprites();
+			heroWithSword = heroWithSwordSS.getSprites();
 			sword =  image.getSubimage(i, j , 120, 100);
-			wall = ImageIO.read(new File("Wall.png"));
-			herbs = ImageIO.read(new File("Herbs.png"));
-			grass = ImageIO.read(new File("Grass.png"));
 			dirt = ImageIO.read(new File("Dirt.png"));
 			rocks = ImageIO.read(new File("Rock.png"));
 					
@@ -122,18 +120,23 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 		
+
 		SpriteSheetLoader dragonSS;
 		SpriteSheetLoader heroSS;
+		SpriteSheetLoader heroWithSwordSS;
 		BufferedImage image = ImageIO.read(new File("Swords.png"));
 		int i = r.nextInt(6) * 120;
 		int j = r.nextInt(6) * 100;
 		try {
 			dragonSS = new SpriteSheetLoader("Dragons.png", 4, 4, 96, 96);
 			heroSS = new SpriteSheetLoader("Heros.png", 4, 6, 32, 64);
+			heroWithSwordSS = new SpriteSheetLoader("HeroWithSword.png", 4, 6, 32, 64);
 			dragon = dragonSS.getSprites();
 			hero = heroSS.getSprites();
+			heroWithSword = heroWithSwordSS.getSprites();
 			sword =  image.getSubimage(i, j , 120, 100);
-			wall = ImageIO.read(new File("Wall.png"));
+			dirt = ImageIO.read(new File("Dirt.png"));
+			rocks = ImageIO.read(new File("Rock.png"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -192,9 +195,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 			for (int i = 0; i < vSize; i++) {
 				for (int j = 0; j < hSize; j++) {
+					 g.drawImage(dirt, j * 40, i * 40, 40, 40, null);
 					if (maze.ReadInMaze(j, i) == 'X'){ // Draw wall
-//						if(i == 0 || j == 0 || j == hSize - 1 || i == vSize - 1)
-//							g.drawImage(wall, j * 40, i * 40, 40, 40, null);
 						 g.drawImage(rocks, j * 40, i * 40, 40, 40, null);
 					}
 					else if (maze.ReadInMaze(j, i) == 'H') // Draw Hero
@@ -204,7 +206,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
 						g.drawImage(sword, j * 40, i * 40, 40, 40, null);
 					else if (maze.ReadInMaze(j, i) == 'A') // Draw heroWithSword
-						g.drawImage(hero.get(heroIndex), j * 40, i * 40, 40, 40, null);
+						g.drawImage(heroWithSword.get(heroIndex), j * 40, i * 40, 40, 40, null);
 //					 else if(maze.ReadInMaze(j, i) == 'd' || maze.ReadInMaze(j, i) == 'F')		//Draw dragon sleeping or dragon on top of sword
 //						 drawFacingDirection(dragon, "dragon", g, i, j);
 				}
