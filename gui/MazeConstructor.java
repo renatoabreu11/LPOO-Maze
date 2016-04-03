@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -101,8 +102,8 @@ public class MazeConstructor extends JPanel {
 		try {
 			wall =  ImageIO.read(new File("wall (1).png"));
 			hero =  ImageIO.read(new File("hero (1).png"));
-			dragon =  ImageIO.read(new File("dragon (1).png"));
-			sword =  ImageIO.read(new File("sword (1).png"));
+			dragon =  ImageIO.read(new File("Dragon.png"));
+			sword =  ImageIO.read(new File("Sword.png"));
 			selected = null;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -129,9 +130,9 @@ public class MazeConstructor extends JPanel {
 				
 				try{
 					mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-					if(mazeHorizontalSize < 7 || mazeHorizontalSize > width / 20)
+					if(mazeHorizontalSize < 7 || mazeHorizontalSize > width / 40)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 20 + "!\n");
+						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 40 + "!\n");
 						textFieldHorizontalSize.setText(Integer.toString(hSize));
 					}
 					
@@ -142,9 +143,9 @@ public class MazeConstructor extends JPanel {
 				
 				try{
 					mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
-					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 20)
+					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 40)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 20 + "!\n");
+						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 40 + "!\n");
 						textFieldVerticalSize.setText(Integer.toString(vSize));
 					}
 					
@@ -292,11 +293,11 @@ public class MazeConstructor extends JPanel {
 				mouseY = e.getY();
 				
 				if (SwingUtilities.isRightMouseButton(e)) {
-					if (mouseX >= 20 && mouseX <= (hSize - 1) * 20 && mouseY >= 100
-							&& mouseY <= (vSize - 1) * 20 + 80) {
+					if (mouseX >= 40 && mouseX <= (hSize - 1) * 40 && mouseY >= 100
+							&& mouseY <= (vSize - 1) * 40 + 80) {
 
-						int newX = mouseX / 20;
-						int newY = (mouseY - 80) / 20;
+						int newX = mouseX / 40;
+						int newY = (mouseY - 80) / 40;
 
 						Coordinates c = new Coordinates(newX, newY);
 						maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
@@ -313,11 +314,11 @@ public class MazeConstructor extends JPanel {
 						selected = sword;
 					else {
 						// Calculates drawing position into char maze
-						if (mouseX >= 20 && mouseX <= (hSize  - 1) * 20 && mouseY >= 100
-								&& mouseY <= (vSize - 1) * 20 + 80) {
+						if (mouseX >= 40 && mouseX <= (hSize  - 1) * 40 && mouseY >= 100
+								&& mouseY <= (vSize - 1) * 40 + 80) {
 
-							int newX = mouseX / 20;
-							int newY = (mouseY - 80) / 20;
+							int newX = mouseX / 40;
+							int newY = (mouseY - 80) / 40;
 							
 							Coordinates c = new Coordinates(newX, newY);
 							char symbol = ' ';
@@ -362,21 +363,21 @@ public class MazeConstructor extends JPanel {
 			char symbol = maze.get(key);
 			
 			if(symbol == 'X')
-				g.drawImage(wall, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
+				g.drawImage(wall, key.getX() * 40, key.getY() * 40 + mazeYPos, 40, 40, null);
 			else if(symbol == 'H'){
-				g.drawImage(hero, key.getX() * 20, key.getY() * 20 + mazeYPos, 20, 20, null);
+				g.drawImage(hero, key.getX() * 40, key.getY() * 40 + mazeYPos, 40, 40, null);
 				numOfHeros++;
 			}
 			else if(symbol == 'E'){
-				g.drawImage(sword, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+				g.drawImage(sword, key.getX() * 40, key.getY() * 40+ mazeYPos, 40, 40, null);
 				numOfSwords++;
 			}
 			else if(symbol == 'D'){
-				g.drawImage(dragon, key.getX() * 20, key.getY() * 20+ mazeYPos, 20, 20, null);
+				g.drawImage(dragon, key.getX() * 40, key.getY() * 40+ mazeYPos, 40, 40, null);
 				numOfDragons++;
 			}
 			
-			//DRAGAO ADORMECE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			//DRAGAO ADORMECE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		
 		g.drawImage(wall, 500, 30, 20, 20, null);

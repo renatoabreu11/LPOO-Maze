@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import maze.logic.Maze;
@@ -125,7 +127,12 @@ public class MainWindow extends JFrame {
 				contentPane.remove(game);
 				game = new GameConstructor();
 				contentPane.add(game, "Game");
-				game.setRandomGame(gameOptions, contentPane);
+				try {
+					game.setRandomGame(gameOptions, contentPane);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
 				game.requestFocusInWindow();
@@ -138,7 +145,12 @@ public class MainWindow extends JFrame {
 				game = new GameConstructor();
 				contentPane.add(game, "Game");				
 				Maze maze = gameDecision.importSelectedMaze();
-				game.setPersonalizedGame(gameOptions, contentPane, maze);
+				try {
+					game.setPersonalizedGame(gameOptions, contentPane, maze);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
 				cardLayout.show(contentPane, "Game");
 				game.requestFocusInWindow();

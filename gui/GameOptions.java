@@ -116,7 +116,7 @@ public class GameOptions extends JPanel {
 				try{
 					size = Integer.parseInt(mazeHorizontalSize.getText());
 					
-					int numHorizontalWalls = width / 20;
+					int numHorizontalWalls = width / 40;
 					if(numHorizontalWalls % 2 == 0)
 						numHorizontalWalls--;
 					
@@ -144,7 +144,7 @@ public class GameOptions extends JPanel {
 				try {
 					size = Integer.parseInt(mazeVerticalSize.getText());
 					
-					int numVerticalWalls = height / 20;
+					int numVerticalWalls = height / 40;
 					if(numVerticalWalls % 2 == 0)
 						numVerticalWalls--;
 					

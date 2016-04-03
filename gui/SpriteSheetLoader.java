@@ -18,14 +18,12 @@ public class SpriteSheetLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-		sprites.add(image.getSubimage(60, 14, 13, 48-14));
 		
-//		for(int i = 0; i < horizontalSprites; i++) {
-//	         for(int j = 0; j < verticalSprites; j++) {
-//	            sprites.add(image.getSubimage(j*widthIncrement, i*heightIncrement , widthIncrement, heightIncrement));
-//	         }
-//	      }
+		for(int i = 0; i < verticalSprites; i++) {
+	         for(int j = 0; j < horizontalSprites; j++) {
+	            sprites.add(image.getSubimage(j*widthIncrement, i*heightIncrement , widthIncrement, heightIncrement));
+	         }
+	      }
 	}
 	
 	public ArrayList<BufferedImage> getSprites() {

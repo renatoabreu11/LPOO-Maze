@@ -102,8 +102,8 @@ public class GameTypeDecision extends JPanel {
 		try {
 			wall =  ImageIO.read(new File("wall (1).png"));
 			hero =  ImageIO.read(new File("hero (1).png"));
-			dragon =  ImageIO.read(new File("dragon (1).png"));
-			sword =  ImageIO.read(new File("sword (1).png"));
+			dragon =  ImageIO.read(new File("Dragon.png"));
+			sword =  ImageIO.read(new File("Sword.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
@@ -126,13 +126,13 @@ public class GameTypeDecision extends JPanel {
 			for (int i = 0; i < maze.getVSize(); i++)
 				for (int j = 0; j < maze.getHSize(); j++) {
 					if (maze.ReadInMaze(j, i) == 'X')
-						g.drawImage(wall, j * 20, i * 20 , 20, 20, null);
+						g.drawImage(wall, j * 40, i * 40 , 40, 40, null);
 					else if (maze.ReadInMaze(j, i) == 'H') {
-						g.drawImage(hero, j * 20, i * 20 , 20, 20, null);
+						g.drawImage(hero, j * 40, i * 40 , 40, 40, null);
 					} else if (maze.ReadInMaze(j, i) == 'E') {
-						g.drawImage(sword, j * 20, i * 20 , 20, 20, null);
+						g.drawImage(sword, j * 40, i * 40 , 40, 40, null);
 					} else if (maze.ReadInMaze(j, i) == 'D') {
-						g.drawImage(dragon, j * 20, i * 20 , 20, 20, null);
+						g.drawImage(dragon, j * 40, i * 40 , 40, 40, null);
 					}
 				}
 		} else
