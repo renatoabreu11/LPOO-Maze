@@ -41,6 +41,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private long startedTime;
 	private boolean dragonMoves;
 	private float FPS = 0.1f;
+	private int spritesSize = 60;
 
 	/***
 	 * Default constructor
@@ -83,6 +84,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			sword =  image.getSubimage(i, j , 120, 100);
 			dirt = ImageIO.read(new File("Dirt.png"));
 			rocks = ImageIO.read(new File("Rock.png"));
+			dragonSleeping = ImageIO.read(new File("Dragon.png"));
 					
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -194,25 +196,27 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			int vSize = maze.getVSize();
 			int width = getWidth();
 			int height = getHeight();
-			int initialXPos = width/2 - (hSize/2) * 60 - 30;
-			int initialYPos = height/2 - (vSize/2) * 60 - 40;
+			int initialXPos = width/2 - (hSize/2) * spritesSize - 30;
+			int initialYPos = height/2 - (vSize/2) * spritesSize - 40;
 			
 			for (int i = 0; i < vSize; i++) {
 				for (int j = 0; j < hSize; j++) {
-					 g.drawImage(dirt, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+					 g.drawImage(dirt, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					if (maze.ReadInMaze(j, i) == 'X'){ // Draw wall
-						 g.drawImage(rocks, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+						 g.drawImage(rocks, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					}
 					else if (maze.ReadInMaze(j, i) == 'H') // Draw Hero
-						g.drawImage(hero.get(heroIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+						g.drawImage(hero.get(heroIndex), j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					else if (maze.ReadInMaze(j, i) == 'D') // Draw dragon
-						g.drawImage(dragon.get(dragonIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+						g.drawImage(dragon.get(dragonIndex), j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
-						g.drawImage(sword, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+						g.drawImage(sword, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					else if (maze.ReadInMaze(j, i) == 'A') // Draw heroWithSword
-						g.drawImage(heroWithSword.get(heroIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
-					 else if(maze.ReadInMaze(j, i) == 'd' || maze.ReadInMaze(j, i) == 'F')		//Draw dragon sleeping or dragon on top of sword
-						g.drawImage(dragonSleeping, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+						g.drawImage(heroWithSword.get(heroIndex), j * spritesSize + initialXPos, i * spritesSize + initialYPos, 60, spritesSize, null);
+					else if(maze.ReadInMaze(j, i) == 'd')		//Draw dragon sleeping
+						g.drawImage(dragonSleeping, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
+					else if(maze.ReadInMaze(j, i) == 'F')
+						g.drawImage(dragonSleeping, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 				}
 			}
 		}
@@ -234,20 +238,21 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 	}
 
-	void dragonAnimation(){
-		if (game.getDragon().getMovedTo().equals("Up")) {
+	void dragonAnimation(int index){
+		if (game.getAllDragons().elementAt(index).getMovedTo().equals("Up")) {
 			dragonIndex = 12;
 		} 
-		else if (game.getDragon().getMovedTo().equals("Down")) {
+		else if (game.getAllDragons().elementAt(index).getMovedTo().equals("Down")) {
 			dragonIndex = 0;
 		} 
-		else if (game.getDragon().getMovedTo().equals("Left")) {
+		else if (game.getAllDragons().elementAt(index).getMovedTo().equals("Left")) {
 			dragonIndex = 4;
 		} 
-		else if (game.getDragon().getMovedTo().equals("Right")) {
+		else if (game.getAllDragons().elementAt(index).getMovedTo().equals("Right")) {
 			dragonIndex = 8;
 		}
 	}
+	
 	/***
 	 * Event that fires every time a key is pressed.
 	 * This function handles 4 different arrow keys: Up, Down, Left and Right.
@@ -303,8 +308,10 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		if(game.GetGameOver())
 			endGame();
 		
-		if(dragonMoves && !(game.getDragon().getDragonState() == (DragonState.dead)) && validKeyPressed)
-			dragonAnimation();
+		if(dragonMoves && validKeyPressed)
+			for(int i = 0; i < game.getAllDragons().size(); i++)
+				if(!(game.getAllDragons().elementAt(i).getDragonState() == (DragonState.dead)))
+					dragonAnimation(i);
 	}
 	
 	public void endGame()

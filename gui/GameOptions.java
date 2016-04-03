@@ -111,7 +111,7 @@ public class GameOptions extends JPanel {
 	}
 	
 	/***
-	 * add all the panel component's listeners
+	 * adds all the panel listener's components
 	 */
 	private void addListeners() {
 		

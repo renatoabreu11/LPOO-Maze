@@ -234,4 +234,9 @@ public class Game {
 	{
 		return dragonMode;
 	}
+	
+	public Vector<Dragon> getAllDragons()
+	{
+		return Dragons;
+	}
 }

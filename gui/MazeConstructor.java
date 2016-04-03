@@ -134,6 +134,10 @@ public class MazeConstructor extends JPanel {
 					{
 						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 60 + "!\n");
 						textFieldHorizontalSize.setText(Integer.toString(hSize));
+					} else if(mazeHorizontalSize % 2 == 0)
+					{
+						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size can't be an even number! Horizontal size reset to default.\n");
+						textFieldHorizontalSize.setText(Integer.toString(hSize));
 					}
 					
 				}catch(NumberFormatException ex){
@@ -146,6 +150,10 @@ public class MazeConstructor extends JPanel {
 					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 60)
 					{
 						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 60 + "!\n");
+						textFieldVerticalSize.setText(Integer.toString(vSize));
+					} else if(mazeVerticalSize % 2 == 0)
+					{
+						JOptionPane.showMessageDialog(getRootPane(), "The vertical size can't be an even number! Vertical size reset to default.\n");
 						textFieldVerticalSize.setText(Integer.toString(vSize));
 					}
 					
