@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import maze.logic.Coordinates;
 import maze.logic.Maze;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
@@ -27,6 +26,10 @@ import java.awt.Font;
 
 public class GameTypeDecision extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BufferedImage wall;
 	private BufferedImage hero;
 	private BufferedImage dragon;
@@ -44,7 +47,7 @@ public class GameTypeDecision extends JPanel {
 	private Maze maze;
 	
 	/**
-	 * Create the panel.
+	 * Create the panel and initialize all of it's components
 	 */
 	public GameTypeDecision() {
 		maze = null;
@@ -121,25 +124,31 @@ public class GameTypeDecision extends JPanel {
 		repaint();
 	}
 	
+	/***
+	 * Draw all the panel components accordingly to the panel situation
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (maze != null) {
 			for (int i = 0; i < maze.getVSize(); i++)
 				for (int j = 0; j < maze.getHSize(); j++) {
 					if (maze.ReadInMaze(j, i) == 'X')
-						g.drawImage(wall, j * 40, i * 40 , 40, 40, null);
+						g.drawImage(wall, j * 60, i * 60 , 60, 60, null);
 					else if (maze.ReadInMaze(j, i) == 'H') {
-						g.drawImage(hero, j * 40, i * 40 , 40, 40, null);
+						g.drawImage(hero, j * 60, i * 60 , 60, 60, null);
 					} else if (maze.ReadInMaze(j, i) == 'E') {
-						g.drawImage(sword, j * 40, i * 40 , 40, 40, null);
+						g.drawImage(sword, j * 60, i * 60 , 60, 60, null);
 					} else if (maze.ReadInMaze(j, i) == 'D') {
-						g.drawImage(dragon, j * 40, i * 40 , 40, 40, null);
+						g.drawImage(dragon, j * 60, i * 60 , 60, 60, null);
 					}
 				}
 		} else
 			g.drawImage(background, 0, 0, 1920, 1000, null);
 	}
 	
+	/***
+	 * add all the panel component's listeners
+	 */
 	public void addListeners()
 	{	
 		btnLoadMaze.addActionListener(new ActionListener() {
@@ -206,6 +215,9 @@ public class GameTypeDecision extends JPanel {
 		});
 	}
 
+	/***
+	 * This function opens the file selected by the user, creates a object Maze and parses all the elements to this object
+	 */
 	public Maze importSelectedMaze() {
 		
 		String name = mazeList.getSelectedItem().toString();
@@ -251,6 +263,9 @@ public class GameTypeDecision extends JPanel {
 		return maze;
 	}
 
+	/***
+	 * This function selects and add to the mazeList comboBox all of the existent mazes
+	 */
 	public void importMazes(){
 		File folder = new File(".");
 		int numOfMazes = 1;

@@ -20,6 +20,10 @@ import java.awt.Color;
 
 public class GameOptions extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblMazeHorizontalSize;
 	private JLabel lblMazeVerticalSize;
 	private JLabel lblNumberOfDragons;
@@ -32,7 +36,7 @@ public class GameOptions extends JPanel {
 	private BufferedImage background;
 
 	/**
-	 * Create the frame.
+	 * Create the panel and all of its components(buttons, background, etc).
 	 */
 	public GameOptions() {
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -98,11 +102,17 @@ public class GameOptions extends JPanel {
 		}
 	}
 	
+	/***
+	 * Draw all the panel components, such as the buttons, comboboxs, etc
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);		
 		g.drawImage(background, 0, 0, 1920, 1000, null);
 	}
 	
+	/***
+	 * add all the panel component's listeners
+	 */
 	private void addListeners() {
 		
 		int width = getWidth();
@@ -116,7 +126,7 @@ public class GameOptions extends JPanel {
 				try{
 					size = Integer.parseInt(mazeHorizontalSize.getText());
 					
-					int numHorizontalWalls = width / 40;
+					int numHorizontalWalls = width / 60;
 					if(numHorizontalWalls % 2 == 0)
 						numHorizontalWalls--;
 					
@@ -144,7 +154,7 @@ public class GameOptions extends JPanel {
 				try {
 					size = Integer.parseInt(mazeVerticalSize.getText());
 					
-					int numVerticalWalls = height / 40;
+					int numVerticalWalls = height / 60;
 					if(numVerticalWalls % 2 == 0)
 						numVerticalWalls--;
 					
@@ -180,7 +190,7 @@ public class GameOptions extends JPanel {
 					}
 					
 					if(numDragons > ((height + width / 2 )) / 3)
- {
+					{
 						JOptionPane.showMessageDialog(getRootPane(), "There's too many dragons in the labirinth!\nThe maximum number is " + ((height + width / 2 )) / 3 + " dragons!");
 						numberOfDragons.setText("1");
 					}
@@ -192,18 +202,30 @@ public class GameOptions extends JPanel {
 		});
 	}
 	
+	/***
+	 * Return the text contained in the text field mazeHorizontalSize as int
+	 */
 	public int getHorizontalSize(){
 		return Integer.parseInt(mazeHorizontalSize.getText());
 	}
 	
+	/***
+	 * Return the text contained in the text field mazeVerticalSize as int
+	 */
 	public int getVerticalSize(){
 		return Integer.parseInt(mazeVerticalSize.getText());
 	}
 	
+	/***
+	 * Return the text contained in the text field numberOfDragons as int
+	 */
 	public int getNumberOfDragons(){
 		return Integer.parseInt(numberOfDragons.getText());
 	}
 	
+	/***
+	 * Parse the selected dragon mode to a respective int and return it
+	 */
 	public int getDragonBehavior(){
 		String value = dragonMode.getSelectedItem().toString();
 		
@@ -216,6 +238,9 @@ public class GameOptions extends JPanel {
 				return 3;
 	}
 
+	/***
+	 * return a reference to the exit button
+	 */
 	public JButton getBtnExit() {
 		return btnExit;
 	}

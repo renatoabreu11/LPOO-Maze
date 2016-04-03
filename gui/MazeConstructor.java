@@ -130,9 +130,9 @@ public class MazeConstructor extends JPanel {
 				
 				try{
 					mazeHorizontalSize = Integer.parseInt(textFieldHorizontalSize.getText());
-					if(mazeHorizontalSize < 7 || mazeHorizontalSize > width / 40)
+					if(mazeHorizontalSize < 7 || mazeHorizontalSize > width / 60)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 40 + "!\n");
+						JOptionPane.showMessageDialog(getRootPane(), "The horizontal size needs to be at least 7 and no more than " + width / 60 + "!\n");
 						textFieldHorizontalSize.setText(Integer.toString(hSize));
 					}
 					
@@ -143,9 +143,9 @@ public class MazeConstructor extends JPanel {
 				
 				try{
 					mazeVerticalSize = Integer.parseInt(textFieldVerticalSize.getText());
-					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 40)
+					if(mazeVerticalSize < 7 || mazeVerticalSize > (height - 80) / 60)
 					{
-						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 40 + "!\n");
+						JOptionPane.showMessageDialog(getRootPane(), "The vertical size needs to be at least 7 and no more than " + (height - 80) / 60 + "!\n");
 						textFieldVerticalSize.setText(Integer.toString(vSize));
 					}
 					
@@ -293,11 +293,11 @@ public class MazeConstructor extends JPanel {
 				mouseY = e.getY();
 				
 				if (SwingUtilities.isRightMouseButton(e)) {
-					if (mouseX >= 40 && mouseX <= (hSize - 1) * 40 && mouseY >= 100
-							&& mouseY <= (vSize - 1) * 40 + 80) {
+					if (mouseX >= 60 && mouseX <= (hSize - 1) * 60 && mouseY >= 100
+							&& mouseY <= (vSize - 1) * 60 + 80) {
 
-						int newX = mouseX / 40;
-						int newY = (mouseY - 80) / 40;
+						int newX = mouseX / 60;
+						int newY = (mouseY - 80) / 60;
 
 						Coordinates c = new Coordinates(newX, newY);
 						maze.entrySet().removeIf(entry -> entry.getKey().equals(c));
@@ -314,11 +314,11 @@ public class MazeConstructor extends JPanel {
 						selected = sword;
 					else {
 						// Calculates drawing position into char maze
-						if (mouseX >= 40 && mouseX <= (hSize  - 1) * 40 && mouseY >= 100
-								&& mouseY <= (vSize - 1) * 40 + 80) {
+						if (mouseX >= 60 && mouseX <= (hSize  - 1) * 60 && mouseY >= 100
+								&& mouseY <= (vSize - 1) * 60 + 80) {
 
-							int newX = mouseX / 40;
-							int newY = (mouseY - 80) / 40;
+							int newX = mouseX / 60;
+							int newY = (mouseY - 80) / 60;
 							
 							Coordinates c = new Coordinates(newX, newY);
 							char symbol = ' ';
@@ -363,17 +363,17 @@ public class MazeConstructor extends JPanel {
 			char symbol = maze.get(key);
 			
 			if(symbol == 'X')
-				g.drawImage(wall, key.getX() * 40, key.getY() * 40 + mazeYPos, 40, 40, null);
+				g.drawImage(wall, key.getX() * 60, key.getY() * 60 + mazeYPos, 60, 60, null);
 			else if(symbol == 'H'){
-				g.drawImage(hero, key.getX() * 40, key.getY() * 40 + mazeYPos, 40, 40, null);
+				g.drawImage(hero, key.getX() * 60, key.getY() * 60 + mazeYPos, 60, 60, null);
 				numOfHeros++;
 			}
 			else if(symbol == 'E'){
-				g.drawImage(sword, key.getX() * 40, key.getY() * 40+ mazeYPos, 40, 40, null);
+				g.drawImage(sword, key.getX() * 60, key.getY() * 60+ mazeYPos, 60, 60, null);
 				numOfSwords++;
 			}
 			else if(symbol == 'D'){
-				g.drawImage(dragon, key.getX() * 40, key.getY() * 40+ mazeYPos, 40, 40, null);
+				g.drawImage(dragon, key.getX() * 60, key.getY() * 60+ mazeYPos, 60, 60, null);
 				numOfDragons++;
 			}
 			

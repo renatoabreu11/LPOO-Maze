@@ -27,6 +27,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private ArrayList<BufferedImage> hero;
 	private ArrayList<BufferedImage> heroWithSword;
 	private ArrayList<BufferedImage> dragon;
+	private BufferedImage dragonSleeping;
 	private BufferedImage sword;
 	private BufferedImage dirt;
 	private BufferedImage rocks;
@@ -48,7 +49,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	}
 	
 	/***
-	 *  used when the player selects "Random Maze".
+	 *  Set all the atributes acordingly to the options passed in gameOptions. Used when the player selects "Random Maze".
 	 * @throws IOException 
 	 */
 	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel) throws IOException {
@@ -102,15 +103,14 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	}
 	
 	/***
-	 * used when the player selects "Load Maze"
+	 *  Set all the atributes acordingly to the maze created. Used when the player selects "Personalized Maze".
 	 * @throws IOException 
 	 */
 	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze) throws IOException {
 		
 		this.mainPanel = mainPanel;
-		horizontalSize = gameOptions.getHorizontalSize();
-		verticalSize = gameOptions.getVerticalSize();
-		numDragons = gameOptions.getNumberOfDragons();
+		horizontalSize = maze.getHSize();
+		verticalSize = maze.getVSize();
 		dragonType = gameOptions.getDragonBehavior();
 		game = new Game();
 		game.SetMaze(maze);
@@ -192,23 +192,27 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			Maze maze = game.getMaze();
 			int hSize = maze.getHSize();
 			int vSize = maze.getVSize();
-
+			int width = getWidth();
+			int height = getHeight();
+			int initialXPos = width/2 - (hSize/2) * 60 - 30;
+			int initialYPos = height/2 - (vSize/2) * 60 - 40;
+			
 			for (int i = 0; i < vSize; i++) {
 				for (int j = 0; j < hSize; j++) {
-					 g.drawImage(dirt, j * 40, i * 40, 40, 40, null);
+					 g.drawImage(dirt, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 					if (maze.ReadInMaze(j, i) == 'X'){ // Draw wall
-						 g.drawImage(rocks, j * 40, i * 40, 40, 40, null);
+						 g.drawImage(rocks, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 					}
 					else if (maze.ReadInMaze(j, i) == 'H') // Draw Hero
-						g.drawImage(hero.get(heroIndex), j * 40, i * 40, 40, 40, null);
+						g.drawImage(hero.get(heroIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 					else if (maze.ReadInMaze(j, i) == 'D') // Draw dragon
-						g.drawImage(dragon.get(dragonIndex), j * 40, i * 40, 40, 40, null);
+						g.drawImage(dragon.get(dragonIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 					else if (maze.ReadInMaze(j, i) == 'E') // Draw sword
-						g.drawImage(sword, j * 40, i * 40, 40, 40, null);
+						g.drawImage(sword, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 					else if (maze.ReadInMaze(j, i) == 'A') // Draw heroWithSword
-						g.drawImage(heroWithSword.get(heroIndex), j * 40, i * 40, 40, 40, null);
-//					 else if(maze.ReadInMaze(j, i) == 'd' || maze.ReadInMaze(j, i) == 'F')		//Draw dragon sleeping or dragon on top of sword
-//						 drawFacingDirection(dragon, "dragon", g, i, j);
+						g.drawImage(heroWithSword.get(heroIndex), j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
+					 else if(maze.ReadInMaze(j, i) == 'd' || maze.ReadInMaze(j, i) == 'F')		//Draw dragon sleeping or dragon on top of sword
+						g.drawImage(dragonSleeping, j * 60 + initialXPos, i * 60 + initialYPos, 60, 60, null);
 				}
 			}
 		}
