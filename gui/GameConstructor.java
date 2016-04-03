@@ -27,6 +27,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private ArrayList<BufferedImage> hero;
 	private ArrayList<BufferedImage> heroWithSword;
 	private ArrayList<BufferedImage> dragon;
+	private ArrayList<BufferedImage> dragonOnTop;
 	private BufferedImage dragonSleeping;
 	private BufferedImage sword;
 	private BufferedImage dirt;
@@ -71,6 +72,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		SpriteSheetLoader dragonSS;
 		SpriteSheetLoader heroSS;
 		SpriteSheetLoader heroWithSwordSS;
+		SpriteSheetLoader dragonOnTopSS;
 		BufferedImage image = ImageIO.read(new File("Swords.png"));
 		int i = r.nextInt(6) * 120;
 		int j = r.nextInt(6) * 100;
@@ -78,6 +80,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			dragonSS = new SpriteSheetLoader("Dragons.png", 4, 4, 96, 96);
 			heroSS = new SpriteSheetLoader("Heros.png", 4, 6, 32, 64);
 			heroWithSwordSS = new SpriteSheetLoader("HeroWithSword.png", 4, 6, 32, 64);
+			dragonOnTopSS = new SpriteSheetLoader("DragonOnTop.png", 4, 4, 96, 96);
+			dragonOnTop = dragonOnTopSS.getSprites();
 			dragon = dragonSS.getSprites();
 			hero = heroSS.getSprites();
 			heroWithSword = heroWithSwordSS.getSprites();
@@ -125,6 +129,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 		SpriteSheetLoader dragonSS;
 		SpriteSheetLoader heroSS;
+		SpriteSheetLoader dragonOnTopSS;
 		SpriteSheetLoader heroWithSwordSS;
 		BufferedImage image = ImageIO.read(new File("Swords.png"));
 		int i = r.nextInt(6) * 120;
@@ -133,6 +138,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			dragonSS = new SpriteSheetLoader("Dragons.png", 4, 4, 96, 96);
 			heroSS = new SpriteSheetLoader("Heros.png", 4, 6, 32, 64);
 			heroWithSwordSS = new SpriteSheetLoader("HeroWithSword.png", 4, 6, 32, 64);
+			dragonOnTopSS = new SpriteSheetLoader("DragonOnTop.png", 4, 4, 96, 96);
+			dragonOnTop = dragonOnTopSS.getSprites();
 			dragon = dragonSS.getSprites();
 			hero = heroSS.getSprites();
 			heroWithSword = heroWithSwordSS.getSprites();
@@ -216,7 +223,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					else if(maze.ReadInMaze(j, i) == 'd')		//Draw dragon sleeping
 						g.drawImage(dragonSleeping, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 					else if(maze.ReadInMaze(j, i) == 'F')
-						g.drawImage(dragonSleeping, j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
+						g.drawImage(dragonOnTop.get(dragonIndex), j * spritesSize + initialXPos, i * spritesSize + initialYPos, spritesSize, spritesSize, null);
 				}
 			}
 		}
