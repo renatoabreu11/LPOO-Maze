@@ -13,6 +13,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import maze.logic.Coordinates;
@@ -112,7 +113,7 @@ public class GameTypeDecision extends JPanel {
 		addListeners();
 		
 		try {
-			background = ImageIO.read(new File("mazeWallpaper.jpg"));
+			background = ImageIO.read(new File("Wallpaper.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -173,15 +174,20 @@ public class GameTypeDecision extends JPanel {
 		
 		btnVisualize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				importSelectedMaze();
-				mazeList.setVisible(false);
-				btnLoadMaze.setVisible(false);
-				getBtnStart().setVisible(false);
-				btnBack.setVisible(false);
-				lblSelectMaze.setVisible(false);
-				btnVisualize.setVisible(false);
-				btnReturn.setVisible(true);
-				repaint();
+				if(mazeList.getItemCount() == 0){
+					JOptionPane.showMessageDialog(getRootPane(), "There are no mazes available!");
+				}
+				else{
+					importSelectedMaze();
+					mazeList.setVisible(false);
+					btnLoadMaze.setVisible(false);
+					getBtnStart().setVisible(false);
+					btnBack.setVisible(false);
+					lblSelectMaze.setVisible(false);
+					btnVisualize.setVisible(false);
+					btnReturn.setVisible(true);
+					repaint();
+				}
 			}
 		});
 		
@@ -201,7 +207,7 @@ public class GameTypeDecision extends JPanel {
 	}
 
 	public Maze importSelectedMaze() {
-
+		
 		String name = mazeList.getSelectedItem().toString();
 		
 		Scanner file = null;
@@ -296,5 +302,9 @@ public class GameTypeDecision extends JPanel {
 
 	public void setBtnStart(JButton btnStart) {
 		this.btnStart = btnStart;
+	}
+
+	public JComboBox<String> getMazeList() {
+		return this.mazeList;
 	}
 }

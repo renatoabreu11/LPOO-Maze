@@ -92,7 +92,7 @@ public class GameOptions extends JPanel {
 		addListeners();
 		
 		try {
-			background = ImageIO.read(new File("mazeWallpaper.jpg"));
+			background = ImageIO.read(new File("Wallpaper.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import maze.logic.Maze;
 
@@ -140,20 +141,25 @@ public class MainWindow extends JFrame {
 		});
 		
 		gameDecision.getBtnStart().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				contentPane.remove(game);
-				game = new GameConstructor();
-				contentPane.add(game, "Game");				
-				Maze maze = gameDecision.importSelectedMaze();
-				try {
-					game.setPersonalizedGame(gameOptions, contentPane, maze);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			public void actionPerformed(ActionEvent arg0) {	
+				if (gameDecision.getMazeList().getItemCount() == 0) {
+					JOptionPane.showMessageDialog(getRootPane(), "There are no mazes available!");
 				}
-				CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-				cardLayout.show(contentPane, "Game");
-				game.requestFocusInWindow();
+				else {
+					contentPane.remove(game);
+					game = new GameConstructor();
+					contentPane.add(game, "Game");				
+					Maze maze = gameDecision.importSelectedMaze();
+					try {
+						game.setPersonalizedGame(gameOptions, contentPane, maze);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+					cardLayout.show(contentPane, "Game");
+					game.requestFocusInWindow();
+				}
 			}
 		});
 	}
