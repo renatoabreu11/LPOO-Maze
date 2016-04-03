@@ -100,8 +100,8 @@ public class GameTypeDecision extends JPanel {
 		add(mazeList);
 		
 		try {
-			wall =  ImageIO.read(new File("wall (1).png"));
-			hero =  ImageIO.read(new File("hero (1).png"));
+			wall =  ImageIO.read(new File("Rock.png"));
+			hero =  ImageIO.read(new File("Hero.png"));
 			dragon =  ImageIO.read(new File("Dragon.png"));
 			sword =  ImageIO.read(new File("Sword.png"));
 		} catch (IOException e) {
