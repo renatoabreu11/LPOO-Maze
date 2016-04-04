@@ -60,15 +60,15 @@ public class MazeConstructor extends JPanel {
 		lblVerticalSize.setBounds(20, 30, 100, 20);
 		add(lblVerticalSize);
 		
-		textFieldHorizontalSize = new JTextField("11", 10);
+		textFieldHorizontalSize = new JTextField("7", 10);
 		textFieldHorizontalSize.setBounds(140, 10, 100, 20);
 		add(textFieldHorizontalSize);
 		
-		textFieldVerticalSize = new JTextField("11", 10);
+		textFieldVerticalSize = new JTextField("7", 10);
 		textFieldVerticalSize.setBounds(140, 30, 100, 20);
 		add(textFieldVerticalSize);
 
-		hSize = 11; vSize = 11;
+		hSize = 7; vSize = 7;
 		numOfDragons = 0; numOfHeros = 0; numOfSwords = 0;
 		
 		btnResize = new JButton("Resize");

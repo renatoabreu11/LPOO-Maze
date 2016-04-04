@@ -145,8 +145,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		horizontalSize = maze.getHSize();
 		verticalSize = maze.getVSize();
 		dragonType = gameOptions.getDragonBehavior();
+		
 		game = new Game();
-		game.SetMaze(maze);
+		game.SetMaze(maze, dragonType);
 
 		Random r = new Random();
 		
@@ -174,6 +175,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			sword =  image.getSubimage(i, j , 120, 100);
 			dirt = ImageIO.read(new File("Dirt.png"));
 			rocks = ImageIO.read(new File("Rock.png"));
+			dragonSleeping = ImageIO.read(new File("Dragon.png"));
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -189,6 +192,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		else
 			dragonMoves = true;
 		
+		battleHasHappened = false;
 		startedTime = System.currentTimeMillis();
 	}
 

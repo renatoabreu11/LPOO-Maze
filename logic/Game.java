@@ -65,9 +65,9 @@ public class Game {
 	/**
 	 * Sets the maze by the given one.
 	 */
-	public void SetMaze(Maze maze) {
+	public void SetMaze(Maze maze, int dragonMode) {
 		this.maze = maze;
-		this.dragonMode = 3;
+		this.dragonMode = dragonMode;
 		Dragons = new Vector<Dragon>();
 
 		for(int i = 0; i < maze.getVSize(); i++)
