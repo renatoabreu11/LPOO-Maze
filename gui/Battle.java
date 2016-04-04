@@ -1,6 +1,5 @@
 package maze.gui;
 
-import java.awt.CardLayout;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -42,24 +40,21 @@ public class Battle extends JPanel{
 	
 	private Timer myTimer;
 	
-	private JPanel mainPanel;
-	private GameConstructor game;
-	
 	/**
 	 * Create the panel.
 	 */
 	
 	public Battle()
 	{
-		setLayout(null);
-		setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		
 	}
 	
-	public void setBattle(int winner, JPanel mainPanel, GameConstructor game){
+	public Battle(int winner){
+		
+		setLayout(null);
+		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		
 		this.winner = winner;
-		this.mainPanel = mainPanel;
-		this.game = game;
 		
 		dragonAttack = new ArrayList<BufferedImage>();
 		heroAttack = new ArrayList<BufferedImage>();
@@ -182,16 +177,7 @@ public class Battle extends JPanel{
 				break;
 			}
 			case BattleOver:
-				if(winner == 0){
-					CardLayout cardLayout = (CardLayout) this.mainPanel.getLayout();
-					cardLayout.show(this.mainPanel, "Game");
-					game.requestFocusInWindow();
-				} else {
-					JOptionPane.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
-					CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-					cardLayout.show(mainPanel, "Main Options");
-					mainPanel.requestFocusInWindow();
-				}
+				break;
 			}
 			
 			if(firePosX == 0)
@@ -227,8 +213,10 @@ public class Battle extends JPanel{
 			g.drawImage(heroMoves.get(heroIndex), heroPosX , heroPosY, 300, 300, null);
 			g.drawImage(dragonFlies.get(dragonIndex), dragonPosX, dragonPosY, 300, 300, null);
 			
-			if(heroPosX > (getWidth() / 2 - 100))
-				heroPosX -= step;
+			heroPosX -= step;
+			
+			if(heroPosX < (getWidth() / 2 - 100))
+				heroPosX += step;
 			
 			if(dragonPosX < (getWidth() / 2 - 350))
 				dragonPosX += (step * 0.8);
@@ -255,6 +243,7 @@ public class Battle extends JPanel{
 			break;
 		}
 		case BattleOver:
+			break;
 		}
 	}
 }
