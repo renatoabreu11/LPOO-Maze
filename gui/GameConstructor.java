@@ -510,7 +510,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	{		
 		if(game.getHero().getIsDead())
 		{
-			JOptionPane.showMessageDialog(this, "bla bla bla u dead! Congratulations!");
+			JOptionPane.showMessageDialog(this, "Your body will be trapped in the maze FOREVER!");
 			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 			cardLayout.show(mainPanel, "Main Options");
 			repaint();
@@ -519,7 +519,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
 			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 			cardLayout.show(mainPanel, "Main Options");
-			repaint();
 		}
 	}
 
@@ -577,7 +576,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 
 	}
 	
-	public void setBattle(int winner){
+	public void setBattle(int win){
 		dragonAttack = new ArrayList<BufferedImage>();
 		heroAttack = new ArrayList<BufferedImage>();
 		dragonDies = new ArrayList<BufferedImage>();
@@ -611,6 +610,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		dragonIndex = 0;
 		
 		state = Animation.Moving;
+		winner = win;
 		
 		int width = getWidth();
 		int height = getHeight();
