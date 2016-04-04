@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -40,11 +41,12 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private Game game;
 	private int horizontalSize, numDragons, dragonType, verticalSize;
 	private JPanel mainPanel;
-	private Battle battle;
 	private long startedTime;
 	private boolean dragonMoves;
 	private float FPS = 0.1f;
 	private int spritesSize = 60;
+	
+	private Battle battle;
 
 	/***
 	 * Default constructor
@@ -56,9 +58,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 * Set all the atributes acordingly to the options passed in gameOptions. Used when the player selects "Random Maze".
 	 * @throws IOException 
 	 */
-	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel, Battle battle) throws IOException {
+	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel) throws IOException {
 		this.mainPanel = mainPanel;
-		this.battle = battle;
 		horizontalSize = gameOptions.getHorizontalSize();
 		verticalSize = gameOptions.getVerticalSize();
 		numDragons = gameOptions.getNumberOfDragons();
@@ -66,6 +67,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 		game = new Game();
 		game.SetObjects(dragonType, horizontalSize, verticalSize, numDragons);
+		battle = new Battle();
+		mainPanel.add(battle, "Battle");
 		 
 		Random r = new Random();
 		
@@ -116,8 +119,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 *  Set all the atributes acordingly to the maze created. Used when the player selects "Personalized Maze".
 	 * @throws IOException 
 	 */
-	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze, Battle battle) throws IOException {
-		this.battle = battle;
+	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze) throws IOException {
+		
 		this.mainPanel = mainPanel;
 		horizontalSize = maze.getHSize();
 		verticalSize = maze.getVSize();
@@ -350,6 +353,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
 			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 			cardLayout.show(mainPanel, "Main Options");
+			this.mainPanel.remove(battle);
+			this.mainPanel.remove(this);
 		}
 	}
 
