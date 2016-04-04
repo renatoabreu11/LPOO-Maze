@@ -108,18 +108,13 @@ public class GameTypeDecision extends JPanel {
 			hero =  ImageIO.read(new File("Hero.png"));
 			dragon =  ImageIO.read(new File("Dragon.png"));
 			sword =  ImageIO.read(new File("Sword.png"));
+			background = ImageIO.read(new File("Wallpaper.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
 		
 		importMazes();
 		addListeners();
-		
-		try {
-			background = ImageIO.read(new File("Wallpaper.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		repaint();
 	}

@@ -2,6 +2,7 @@ package maze.gui;
 
 import java.awt.CardLayout;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -315,14 +316,31 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		if(game.GetGameOver())
 			endGame();
 		
+		
+		
+//		Battle battle = new Battle(0);	
+//		mainPanel.add(battle, "Battle");
+//		
+//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+//		cardLayout.show(mainPanel, "Battle");
+		
+		
+		
+		
 		if(dragonMoves && validKeyPressed)
-			for(int i = 0; i < game.getAllDragons().size(); i++)
+			for(int i = 0; i < numDragons; i++)
 				if(!(game.getAllDragons().elementAt(i).getDragonState() == (DragonState.dead)))
 					dragonAnimation(i);
 	}
 	
 	public void endGame()
 	{
+//		Battle battle = new Battle();	
+//		mainPanel.add(battle, "Battle");
+//		
+//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+//		cardLayout.show(mainPanel, "Battle");
+		
 		if(game.getHero().getIsDead())
 			JOptionPane.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
 		else
