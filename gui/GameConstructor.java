@@ -2,7 +2,6 @@ package maze.gui;
 
 import java.awt.CardLayout;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -335,7 +334,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	
 	public void doGraphicBattle(int winner)
 	{
-		battle = new Battle(winner, mainPanel);	
+		battle = new Battle(winner);	
 		mainPanel.add(battle, "Battle");
 		
 		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
