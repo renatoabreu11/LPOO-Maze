@@ -95,8 +95,8 @@ public class Battle extends JPanel{
 		int width = getWidth();
 		int height = getHeight();
 		
-		heroPosX = width / 2 ; heroPosY = height/2 - 200;
-		dragonPosX = width / 2 - 300; dragonPosY =  height/2 - 200;
+		heroPosX = width - 150 ; heroPosY = height/2 - 200;
+		dragonPosX = 0; dragonPosY =  height/2 - 200;
 		fireWidth = width +100;
 		fireHeight = 400;
 		firePosX =  - 500;
@@ -122,14 +122,14 @@ public class Battle extends JPanel{
 			case Moving:
 			{
 				if(heroIndex == heroMoves.size() - 1 ){
-					heroIndex = heroMoves.size() - 1;
+					heroIndex = 0;
 				}  else heroIndex++;
 				
 				if(dragonIndex == dragonFlies.size() - 1){
-					dragonIndex = dragonFlies.size() - 1;
+					dragonIndex = 0;
 				} else dragonIndex++;
 					
-				if(heroIndex == heroMoves.size() - 1 && dragonIndex == dragonFlies.size() - 1){
+				if(heroPosX <= (getWidth() / 2 - 100) && dragonPosX >= (getWidth() / 2 - 450)) {
 					if(this.winner == 0){
 						this.state = Animation.HeroAttacking;
 						heroIndex = 0;
@@ -196,9 +196,9 @@ public class Battle extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		int step = 15;
+		int step = 7;
 		
-		g.drawImage(background, 0, 0, 1920, 1000, null);
+		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 		
 		//Bottom
 		g.drawImage(fire, firePosX, firePosY, fireWidth, fireHeight, null);
@@ -212,8 +212,16 @@ public class Battle extends JPanel{
 		default:
 			break;
 		case Moving: {
-			g.drawImage(heroMoves.get(heroIndex), heroPosX, heroPosY, 300, 300, null);
+			g.drawImage(heroMoves.get(heroIndex), heroPosX , heroPosY, 300, 300, null);
 			g.drawImage(dragonFlies.get(dragonIndex), dragonPosX, dragonPosY, 300, 300, null);
+			
+			heroPosX -= step;
+			
+			if(heroPosX < (getWidth() / 2 - 100))
+				heroPosX += step;
+			
+			if(dragonPosX < (getWidth() / 2 - 350))
+				dragonPosX += (step * 0.8);
 			break;
 		}
 		case HeroAttacking: {
