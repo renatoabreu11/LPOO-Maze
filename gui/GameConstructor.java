@@ -35,6 +35,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private BufferedImage rocks;
 	private int dragonIndex;
 	private int heroIndex;
+	private boolean battleHasHappened;
 	
 	private Timer myTimer;
 	private Game game;
@@ -44,6 +45,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private boolean dragonMoves;
 	private float FPS = 0.1f;
 	private int spritesSize = 60;
+	
+	private Battle battle;
 
 	/***
 	 * Default constructor
@@ -106,6 +109,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		else
 			dragonMoves = true;
 		
+		battleHasHappened = false;
 		startedTime = System.currentTimeMillis();
 	}
 	
@@ -313,19 +317,16 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 				}
 			}
 		
+		if(game.checkDragonsDead() && !battleHasHappened)
+		{
+			doGraphicBattle(0);
+//			mainPanel.remove(battle);
+//			battle = new Battle();
+			battleHasHappened = true;
+		}
+		
 		if(game.GetGameOver())
-			endGame();
-		
-		
-		
-//		Battle battle = new Battle(0);	
-//		mainPanel.add(battle, "Battle");
-//		
-//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-//		cardLayout.show(mainPanel, "Battle");
-		
-		
-		
+			endGame();		
 		
 		if(dragonMoves && validKeyPressed)
 			for(int i = 0; i < numDragons; i++)
@@ -333,16 +334,22 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 					dragonAnimation(i);
 	}
 	
-	public void endGame()
+	public void doGraphicBattle(int winner)
 	{
-//		Battle battle = new Battle();	
-//		mainPanel.add(battle, "Battle");
-//		
-//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-//		cardLayout.show(mainPanel, "Battle");
+		battle = new Battle(winner, mainPanel);	
+		mainPanel.add(battle, "Battle");
 		
+		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+		cardLayout.show(mainPanel, "Battle");
+	}
+	
+	public void endGame()
+	{		
 		if(game.getHero().getIsDead())
+		{
+			doGraphicBattle(1);
 			JOptionPane.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
+		}
 		else
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
 			
