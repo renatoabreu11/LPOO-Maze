@@ -142,12 +142,12 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze) throws IOException {
 		
 		this.mainPanel = mainPanel;
-		horizontalSize = maze.getHSize();
-		verticalSize = maze.getVSize();
+		horizontalSize = gameOptions.getHorizontalSize();
+		verticalSize = gameOptions.getVerticalSize();
 		dragonType = gameOptions.getDragonBehavior();
-		
 		game = new Game();
 		game.SetMaze(maze, dragonType);
+		numDragons = game.getAllDragons().size();
 
 		Random r = new Random();
 		
