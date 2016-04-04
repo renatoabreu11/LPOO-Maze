@@ -4,35 +4,44 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Battle extends JPanel {
+import maze.logic.Dragon.DragonState;
+
+public class Battle extends JPanel{
 
 	private int winner;
 	private int width;
 	private int height;
-	private JLabel lblMessage;
 	private BufferedImage background;
-	private BufferedImage hero2;
 	private BufferedImage fire;
 	private ArrayList<BufferedImage> heroAttack;
 	private ArrayList<BufferedImage> fireAttack;
 	private ArrayList<BufferedImage> dragonAttack;	
+	private ArrayList<BufferedImage> dragonDies;	
+	private ArrayList<BufferedImage> dragonFlies;	
 	private long startedTime;
 	private float FPS = 0.1f;
 	
 	private int heroAttackIndex;
 	private int fireAttackIndex;
 	private int dragonAttackIndex;
+	private int dragonFliesIndex;
+	private int dragonDiesIndex;
+	private int dragonIndex;
 	private boolean startAttack;
 	private boolean attacksNoMore;
+	private boolean endBattle;
 
 	private int heroPosX, heroPosY;
 	private int dragonPosX, dragonPosY;
@@ -51,7 +60,7 @@ public class Battle extends JPanel {
 		
 	}
 	
-	public Battle(int winner, JPanel mainPanel) {
+	public Battle(int winner, JPanel mainPanel){
 		
 		setLayout(null);
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -69,11 +78,14 @@ public class Battle extends JPanel {
 			SpriteSheetLoader fireAttackSS = new SpriteSheetLoader("fireAttack.png", 8, 1, 128, 128);
 			fireAttack = fireAttackSS.getSprites();
 			
-			for(int i = 0; i < 7; i++)
-			{
-				d = ImageIO.read(new File("dragonAttack (" + (i + 1) + ").png"));
-				dragonAttack.add(d);
-			}
+			SpriteSheetLoader dragonAttackSS = new SpriteSheetLoader("DragonAttacking.png", 1, 11, 200, 150);
+			dragonAttack = dragonAttackSS.getSprites();
+			
+			SpriteSheetLoader dragonDiesSS = new SpriteSheetLoader("DragonDying.png", 1, 11, 200, 150);
+			dragonDies = dragonDiesSS.getSprites();
+			
+			SpriteSheetLoader dragonFliesSS = new SpriteSheetLoader("DragonFlying.png", 1, 11, 200, 150);
+			dragonFlies = dragonFliesSS.getSprites();
 			
 			for(int i = 0; i < 17; i++)
 			{
@@ -89,8 +101,17 @@ public class Battle extends JPanel {
 		heroAttackIndex = 0;
 		fireAttackIndex = 0;
 		dragonAttackIndex = 0;
-		startAttack = false;
+		dragonFliesIndex = 0;
+		dragonDiesIndex = 0;
+		dragonIndex = 0;
+		
+		if(winner == 0)
+			startAttack = false;
+		else
+			startAttack = true;
+		
 		attacksNoMore = false;
+		endBattle = false;
 		
 		heroPosX = 400; heroPosY = 600;
 		dragonPosX = 1300; dragonPosY = 200;
@@ -140,20 +161,22 @@ public class Battle extends JPanel {
 							fireAttackIndex++;
 					}
 					
-					if(dragonAttackIndex >= 1)
-						dragonAttackIndex = 0;
+					if(dragonFliesIndex >= 10)
+						dragonFliesIndex = 0;
 					else
-						dragonAttackIndex++;
+						dragonFliesIndex++;
 				}
 				else
 				{
 					if(heroAttackIndex >= 9)
-					{
-						CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-						cardLayout.show(mainPanel, "Game");
-					}
+						endBattle = true;
 					else
 						heroAttackIndex++;
+					
+					if(dragonDiesIndex >= 10)
+						dragonDiesIndex = 0;
+					else
+						dragonDiesIndex++;
 				}
 			}
 			else
@@ -168,34 +191,30 @@ public class Battle extends JPanel {
 					if(startAttack)
 					{
 						if(fireAttackIndex >= 7)
-						{
-							startAttack = false;
-							attacksNoMore = true;
-							dragonAttackIndex = 0;
-						}
+							fireAttackIndex = 0;
 						else
 							fireAttackIndex++;
 					}
-					else
-					{
-						if(dragonAttackIndex >= 5)
-							startAttack = true;
-						else
-							dragonAttackIndex++;
-					}
 					
-					if(dragonAttackIndex == 5)
-						startAttack = true;
-				}
-				else
-				{
-					if(dragonAttackIndex >= 1)
+					if(dragonAttackIndex >= 10)
 					{
-						CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-						cardLayout.show(mainPanel, "Game");
+						attacksNoMore = true;
+						startAttack = false;
 					}
 					else
 						dragonAttackIndex++;
+				}
+				else
+				{
+					if(dragonFliesIndex >= 10)
+						endBattle = true;
+					else
+						dragonFliesIndex++;
+					
+					if(heroAttackIndex >= 9)
+						heroAttackIndex = 0;
+					else
+						heroAttackIndex++;
 				}
 			}
 			
@@ -225,9 +244,17 @@ public class Battle extends JPanel {
 		
 		if(winner == 0)
 		{
-			g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
-			g.drawImage(dragonAttack.get(dragonAttackIndex), dragonPosX, dragonPosY, 200, 200, null);
-
+			if(!attacksNoMore)
+			{
+				g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
+				g.drawImage(dragonFlies.get(dragonFliesIndex), dragonPosX, dragonPosY, 200, 200, null);
+			}
+			else
+			{
+				g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
+				g.drawImage(dragonDies.get(dragonDiesIndex), dragonPosX, dragonPosY, 200, 200, null);
+			}
+			
 			if(startAttack)
 			{
 				g.drawImage(fireAttack.get(fireAttackIndex), dragonPosX - 200, dragonPosY - 130, 400, 400, null);
@@ -239,8 +266,16 @@ public class Battle extends JPanel {
 		}
 		else
 		{
-			g.drawImage(dragonAttack.get(dragonAttackIndex), dragonPosX, dragonPosY, 200, 200, null);
-			g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
+			if(!attacksNoMore)
+			{
+				g.drawImage(dragonAttack.get(dragonAttackIndex), dragonPosX, dragonPosY, 200, 200, null);
+				g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
+			}
+			else
+			{
+				g.drawImage(dragonFlies.get(dragonFliesIndex), dragonPosX, dragonPosY, 200, 200, null);
+				g.drawImage(heroAttack.get(heroAttackIndex), heroPosX, heroPosY, 200, 200, null);
+			}
 
 			if(startAttack)
 			{
@@ -248,8 +283,12 @@ public class Battle extends JPanel {
 				g.drawImage(fireAttack.get(fireAttackIndex), heroPosX - 170, heroPosY + 30, 400, 400, null);
 				g.drawImage(fireAttack.get(fireAttackIndex), heroPosX - 60, heroPosY - 250, 400, 400, null);
 				g.drawImage(fireAttack.get(fireAttackIndex), heroPosX - 130, heroPosY - 40, 400, 400, null);
-			}		
+			}
+			
+//			if(endBattle)
+//			{
+//				//mudar o set visible?????????????????????????
+//			}
 		}
 	}
-
 }

@@ -321,7 +321,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		if(game.checkDragonsDead() && !battleHasHappened)
 		{
 			doGraphicBattle(0);
-//			mainPanel.remove(battle);
 			battleHasHappened = true;
 		}
 		
@@ -353,8 +352,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		else
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
 			
-		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-		cardLayout.show(mainPanel, "Main Options");
+//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+//		cardLayout.show(mainPanel, "Main Options");
 	}
 
 	@Override
