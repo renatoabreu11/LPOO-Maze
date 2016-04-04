@@ -26,7 +26,7 @@ public class Battle extends JPanel {
 	private ArrayList<BufferedImage> fireAttack;
 	private ArrayList<BufferedImage> dragonAttack;	
 	private long startedTime;
-	private float FPS = 0.2f;
+	private float FPS = 0.1f;
 	
 	private int heroAttackIndex;
 	private int fireAttackIndex;

@@ -67,6 +67,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 		game = new Game();
 		game.SetObjects(dragonType, horizontalSize, verticalSize, numDragons);
+		battle = new Battle();
 		 
 		Random r = new Random();
 		
@@ -321,7 +322,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		{
 			doGraphicBattle(0);
 //			mainPanel.remove(battle);
-//			battle = new Battle();
 			battleHasHappened = true;
 		}
 		
