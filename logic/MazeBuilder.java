@@ -9,9 +9,34 @@ public class MazeBuilder {
 	private Stack<Coordinates> pathHistory;
 	private Coordinates guideCell;
 	private boolean guideCellUpdated;
-
-	Random random = new Random();
+	private Random random = new Random();
 	
+	/**
+	 * MazeBuilder constructor
+	 */
+	public char[][] buildMaze(int horizontalSize, int verticalSize) throws IllegalArgumentException {
+		maze = new char[horizontalSize][verticalSize];
+		cellsVisited = new char[(horizontalSize - 1) / 2][(verticalSize - 1) / 2];
+		pathHistory = new Stack<Coordinates>();
+		guideCell = new Coordinates(0, 0);
+		guideCellUpdated = false;
+
+		FillMaze(horizontalSize, verticalSize, guideCell);
+
+		for (int i = 0; i < cellsVisited.length; i++)
+			for (int j = 0; j < cellsVisited[i].length; j++)
+				cellsVisited[i][j] = '.';
+
+		do {
+			UpdateGuideCell();
+		} while (!pathHistory.empty());
+		
+		return maze;
+	}
+	
+	/**
+	 * Fills the maze with 'X' (walls) and chooses a random starting position.
+	 */
 	public void FillMaze(int hSize, int vSize, Coordinates guideCell) {
 		// Fills maze with walls ('X')
 		for (int i = 0; i < vSize; i++)
@@ -34,6 +59,9 @@ public class MazeBuilder {
 		pathHistory.push(guideCell.getCoordinates());
 	}
 
+	/**
+	 * Updates all the maze cells.
+	 */
 	public void UpdateMazeCells(int xNew, int yNew, int xVisited, int yVisited, int direction) {
 		// Maze update
 		maze[xNew][yNew] = ' ';
@@ -69,6 +97,9 @@ public class MazeBuilder {
 		guideCellUpdated = true;
 	}
 
+	/**
+	 * Decides which direction the guideCell should go.
+	 */
 	public void UpdateGuideCell() {
 		boolean canMoveNorth, canMoveSouth, canMoveWest, canMoveEast;
 		canMoveNorth = canMoveSouth = canMoveWest = canMoveEast = true;
@@ -169,25 +200,5 @@ public class MazeBuilder {
 				UpdateMazeCells(xNew, yNew, xVisited, yVisited, 4);
 			}
 		} while (!guideCellUpdated);
-	}
-	
-	public char[][] buildMaze(int horizontalSize, int verticalSize) throws IllegalArgumentException {
-		maze = new char[horizontalSize][verticalSize];
-		cellsVisited = new char[(horizontalSize - 1) / 2][(verticalSize - 1) / 2];
-		pathHistory = new Stack<Coordinates>();
-		guideCell = new Coordinates(0, 0);
-		guideCellUpdated = false;
-
-		FillMaze(horizontalSize, verticalSize, guideCell);
-
-		for (int i = 0; i < cellsVisited.length; i++)
-			for (int j = 0; j < cellsVisited[i].length; j++)
-				cellsVisited[i][j] = '.';
-
-		do {
-			UpdateGuideCell();
-		} while (!pathHistory.empty());
-		
-		return maze;
 	}
 }

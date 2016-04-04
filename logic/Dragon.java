@@ -13,12 +13,18 @@ public class Dragon extends Elements {
 	private String movedTo;
 	Random seed = new Random();
 	
+	/**
+	 * Dragon constructor
+	 */
 	public Dragon(Coordinates c, DragonState s) {
 		super(c, 'D');
 		dragonOnTop = false;
 		state  = s;
 	}
 	
+	/**
+	 * Updates dragon movement depending on the given dragonMode (Static, aleatory movement or aleatory movement with sleep state).
+	 */
 	public Coordinates updateMovement(int dragonMode){
 		int aux;
 		Coordinates c = this.getCoordinates();	
@@ -86,6 +92,10 @@ public class Dragon extends Elements {
 		return c;
 	}
 	
+	/**
+	 * Sets the dragonOnTop variable to true or false, depending on the given flag.
+	 * This is used when the dragon gets on top of the sword.
+	 */
 	public void setDragonOnTop(boolean flag){
 		this.dragonOnTop = flag;
 
@@ -95,6 +105,9 @@ public class Dragon extends Elements {
 			setName('D');
 	}
 
+	/**
+	 * Sets the dragon state to the given dragon state.
+	 */
 	public void setDragonState(DragonState s) {
 		this.state = s;
 		
@@ -103,16 +116,24 @@ public class Dragon extends Elements {
 		else if(s.equals(DragonState.sleeping))
 			this.setName('d');
 	}
-
+	/**
+	 * Retuns the dragon state.
+	 */
 	public DragonState getDragonState(){
 		return this.state;
 	}
 	
+	/**
+	 * Returns the dragonOnTop variable.
+	 */
 	public boolean getDragonOnTop()
 	{
 		return this.dragonOnTop;
 	}
 	
+	/**
+	 * Return a string indicating the position the dragon has moved to.
+	 */
 	public String getMovedTo()
 	{
 		return this.movedTo;

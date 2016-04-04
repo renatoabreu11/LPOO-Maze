@@ -15,11 +15,17 @@ public class Game {
 	private boolean exitSpawned;
 	private int dragonMode;
 
+	/**
+	 * Game constructor
+	 */
 	public Game(){
 		this.gameOver = false;
 		this.exitSpawned = false;
 	}
 	
+	/**
+	 * Game members initialization 1
+	 */
 	public void SetObjects(int dragonMode){
 		this.dragonMode = dragonMode;
 		maze = new Maze();
@@ -36,6 +42,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Game members initialization 2
+	 */
 	public void SetObjects(int dragonMode, int horizontalSize, int verticalSize, int numberOfDragons) {
 		this.dragonMode = dragonMode;
 		
@@ -53,6 +62,9 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Sets the maze by the given one.
+	 */
 	public void SetMaze(Maze maze) {
 		this.maze = maze;
 		this.dragonMode = 3;
@@ -71,6 +83,9 @@ public class Game {
 		
 	}
 	
+	/**
+	 * Updates the game.
+	 */
 	public void UpdateGame(String movement) {
 		UpdateHero(hero, movement);
 
@@ -103,6 +118,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Updates the hero in game.
+	 */
 	public void UpdateHero(Hero hero, String playerMovement) {
 
 		Coordinates newCoordinates = hero.UpdateMovement(playerMovement);
@@ -125,6 +143,9 @@ public class Game {
 		maze.WriteInMaze(hero.getCoordinates(), hero.getName());
 	}
 
+	/**
+	 * Updates the dragon in game.
+	 */
 	public void UpdateDragons() {
 		for (int i = 0; i < Dragons.size(); i++) {
 			Coordinates c = Dragons.elementAt(i).updateMovement(this.dragonMode);
@@ -155,6 +176,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Check for battle, and if the battle happens, kills either the hero or the dragon.
+	 */
 	public void Battle() {
 		boolean doBattle = false;
 		Coordinates heroCoord = hero.getCoordinates();
@@ -191,34 +215,58 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Returns the maze in a string format.
+	 */
 	public String getMazeString() {
 		return this.maze.toString();
 	}
 
+	/**
+	 * Sets gameOver to true.
+	 */
 	public void SetGameOver() {
 		this.gameOver = true;
 	}
 
+	/**
+	 * Returns gameOver.
+	 */
 	public boolean GetGameOver() {
 		return this.gameOver;
 	}
 
+	/**
+	 * Returns the hero.
+	 */
 	public Hero getHero() {
 		return hero;
 	}
 
+	/**
+	 * Returns the first dragon.
+	 */
 	public Dragon getDragon() {
 		return Dragons.elementAt(0);
 	}
 
+	/**
+	 * Returns the sword.
+	 */
 	public Sword getSword() {
 		return sword;
 	}
 
+	/**
+	 * Returns the maze.
+	 */
 	public Maze getMaze() {
 		return this.maze;
 	}
 	
+	/**
+	 * Checks if all dragons in the game are dead.
+	 */
 	public boolean checkDragonsDead() {
 		boolean allDragonsDead = true;
 		for (int i = 0; i < Dragons.size(); i++)
@@ -230,11 +278,17 @@ public class Game {
 		return allDragonsDead;
 	}
 	
+	/**
+	 * Returns dragonMode.
+	 */
 	public int getDragonMode()
 	{
 		return dragonMode;
 	}
 	
+	/**
+	 * Returns a vector containing all dragons.
+	 */
 	public Vector<Dragon> getAllDragons()
 	{
 		return Dragons;
