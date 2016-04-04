@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -41,12 +40,11 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	private Game game;
 	private int horizontalSize, numDragons, dragonType, verticalSize;
 	private JPanel mainPanel;
+	private Battle battle;
 	private long startedTime;
 	private boolean dragonMoves;
 	private float FPS = 0.1f;
 	private int spritesSize = 60;
-	
-	private Battle battle;
 
 	/***
 	 * Default constructor
@@ -58,8 +56,9 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 * Set all the atributes acordingly to the options passed in gameOptions. Used when the player selects "Random Maze".
 	 * @throws IOException 
 	 */
-	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel) throws IOException {
+	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel, Battle battle) throws IOException {
 		this.mainPanel = mainPanel;
+		this.battle = battle;
 		horizontalSize = gameOptions.getHorizontalSize();
 		verticalSize = gameOptions.getVerticalSize();
 		numDragons = gameOptions.getNumberOfDragons();
@@ -67,7 +66,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		
 		game = new Game();
 		game.SetObjects(dragonType, horizontalSize, verticalSize, numDragons);
-		battle = new Battle();
 		 
 		Random r = new Random();
 		
@@ -118,8 +116,8 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	 *  Set all the atributes acordingly to the maze created. Used when the player selects "Personalized Maze".
 	 * @throws IOException 
 	 */
-	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze) throws IOException {
-		
+	public void setPersonalizedGame(GameOptions gameOptions, JPanel mainPanel, Maze maze, Battle battle) throws IOException {
+		this.battle = battle;
 		this.mainPanel = mainPanel;
 		horizontalSize = maze.getHSize();
 		verticalSize = maze.getVSize();
@@ -335,11 +333,11 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	
 	public void doGraphicBattle(int winner)
 	{
-		battle = new Battle(winner);	
-		mainPanel.add(battle, "Battle");
+		battle.setBattle(winner, this.mainPanel, this);
 		
 		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
 		cardLayout.show(mainPanel, "Battle");
+		battle.requestFocusInWindow();
 	}
 	
 	public void endGame()
@@ -347,10 +345,12 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		if(game.getHero().getIsDead())
 		{
 			doGraphicBattle(1);
-			JOptionPane.showMessageDialog(this, "You've died! Your body will be in the maze FOREVER!");
 		}
-		else
+		else{
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
+			CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+			cardLayout.show(mainPanel, "Main Options");
+		}
 	}
 
 	@Override

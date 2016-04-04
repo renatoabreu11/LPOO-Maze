@@ -123,7 +123,6 @@ public class MainWindow extends JFrame {
 		gameDecision.getBtnRandomMaze().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				contentPane.remove(game);
 				game = new GameConstructor();
 				contentPane.add(game, "Game");
 				try {
