@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -15,10 +16,7 @@ public class Battle extends JPanel{
 	enum Animation{
 		Moving, HeroAttacking, DragonAttacking, HeroDying, DragonDying, BattleOver;
 	}
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private int winner;
 	private BufferedImage background;

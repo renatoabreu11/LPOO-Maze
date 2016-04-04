@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -54,7 +55,7 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 	}
 	
 	/***
-	 *  Set all the atributes acordingly to the options passed in gameOptions. Used when the player selects "Random Maze".
+	 * Set all the atributes acordingly to the options passed in gameOptions. Used when the player selects "Random Maze".
 	 * @throws IOException 
 	 */
 	public void setRandomGame(GameOptions gameOptions, JPanel mainPanel) throws IOException {
@@ -350,9 +351,6 @@ public class GameConstructor extends JPanel implements MouseListener, MouseMotio
 		}
 		else
 			JOptionPane.showMessageDialog(this, "You've slain the dragon and escaped! Congratulations!");
-			
-//		CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
-//		cardLayout.show(mainPanel, "Main Options");
 	}
 
 	@Override

@@ -9,16 +9,13 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Scanner;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import maze.logic.Coordinates;
 import maze.logic.Maze;
-
 import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
@@ -138,7 +135,7 @@ public class GameTypeDecision extends JPanel {
 					}
 				}
 		} else
-			g.drawImage(background, 0, 0, 1920, 1000, null);
+			g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
 	}
 	
 	/***

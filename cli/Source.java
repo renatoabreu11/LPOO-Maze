@@ -2,7 +2,6 @@ package maze.cli;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 import maze.logic.Game;
 
 public class Source {
